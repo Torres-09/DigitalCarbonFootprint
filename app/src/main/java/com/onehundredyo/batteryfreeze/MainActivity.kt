@@ -3,6 +3,7 @@ package com.onehundredyo.batteryfreeze
 import android.app.AppOpsManager
 import android.app.AppOpsManager.MODE_ALLOWED
 import android.app.AppOpsManager.OPSTR_GET_USAGE_STATS
+import android.app.Application
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -38,16 +39,26 @@ class MainActivity : AppCompatActivity() {
     private val binding get() = _binding!!
     lateinit var listPackageInfo: MutableList<PackageInfo>
 
-    @RequiresApi(Build.VERSION_CODES.M)
     lateinit var networkStatsManager: NetworkStatsManager
     val uidCarbon = mutableMapOf<Int, Long>()   // uid 와 데이터 클래스로 이뤄진 맵
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        if (!checkForPermission()) {
+            Log.i(TAG, "The user may not allow the access to apps usage. ")
+            Toast.makeText(
+                this,
+                "Failed to retrieve app usage statistics. " +
+                        "You may need to enable access for this app through " +
+                        "Settings > Security > Apps with usage access",
+                Toast.LENGTH_LONG
+            ).show()
+            startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+        }
 
         configureBottomNavigation()
 
@@ -85,31 +96,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
-    override fun onStart() {
-        if (!checkForPermission()) {
-            Log.i(TAG, "The user may not allow the access to apps usage. ")
-            Toast.makeText(
-                this,
-                "Failed to retrieve app usage statistics. " +
-                        "You may need to enable access for this app through " +
-                        "Settings > Security > Apps with usage access",
-                Toast.LENGTH_LONG
-            ).show()
-            startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
-        } else {
-
-        }
-        super.onStart()
-    }
-
     private fun checkForPermission(): Boolean {
         val appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
         val mode = appOps.checkOpNoThrow(OPSTR_GET_USAGE_STATS, Process.myUid(), packageName)
         return mode == MODE_ALLOWED
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun getDailyDataUsage() {
         for (i in listPackageInfo.indices) {
             var packageName = listPackageInfo.get(i).packageName
@@ -144,7 +136,6 @@ class MainActivity : AppCompatActivity() {
             )
         }
     }
-//        @RequiresApi(Build.VERSION_CODES.M)
 //        private fun getDataUsageWithPeriod(list: List<PackageInfo>, time: Int, type: Int) {
 //            val INTERVAL_DAY: Long = 60 * 60 * 24 * 1000L
 //            val INTERVAL_WEEK: Long = INTERVAL_DAY * 7L

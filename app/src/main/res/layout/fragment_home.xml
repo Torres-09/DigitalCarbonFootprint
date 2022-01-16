@@ -4,13 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.HomeFragment"
-    android:background="@drawable/north_pole">
+    android:background="@drawable/north_pole"
+    tools:context=".fragment.HomeFragment">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
 
     </androidx.appcompat.widget.AppCompatImageView>
@@ -20,7 +19,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/glacier0"
             android:layout_width="300dp"
             android:layout_height="140dp"
             android:layout_marginBottom="190dp"
@@ -32,42 +31,34 @@
         </ImageView>
 
         <ImageView
-            android:id="@+id/imageView5"
+            android:id="@+id/polarBear0"
             android:layout_width="130dp"
             android:layout_height="130dp"
             android:layout_marginBottom="60dp"
             android:src="@drawable/polar_bear1"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-            app:layout_constraintEnd_toEndOf="@+id/imageView4"
-            app:layout_constraintStart_toStartOf="@+id/imageView4" />
+            app:layout_constraintBottom_toBottomOf="@+id/glacier0"
+            app:layout_constraintEnd_toEndOf="@+id/glacier0"
+            app:layout_constraintStart_toStartOf="@+id/glacier0" />
+
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/todayGoalText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="오늘의 목표"
+            android:layout_marginTop="160dp"
+            android:text="daily mission"
+            android:textColor="@color/black"
             android:textSize="20sp"
-            android:layout_marginTop="100dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/remainText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="데이터 100MB 이하로 사용하기"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_marginBottom="152dp"
             android:text="남은 목표량: 19%"
-            android:layout_marginBottom="160sp"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -1,11 +1,35 @@
 package com.onehundredyo.batteryfreeze.fragment
 
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
+import android.app.Activity
+import android.media.Image
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.Animation.INFINITE
+import android.view.animation.AnimationUtils
+import android.view.animation.OvershootInterpolator
+import android.view.animation.TranslateAnimation
+import android.widget.ImageView
 import com.onehundredyo.batteryfreeze.R
+import android.animation.ValueAnimator
+import android.content.SharedPreferences
+import android.os.Build
+import android.widget.TextView
+import androidx.annotation.RequiresApi
+import com.onehundredyo.batteryfreeze.App
+import com.onehundredyo.batteryfreeze.App.Companion.prefs
+import com.onehundredyo.batteryfreeze.MySharedPreferences
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.util.*
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +45,17 @@ class HomeFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    fun compareDate(): Boolean {
+        var currentDate: String = LocalDate.now().toString()
+        val savedDate: String = App.prefs.getSavedDate("savedDate", "")
+        if (currentDate != savedDate) {
+            App.prefs.setSavedDate("savedDate", currentDate)
+            return false
+        } else
+            return true
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,5 +91,27 @@ class HomeFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val todayGoalText: TextView = view.findViewById(R.id.todayGoalText)
+        if (compareDate()) {
+            todayGoalText.setText(App.prefs.getSavedText("savedDate", "error"))
+        } else {
+            val range = (0..6)
+            val randomNumber = range.random()
+            val textArray: Array<String> = resources.getStringArray(R.array.dailyMission)
+            val newText: String = textArray[randomNumber]
+            todayGoalText.setText(newText)
+            App.prefs.setSavedText("savedDate", newText)
+        }
+
+        val glacier0: ImageView = view.findViewById(R.id.glacier0)
+        val poloarBear0: ImageView = view.findViewById(R.id.polarBear0)
+        val animation = AnimationUtils.loadAnimation(activity, R.anim.moving)
+        glacier0.startAnimation(animation)
+        poloarBear0.startAnimation(animation)
     }
 }
