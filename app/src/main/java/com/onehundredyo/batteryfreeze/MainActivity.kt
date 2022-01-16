@@ -16,7 +16,9 @@ import android.os.Process
 import android.provider.Settings
 import android.widget.Toast
 import android.app.usage.NetworkStatsManager
+import android.content.ContentValues.TAG
 import android.content.pm.PackageInfo
+import android.util.Log
 import com.onehundredyo.batteryfreeze.DO.CarbonData
 
 
