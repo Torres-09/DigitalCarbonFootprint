@@ -101,7 +101,9 @@ class CarbonData {
             )
         }
     }
-
+    fun getDailyCarbon(): MutableMap<String,Long>{
+        return this.daily_cabon
+    }
     fun setWeeklyCarbon(){
         var start_time_list = time_data.getStartTimeList(0)
         var index = 0
@@ -167,7 +169,9 @@ class CarbonData {
             index += 1
         }
     }
-
+    fun getWeeklyCarbon(): MutableList<Long>{
+        return this.weekly_cabon
+    }
     fun setMonthlyCarbon() {
         val start_time_list = time_data.getStartTimeList(1)
 //        Log.d(TAG + "리스트", start_time_list.toString())
@@ -233,7 +237,9 @@ class CarbonData {
             )
         }
     }
-
+    fun getMonthlyCarbon(): MutableList<Long>{
+        return this.monthly_cabon
+    }
     fun setYearlyCarbon() {
         var start_time_list = time_data.getStartTimeList(2)
         var index = 0
@@ -298,5 +304,8 @@ class CarbonData {
             )
             index += 1
         }
+    }
+    fun getYearlyCarbon(): MutableList<Long>{
+        return this.yearly_cabon
     }
 }

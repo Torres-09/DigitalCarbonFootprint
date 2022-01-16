@@ -43,17 +43,17 @@ class TimeData {
                 return list_month
             }
             2 -> {
-                // TODO: 년도 확인해서 1월 이하로 내려가면 이전년도로 넘어가기
-                for (i: Int in 11..0) {
-                    list_year[i] = (Calendar.getInstance().apply {
-                        set(Calendar.MONTH, -i)
-                        set(Calendar.DATE, 1)
-                        set(Calendar.HOUR_OF_DAY, 0)
-                        set(Calendar.MINUTE, 0)
-                        set(Calendar.SECOND, 0)
-                        set(Calendar.MILLISECOND, 0)
-                    }.time.time)
+                var this_month = (Calendar.getInstance().apply {
+                    set(Calendar.DATE, 1)
+                    set(Calendar.HOUR_OF_DAY, 0)
+                    set(Calendar.MINUTE, 0)
+                    set(Calendar.SECOND, 0)
+                    set(Calendar.MILLISECOND, 0)
+                }.time.time)
+                for (i: Int in 0..10) {
+                    list_year[i] = this_month - INTERVAL_MONTH * (11 - i)
                 }
+                list_year[11] = this_month
                 return list_year
             }
             else -> print("default")
