@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <translate
+        android:duration="2937"
+        android:fillAfter="true"
+        android:fromYDelta="-2%"
+        android:repeatCount="infinite"
+        android:repeatMode="reverse"
+        android:toYDelta="2%" />
+    <translate
+        android:duration="2332"
+        android:fillAfter="true"
+        android:fromXDelta="-1%"
+        android:repeatCount="infinite"
+        android:repeatMode="reverse"
+        android:toXDelta="1%" />
+</set>

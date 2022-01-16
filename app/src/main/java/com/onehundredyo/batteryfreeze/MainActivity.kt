@@ -3,6 +3,7 @@ package com.onehundredyo.batteryfreeze
 import android.app.AppOpsManager
 import android.app.AppOpsManager.MODE_ALLOWED
 import android.app.AppOpsManager.OPSTR_GET_USAGE_STATS
+import android.app.Application
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -41,6 +42,18 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        if (!checkForPermission()) {
+            Log.i(TAG, "The user may not allow the access to apps usage. ")
+            Toast.makeText(
+                this,
+                "Failed to retrieve app usage statistics. " +
+                        "You may need to enable access for this app through " +
+                        "Settings > Security > Apps with usage access",
+                Toast.LENGTH_LONG
+            ).show()
+            startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+        }
 
         configureBottomNavigation()
 
