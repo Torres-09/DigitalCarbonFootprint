@@ -4,18 +4,17 @@ import com.onehundredyo.batteryfreeze.Constants.*
 import java.util.*
 
 class TimeData {
-    var list_week: MutableList<Long> = mutableListOf(0, 0, 0, 0, 0, 0, 0)
-    var list_month: MutableList<Long> = mutableListOf(0,0,0,0)
-    var list_year: MutableList<Long> = mutableListOf(0,0,0,0,0,0,0,0,0,0,0,0)
+    var listWeek: MutableList<Long> = mutableListOf(0, 0, 0, 0, 0, 0, 0)
+    var listMonth: MutableList<Long> = mutableListOf(0, 0, 0, 0)
+    var listYear: MutableList<Long> = mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 
-
-    fun getStartTimeList(type: Int): MutableList<Long>{
-        // type == 0 week
-        // 1 month
+    fun getStartTimeList(type: Int): MutableList<Long> {
         when (type) {
+            // type == 0 week
             0 -> {
+                // 0 : 일, 1 : 월 ... 6 : 토
                 for (i: Int in 0..6) {
-                    list_week[i] = (Calendar.getInstance().apply {
+                    listWeek[i] = (Calendar.getInstance().apply {
                         set(Calendar.DAY_OF_WEEK, i + 1)
                         set(Calendar.HOUR_OF_DAY, 0)
                         set(Calendar.MINUTE, 0)
@@ -23,8 +22,9 @@ class TimeData {
                         set(Calendar.MILLISECOND, 0)
                     }.time.time)
                 }
-                return list_week
+                return listWeek
             }
+            // type == 1 month
             1 -> {
                 val this_week_sunday = Calendar.getInstance().apply {
                     set(Calendar.DAY_OF_WEEK, 1)
@@ -33,15 +33,16 @@ class TimeData {
                     set(Calendar.SECOND, 0)
                     set(Calendar.MILLISECOND, 0)
                 }.time.time
-                // this_week_sunday 에 이번주 일요일 0시0분0초 저장
-                // 저번주: 이번주 일요일 - 1주일 시간
-                // 저저번주: 이번주 일요일 - 2주일 시간
-                // 저저저번주: 이번주 일요일 - 3주일 시간
+                // list_month[3]: this_week_sunday 에 이번주 일요일 0시0분0초 저장
+                // list_month[2]: 저번주 일요일 - 1주일 시간
+                // list_month[1]: 저저번주 일요일 - 2주일 시간
+                // list_month[0]: 저저저저번주 일요일 - 3주일 시간
                 for (i: Int in 0..3) {
-                    list_month[i] = this_week_sunday - ((3 - i) * INTERVAL_WEEK)
+                    listMonth[i] = this_week_sunday - ((3 - i) * INTERVAL_WEEK)
                 }
-                return list_month
+                return listMonth
             }
+            // type == 2 year
             2 -> {
                 var this_month = (Calendar.getInstance().apply {
                     set(Calendar.DATE, 1)
@@ -51,13 +52,12 @@ class TimeData {
                     set(Calendar.MILLISECOND, 0)
                 }.time.time)
                 for (i: Int in 0..10) {
-                    list_year[i] = this_month - INTERVAL_MONTH * (11 - i)
+                    listYear[i] = this_month - INTERVAL_MONTH * (11 - i)
                 }
-                list_year[11] = this_month
-                return list_year
+                listYear[11] = this_month
+                return listYear
             }
-            else -> print("default")
         }
-        return list_week    //바꿔야됨 임시...
+        return mutableListOf()
     }
 }
