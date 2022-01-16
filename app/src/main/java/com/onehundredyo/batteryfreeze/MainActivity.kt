@@ -65,7 +65,8 @@ class MainActivity : AppCompatActivity() {
         findPackageInfo(packageManager)
         carbonData = CarbonData(listPackageInfo,packageManager,networkStatsManager)
         carbonData.setYearlyCarbon()
-//        getDailyDataUsage()
+        var yearlyData: MutableList<Long> = carbonData.getYearlyCarbon()
+        Log.d(TAG +"연간데이터 getter 테스트", yearlyData.toString())
     }
     private fun configureBottomNavigation(){
         binding.mainFragPager.adapter = MainFragmentStatePagerAdapter(supportFragmentManager, 2)
