@@ -1,4 +1,4 @@
-package com.onehundredyo.batteryfreeze
+package com.onehundredyo.batteryfreeze.DO
 
 data class ApplicationUsageData(
     var uid: Int,
