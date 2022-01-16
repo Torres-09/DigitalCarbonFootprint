@@ -2,7 +2,6 @@ package com.onehundredyo.batteryfreeze;
 
 public class Constants {
     public static final long INTERVAL_DAY = 60 * 60 * 24 * 1000L;
-    public static final long INTERVAL_WEEK = 60 * 60 * 24 * 1000 * 7L;
-    public static final long INTERVAL_MONTH = 60 * 60 * 24 * 1000 * 30L;
-    public static final long INTERVAL_YEAR = 60 * 60 * 24 * 1000* 365L;
+    public static final long INTERVAL_WEEK = INTERVAL_DAY * 7L;
+    public static final long INTERVAL_MONTH = INTERVAL_DAY * 30L;
 }
