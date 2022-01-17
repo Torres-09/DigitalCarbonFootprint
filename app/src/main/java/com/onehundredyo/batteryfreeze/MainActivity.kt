@@ -19,15 +19,14 @@ import android.content.ContentValues.TAG
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.util.Log
-import androidx.room.Room
-import com.onehundredyo.batteryfreeze.DO.CarbonData
-import com.onehundredyo.batteryfreeze.DO.MonthlyInfo
-import com.onehundredyo.batteryfreeze.DO.WeeklyInfo
-import com.onehundredyo.batteryfreeze.DO.YearlyInfo
+import com.onehundredyo.batteryfreeze.DO.*
 import com.onehundredyo.batteryfreeze.dataBaseHelper.DataBaseManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import androidx.fragment.app.Fragment
+import com.onehundredyo.batteryfreeze.DO.CarbonData
+import com.onehundredyo.batteryfreeze.fragment.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -37,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var networkStatsManager: NetworkStatsManager
     lateinit var carbonData: CarbonData
     lateinit var db: DataBaseManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -52,8 +52,7 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-
-        configureBottomNavigation()
+        initNavigationBar()
 
         //data usage
         networkStatsManager =
@@ -70,18 +69,28 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun configureBottomNavigation() {
-        binding.mainFragPager.adapter = MainFragmentStatePagerAdapter(supportFragmentManager, 2)
 
-        binding.bottomNavigation.setupWithViewPager(binding.mainFragPager)
+    fun initNavigationBar() {
+        binding.bottomNavigation.run {
+            setOnNavigationItemSelectedListener {
+                when (it.itemId) {
+                    R.id.page_1 -> {
+                        changeFragment(HomeFragment())
+                    }
+                    R.id.page_2 -> {
+                        changeFragment(StaticFragment())
+                    }
+                }
+                true
+            }
+            selectedItemId = R.id.page_1
+        }
+    }
 
-        val bottomNaviLayout: View =
-            this.layoutInflater.inflate(R.layout.bottom_navigation_tab, null, false)
+    fun changeFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(binding.mainFragPager.id, fragment).commit()
 
-        binding.bottomNavigation.getTabAt(0)!!.customView =
-            bottomNaviLayout.findViewById(R.id.btn_bottom_navi_home_tab) as RelativeLayout
-        binding.bottomNavigation.getTabAt(1)!!.customView =
-            bottomNaviLayout.findViewById(R.id.btn_bottom_navi_static_tab) as RelativeLayout
     }
 
     private fun findPackageInfo() {
