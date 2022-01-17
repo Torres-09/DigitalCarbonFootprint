@@ -35,6 +35,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+//barchart - weekly
+//monthlybarchart - monthly
+//yearlybarchart - yearly
 
 class StaticFragment : Fragment() {
     private var DataList = ArrayList<DataUsage>()
@@ -100,10 +103,13 @@ class StaticFragment : Fragment() {
 
     fun getBarDataUsage(): ArrayList<DataUsage> {
 
-        DataList.add(DataUsage("3주전", monthlyData[0].DataUsage))
-        DataList.add(DataUsage("2주전", monthlyData[1].DataUsage))
-        DataList.add(DataUsage("1주전", monthlyData[2].DataUsage))
-        DataList.add(DataUsage("이번주", monthlyData[3].DataUsage))
+        DataList.add(DataUsage("일요일", weeklyData[0].DataUsage))
+        DataList.add(DataUsage("월요일", weeklyData[1].DataUsage))
+        DataList.add(DataUsage("화요일", weeklyData[2].DataUsage))
+        DataList.add(DataUsage("수요일", weeklyData[3].DataUsage))
+        DataList.add(DataUsage("목요일", weeklyData[4].DataUsage))
+        DataList.add(DataUsage("금요일", weeklyData[5].DataUsage))
+        DataList.add(DataUsage("토요일", weeklyData[6].DataUsage))
 
         return DataList
     }
