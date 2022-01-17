@@ -24,7 +24,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class StaticFragment : Fragment() {
+class StatisticsFragment : Fragment() {
     private var DataList = ArrayList<DataUsage>()
     private lateinit var barChart: BarChart
     lateinit var mainActivity: MainActivity     // CONTEXT
