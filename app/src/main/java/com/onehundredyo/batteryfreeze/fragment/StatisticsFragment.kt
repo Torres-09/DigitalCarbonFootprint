@@ -19,8 +19,6 @@ import com.onehundredyo.batteryfreeze.DO.YearlyInfo
 import com.onehundredyo.batteryfreeze.MainActivity
 import com.onehundredyo.batteryfreeze.R
 import com.onehundredyo.batteryfreeze.dataBaseHelper.DataBaseManager
-import com.onehundredyo.batteryfreeze.dataBaseHelper.DatausageDAO
-import com.onehundredyo.batteryfreeze.databinding.FragmentStaticBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -51,7 +49,7 @@ class StaticFragment : Fragment() {
             savedInstanceState: Bundle?
         ): View? {
             // Inflate the layout for this fragment
-            return inflater.inflate(R.layout.fragment_static, container, false)
+            return inflater.inflate(R.layout.fragment_statistics, container, false)
         }
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -80,11 +78,11 @@ class StaticFragment : Fragment() {
 
         fun getBarDataUsage(): ArrayList<DataUsage> {
 
-            DataList.add(DataUsage("3주전", monthlyData[0].DataUsage.toInt()))
-            DataList.add(DataUsage("2주전", monthlyData[1].DataUsage.toInt()))
-            DataList.add(DataUsage("1주전", monthlyData[2].DataUsage.toInt()))
-            DataList.add(DataUsage("이번주", monthlyData[3].DataUsage.toInt()))
-            DataList.add(DataUsage("이번주", monthlyData[3].DataUsage.toInt()))
+            DataList.add(DataUsage("3주전", monthlyData[0].DataUsage))
+            DataList.add(DataUsage("2주전", monthlyData[1].DataUsage))
+            DataList.add(DataUsage("1주전", monthlyData[2].DataUsage))
+            DataList.add(DataUsage("이번주", monthlyData[3].DataUsage))
+            DataList.add(DataUsage("이번주", monthlyData[3].DataUsage))
 
             return DataList
         }
