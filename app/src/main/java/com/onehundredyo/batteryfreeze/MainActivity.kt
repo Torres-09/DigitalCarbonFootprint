@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         // 아래 메소드(initiateDatabase)는 DB에 주간,월간,연간데이터를 저장하게 함
         // 실행시간 30초 예상되는 메소드임,
         // DB에 주간,월간,연간데이터를 저장하게 함
-//        initiateDatabase(listPackageInfo,packageManager,networkStatsManager)
+        initiateDatabase(listPackageInfo,packageManager,networkStatsManager)
 
     }
 
