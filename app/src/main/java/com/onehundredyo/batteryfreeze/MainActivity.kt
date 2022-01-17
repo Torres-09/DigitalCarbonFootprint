@@ -68,11 +68,6 @@ class MainActivity : AppCompatActivity() {
         // DB에 주간,월간,연간데이터를 저장하게 함
 //        initiateDatabase(listPackageInfo,packageManager,networkStatsManager)
 
-
-//        carbonData = CarbonData(listPackageInfo,packageManager,networkStatsManager)
-//        carbonData.setYearlyCarbon()
-//
-//        var yearlyData: MutableList<Long> = carbonData.getYearlyCarbon()
     }
 
     private fun configureBottomNavigation() {
@@ -115,16 +110,16 @@ class MainActivity : AppCompatActivity() {
         packageManager: PackageManager,
         networkStatsManager: NetworkStatsManager
     ) {
-        carbonData = CarbonData(listPackageInfo,packageManager,networkStatsManager)
+        carbonData = CarbonData(listPackageInfo, packageManager, networkStatsManager)
         carbonData.setWeeklyCarbon()
         carbonData.setMonthlyCarbon()
         carbonData.setYearlyCarbon()
 
         // 리스트 형태로 주,월,연간 데이터 받아온다
-        val weeklyCarbon :MutableList<Long> = carbonData.getWeeklyCarbon()
+        val weeklyCarbon: MutableList<Long> = carbonData.getWeeklyCarbon()
         val monthlyCarbon: MutableList<Long> = carbonData.getMonthlyCarbon()
         val yearlyCarbon: MutableList<Long> = carbonData.getYearlyCarbon()
-        
+
         // 메인쓰레드 사용(권장하지 않음)
 //        val db = Room.databaseBuilder(
 //            applicationContext,
@@ -137,15 +132,16 @@ class MainActivity : AppCompatActivity() {
         db = DataBaseManager.getInstance(applicationContext)!!
 
         CoroutineScope(Dispatchers.IO).launch {
-            for(weekData in weeklyCarbon.indices){
+            for (weekData in weeklyCarbon.indices) {
                 Log.d(TAG + "INSERT: ", "${weekData} 번째 요일 / 사용량:${weeklyCarbon[weekData]}")
                 db!!.DatausageDAO().insertWeekData(WeeklyInfo(weekData, weeklyCarbon[weekData]))
             }
-            for(monthData in monthlyCarbon.indices){
+            for (monthData in monthlyCarbon.indices) {
                 Log.d(TAG + "INSERT: ", "${monthData} 주 / 사용량:${monthlyCarbon[monthData]}")
-                db!!.DatausageDAO().insertMonthData(MonthlyInfo(monthData, monthlyCarbon[monthData]))
+                db!!.DatausageDAO()
+                    .insertMonthData(MonthlyInfo(monthData, monthlyCarbon[monthData]))
             }
-            for(yearData in yearlyCarbon.indices){
+            for (yearData in yearlyCarbon.indices) {
                 Log.d(TAG + "INSERT: ", "${yearData} 달 / 사용량:${yearlyCarbon[yearData]}")
                 db!!.DatausageDAO().insertYearData(YearlyInfo(yearData, yearlyCarbon[yearData]))
             }

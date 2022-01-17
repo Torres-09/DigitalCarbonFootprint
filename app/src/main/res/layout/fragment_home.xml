@@ -19,11 +19,11 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/glacier0"
+            android:id="@+id/glacierImage"
             android:layout_width="300dp"
             android:layout_height="140dp"
             android:layout_marginBottom="190dp"
-            android:src="@drawable/glacier2"
+            android:src="@drawable/glacier0"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -31,14 +31,14 @@
         </ImageView>
 
         <ImageView
-            android:id="@+id/polarBear0"
+            android:id="@+id/polarBearImage"
             android:layout_width="130dp"
             android:layout_height="130dp"
             android:layout_marginBottom="60dp"
             android:src="@drawable/polar_bear1"
-            app:layout_constraintBottom_toBottomOf="@+id/glacier0"
-            app:layout_constraintEnd_toEndOf="@+id/glacier0"
-            app:layout_constraintStart_toStartOf="@+id/glacier0" />
+            app:layout_constraintBottom_toBottomOf="@+id/glacierImage"
+            app:layout_constraintEnd_toEndOf="@+id/glacierImage"
+            app:layout_constraintStart_toStartOf="@+id/glacierImage" />
 
 
         <TextView
