@@ -65,7 +65,10 @@ class MainActivity : AppCompatActivity() {
         // 아래 메소드(initiateDatabase)는 DB에 주간,월간,연간데이터를 저장하게 함
         // 실행시간 30초 예상되는 메소드임,
         // DB에 주간,월간,연간데이터를 저장하게 함
-//        initiateDatabase(listPackageInfo,packageManager,networkStatsManager)
+        // Coroutine 을 사용하여 메인쓰레드가 아닌 IO 쓰레드를 사용하여 DB Insert 작업 수행
+        CoroutineScope(Dispatchers.IO).launch {
+            initiateDatabase(listPackageInfo, packageManager, networkStatsManager)
+        }
 
     }
 
@@ -78,7 +81,7 @@ class MainActivity : AppCompatActivity() {
                         changeFragment(HomeFragment())
                     }
                     R.id.page_2 -> {
-                        changeFragment(StaticFragment())
+                        changeFragment(StatisitcsFragment())
                     }
                 }
                 true
@@ -134,7 +137,7 @@ class MainActivity : AppCompatActivity() {
 //            applicationContext,
 //            DataBaseManager::class.java,
 //            "databasemanager"
-//        ).allowMainThreadQueries() 
+//        ).allowMainThreadQueries()
 //            .build()
 
         //코루틴 사용(IO 쓰레드 사용)
