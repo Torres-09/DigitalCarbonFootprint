@@ -27,6 +27,7 @@ import kotlinx.coroutines.launch
 import androidx.fragment.app.Fragment
 import com.onehundredyo.batteryfreeze.DO.CarbonData
 import com.onehundredyo.batteryfreeze.fragment.*
+import java.time.LocalDate
 
 
 class MainActivity : AppCompatActivity() {
@@ -36,6 +37,12 @@ class MainActivity : AppCompatActivity() {
     lateinit var networkStatsManager: NetworkStatsManager
     lateinit var carbonData: CarbonData
     lateinit var db: DataBaseManager
+
+//    fun compareDate(): Boolean {
+//        var currentDate: String = LocalDate.now().toString()
+//        val savedDate: String = App.prefs.getSavedDate("savedDate", "")
+//        return currentDate == savedDate
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,8 +72,9 @@ class MainActivity : AppCompatActivity() {
         // 아래 메소드(initiateDatabase)는 DB에 주간,월간,연간데이터를 저장하게 함
         // 실행시간 30초 예상되는 메소드임,
         // DB에 주간,월간,연간데이터를 저장하게 함
-//        initiateDatabase(listPackageInfo,packageManager,networkStatsManager)
-
+//        if (!compareDate()) {
+//            initiateDatabase(listPackageInfo, packageManager, networkStatsManager)
+//        }
     }
 
 
@@ -134,7 +142,7 @@ class MainActivity : AppCompatActivity() {
 //            applicationContext,
 //            DataBaseManager::class.java,
 //            "databasemanager"
-//        ).allowMainThreadQueries() 
+//        ).allowMainThreadQueries()
 //            .build()
 
         //코루틴 사용(IO 쓰레드 사용)
