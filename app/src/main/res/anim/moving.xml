@@ -3,10 +3,10 @@
     <translate
         android:duration="2937"
         android:fillAfter="true"
-        android:fromYDelta="-2%"
+        android:fromYDelta="-4%"
         android:repeatCount="infinite"
         android:repeatMode="reverse"
-        android:toYDelta="2%" />
+        android:toYDelta="4%" />
     <translate
         android:duration="2332"
         android:fillAfter="true"
