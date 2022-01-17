@@ -28,127 +28,123 @@ class StatisticsFragment : Fragment() {
     private var DataList = ArrayList<DataUsage>()
     private lateinit var barChart: BarChart
     lateinit var mainActivity: MainActivity     // CONTEXT
-    var yearlyData :MutableList<YearlyInfo> = mutableListOf()
-    var monthlyData: MutableList<MonthlyInfo>  = mutableListOf()
-    var weeklyData: MutableList<WeeklyInfo>  = mutableListOf()
+    var yearlyData: MutableList<YearlyInfo> = mutableListOf()
+    var monthlyData: MutableList<MonthlyInfo> = mutableListOf()
+    var weeklyData: MutableList<WeeklyInfo> = mutableListOf()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-         mainActivity = context as MainActivity
+        mainActivity = context as MainActivity
         // DB를 사용하기 위해 CONTEXT 를 얻어옴
+        getDatabase()
+    }
+    
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_statistics, container, false)
     }
 
 
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            getDatabase()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        barChart = view.findViewById(R.id.barchart)
+        DataList = getBarDataUsage()
+
+        initBarChart()
+
+        val entries: ArrayList<BarEntry> = ArrayList()
+
+        for (i in DataList.indices) {
+            val dataUsage = DataList[i]
+            entries.add(BarEntry(i.toFloat(), dataUsage.datausage.toFloat()))
         }
 
-        override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
-        ): View? {
-            // Inflate the layout for this fragment
-            return inflater.inflate(R.layout.fragment_statistics, container, false)
-        }
+        val barDataSet = BarDataSet(entries, "")
+        barDataSet.color = ColorTemplate.rgb("#5C98AF")
+        val data = BarData(barDataSet)
+        data.barWidth = 0.35f
+        barChart.data = data
 
-        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            super.onViewCreated(view, savedInstanceState)
+        barChart.invalidate()
+    }
 
-            barChart = view.findViewById(R.id.barchart)
-            DataList = getBarDataUsage()
+    fun getBarDataUsage(): ArrayList<DataUsage> {
 
-            initBarChart()
+        DataList.add(DataUsage("3주전", monthlyData[0].DataUsage.toInt()))
+        DataList.add(DataUsage("2주전", monthlyData[1].DataUsage.toInt()))
+        DataList.add(DataUsage("1주전", monthlyData[2].DataUsage.toInt()))
+        DataList.add(DataUsage("이번주", monthlyData[3].DataUsage.toInt()))
+        DataList.add(DataUsage("이번주", monthlyData[3].DataUsage.toInt()))
 
-            val entries: ArrayList<BarEntry> = ArrayList()
+        return DataList
+    }
 
-            for (i in DataList.indices) {
-                val dataUsage = DataList[i]
-                entries.add(BarEntry(i.toFloat(), dataUsage.datausage.toFloat()))
+    private fun initBarChart() {
+
+        barChart.run {
+            // 막대 그래프 그림자 on
+            setDrawBarShadow(true)
+            // 차트 터치 X
+            setTouchEnabled(false)
+            // 줌 금지
+            setPinchZoom(false)
+
+            // 막대 그래프 올라가는 애니메이션 추가
+            animateXY(0, 800)
+
+            axisLeft.run {
+                // 좌측 y축 제거
+                isEnabled = false
+
+
+            }
+            axisRight.run {
+                //우측 y축 제거
+                isEnabled = false
             }
 
-            val barDataSet = BarDataSet(entries, "")
-            barDataSet.color = ColorTemplate.rgb("#5C98AF")
-            val data = BarData(barDataSet)
-            data.barWidth = 0.35f
-            barChart.data = data
+            xAxis.run {
+                // 막대 그래프 바 grid 제거
+                setDrawGridLines(false)
+                setDrawAxisLine(false)
 
-            barChart.invalidate()
-        }
+                // 막대 그래프 설정
+                position = XAxis.XAxisPosition.BOTTOM
+                textColor = ColorTemplate.rgb("#5C98AF")
 
-        fun getBarDataUsage(): ArrayList<DataUsage> {
-
-            DataList.add(DataUsage("3주전", monthlyData[0].DataUsage.toInt()))
-            DataList.add(DataUsage("2주전", monthlyData[1].DataUsage.toInt()))
-            DataList.add(DataUsage("1주전", monthlyData[2].DataUsage.toInt()))
-            DataList.add(DataUsage("이번주", monthlyData[3].DataUsage.toInt()))
-            DataList.add(DataUsage("이번주", monthlyData[3].DataUsage.toInt()))
-
-            return DataList
-        }
-
-        private fun initBarChart() {
-
-            barChart.run {
-                // 막대 그래프 그림자 on
-                setDrawBarShadow(true)
-                // 차트 터치 X
-                setTouchEnabled(false)
-                // 줌 금지
-                setPinchZoom(false)
-
-                // 막대 그래프 올라가는 애니메이션 추가
-                animateXY(0, 800)
-
-                axisLeft.run {
-                    // 좌측 y축 제거
-                    isEnabled = false
-
-
-                }
-                axisRight.run {
-                    //우측 y축 제거
-                    isEnabled = false
-                }
-
-                xAxis.run {
-                    // 막대 그래프 바 grid 제거
-                    setDrawGridLines(false)
-                    setDrawAxisLine(false)
-
-                    // 막대 그래프 설정
-                    position = XAxis.XAxisPosition.BOTTOM
-                    textColor = ColorTemplate.rgb("#5C98AF")
-
-                    granularity = 1f
-                    labelRotationAngle = -25f
-                }
-
-                legend.run {
-                    // 하단 항목 이름 제거
-                    isEnabled = false
-                }
-
-                description.run {
-                    // 설명 제거
-                    isEnabled = false
-
-                }
+                granularity = 1f
+                labelRotationAngle = -25f
             }
-        }
 
-        private fun getDatabase() {
-            val db = DataBaseManager.getInstance(mainActivity)!!
-            CoroutineScope(Dispatchers.IO).launch {
-                for( i in (db!!. DatausageDAO().getAllYearlyData())){
-                    yearlyData.add(i)
-                }
-                for(i in  db!!.DatausageDAO().getAllMonthlyData()){
-                    monthlyData.add(i)
-                }
-                for( i in db!!.DatausageDAO().getAllWeeklyData()){
-                    weeklyData.add(i)
-                }
+            legend.run {
+                // 하단 항목 이름 제거
+                isEnabled = false
+            }
+
+            description.run {
+                // 설명 제거
+                isEnabled = false
+
             }
         }
     }
+
+    private fun getDatabase() {
+        val db = DataBaseManager.getInstance(mainActivity)!!
+        CoroutineScope(Dispatchers.IO).launch {
+            for (i in (db!!.DatausageDAO().getAllYearlyData())) {
+                yearlyData.add(i)
+            }
+            for (i in db!!.DatausageDAO().getAllMonthlyData()) {
+                monthlyData.add(i)
+            }
+            for (i in db!!.DatausageDAO().getAllWeeklyData()) {
+                weeklyData.add(i)
+            }
+        }
+    }
+}
