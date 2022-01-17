@@ -24,6 +24,7 @@ import com.github.mikephil.charting.renderer.BarChartRenderer
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
+import com.google.android.material.shadow.ShadowRenderer
 import com.onehundredyo.batteryfreeze.DO.MonthlyInfo
 import com.onehundredyo.batteryfreeze.DO.WeeklyInfo
 import com.onehundredyo.batteryfreeze.DO.YearlyInfo
@@ -81,7 +82,8 @@ class StaticFragment : Fragment() {
 
         // label 이름이랑 color 설정 - barchart
         val barDataSet = BarDataSet(entries, "")
-        barDataSet.color = ColorTemplate.rgb("#5C98AF")
+        barDataSet.color = ColorTemplate.rgb("#1A73E9")
+        barDataSet.barShadowColor = ColorTemplate.rgb("#F0F0F0")
         val data = BarData(barDataSet)
         data.barWidth = 0.35f
         barChart.data = data
@@ -109,8 +111,10 @@ class StaticFragment : Fragment() {
     private fun initBarChart() {
 
         barChart.run {
+
             // 막대 그래프 그림자 on
             setDrawBarShadow(true)
+
             // 차트 터치 X
             setTouchEnabled(false)
             // 줌 금지
@@ -118,6 +122,8 @@ class StaticFragment : Fragment() {
 
             // 막대 그래프 올라가는 애니메이션 추가
             animateXY(0, 800)
+
+            extraBottomOffset = 10f
 
             axisLeft.run {
                 // 좌측 y축 제거
@@ -130,6 +136,7 @@ class StaticFragment : Fragment() {
                 isEnabled = false
             }
 
+
             xAxis.run {
                 // 막대 그래프 바 grid 제거
                 setDrawGridLines(false)
@@ -137,10 +144,9 @@ class StaticFragment : Fragment() {
 
                 // 막대 그래프 설정
                 position = XAxis.XAxisPosition.BOTTOM
-                textColor = ColorTemplate.rgb("#5C98AF")
+                textColor = ColorTemplate.rgb("#F0F0F0")
                 valueFormatter = MyAxisFormatter()
                 granularity = 1f
-                labelRotationAngle = -25f
             }
 
             legend.run {
