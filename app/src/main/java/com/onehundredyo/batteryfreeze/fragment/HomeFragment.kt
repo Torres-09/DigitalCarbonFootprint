@@ -1,33 +1,17 @@
 package com.onehundredyo.batteryfreeze.fragment
 
-import android.animation.ObjectAnimator
-import android.animation.PropertyValuesHolder
-import android.app.Activity
-import android.media.Image
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.Animation.INFINITE
 import android.view.animation.AnimationUtils
-import android.view.animation.OvershootInterpolator
-import android.view.animation.TranslateAnimation
 import android.widget.ImageView
 import com.onehundredyo.batteryfreeze.R
-import android.animation.ValueAnimator
-import android.content.SharedPreferences
-import android.os.Build
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import com.onehundredyo.batteryfreeze.App
-import com.onehundredyo.batteryfreeze.App.Companion.prefs
-import com.onehundredyo.batteryfreeze.MySharedPreferences
-import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.util.*
 
 
@@ -93,9 +77,42 @@ class HomeFragment : Fragment() {
             }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val glacierImage: ImageView = view.findViewById(R.id.glacierImage)
+        val polarBearImage: ImageView = view.findViewById(R.id.polarBearImage)
+        val remainText: TextView = view.findViewById(R.id.remainText)
+        val animation = AnimationUtils.loadAnimation(activity, R.anim.moving)
 
+
+        //퍼센트에 따른 변화
+        var remainPercentage = 27
+        when (remainPercentage) {
+            in 76..100 -> {}
+            in 51..75 -> {
+//                glacierImage.setImageResource(R.drawable.glacier0)
+//                polarBearImage.setImageResource(R.drawable.polar_bear2)
+//                glacierImage.startAnimation(animation)
+//                polarBearImage.startAnimation(animation)
+            }
+            in 26..50 -> {
+                glacierImage.setImageResource(R.drawable.glacier0)
+                polarBearImage.setImageResource(R.drawable.polar_bear1)
+                glacierImage.startAnimation(animation)
+                polarBearImage.startAnimation(animation)
+            }
+            in 0..25 -> {
+//                glacierImage.setImageResource(0)
+//                polarBearImage.setImageResource(0)
+            }
+            else -> {
+            }
+        }
+        remainText.setText("남은 목표량: $remainPercentage%")
+
+
+        //오늘의 문구
         val todayGoalText: TextView = view.findViewById(R.id.todayGoalText)
         if (compareDate()) {
             todayGoalText.setText(App.prefs.getSavedText("savedDate", "error"))
@@ -107,11 +124,5 @@ class HomeFragment : Fragment() {
             todayGoalText.setText(newText)
             App.prefs.setSavedText("savedDate", newText)
         }
-
-        val glacier0: ImageView = view.findViewById(R.id.glacier0)
-        val poloarBear0: ImageView = view.findViewById(R.id.polarBear0)
-        val animation = AnimationUtils.loadAnimation(activity, R.anim.moving)
-        glacier0.startAnimation(animation)
-        poloarBear0.startAnimation(animation)
     }
 }
