@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Battery Freeze</string>
-    <string name="home">Home</string>
-    <string name="statics">Statics</string>
+    <string name="home">홈</string>
+    <string name="statics">통계</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string-array name="dailyMission">
