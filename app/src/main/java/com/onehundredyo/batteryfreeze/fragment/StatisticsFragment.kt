@@ -19,14 +19,12 @@ import com.onehundredyo.batteryfreeze.DO.YearlyInfo
 import com.onehundredyo.batteryfreeze.MainActivity
 import com.onehundredyo.batteryfreeze.R
 import com.onehundredyo.batteryfreeze.dataBaseHelper.DataBaseManager
-import com.onehundredyo.batteryfreeze.dataBaseHelper.DatausageDAO
-import com.onehundredyo.batteryfreeze.databinding.FragmentStaticBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class StatisitcsFragment : Fragment() {
+class StatisticsFragment : Fragment() {
     private var DataList = ArrayList<DataUsage>()
     private lateinit var barChart: BarChart
     lateinit var mainActivity: MainActivity     // CONTEXT
@@ -40,19 +38,15 @@ class StatisitcsFragment : Fragment() {
         // DB를 사용하기 위해 CONTEXT 를 얻어옴
         getDatabase()
     }
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
+    
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_static, container, false)
+        return inflater.inflate(R.layout.fragment_statistics, container, false)
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

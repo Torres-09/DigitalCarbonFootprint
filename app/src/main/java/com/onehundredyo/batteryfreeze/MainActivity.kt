@@ -7,9 +7,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.RelativeLayout
-import com.onehundredyo.batteryfreeze.adapter.MainFragmentStatePagerAdapter
 import com.onehundredyo.batteryfreeze.databinding.ActivityMainBinding
 import android.os.Process
 import android.provider.Settings
@@ -87,7 +84,7 @@ class MainActivity : AppCompatActivity() {
                         changeFragment(HomeFragment())
                     }
                     R.id.page_2 -> {
-                        changeFragment(StatisitcsFragment())
+                        changeFragment(StatisticsFragment())
                     }
                 }
                 true
