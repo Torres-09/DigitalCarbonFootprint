@@ -16,7 +16,6 @@ import com.onehundredyo.batteryfreeze.App
 import com.onehundredyo.batteryfreeze.MainActivity
 import com.onehundredyo.batteryfreeze.databinding.FragmentHomeBinding
 import java.time.LocalDate
-import java.util.*
 
 
 class HomeFragment : Fragment() {
@@ -26,10 +25,9 @@ class HomeFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if(activity != null && activity is MainActivity){
-            remainPercentage = (activity as MainActivity?)?.getDaily()
+        if (activity != null && activity is MainActivity) {
+            remainPercentage = (activity as MainActivity?)?.getTotalDailyCarbon()
         }
-
     }
 
     fun compareDate(): Boolean {
@@ -41,7 +39,7 @@ class HomeFragment : Fragment() {
         } else
             return true
     }
-    
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -59,9 +57,10 @@ class HomeFragment : Fragment() {
         val remainText: TextView = view.findViewById(R.id.remainText)
         val animation = AnimationUtils.loadAnimation(activity, R.anim.moving)
 
-
-        //퍼센트에 따른 변화
-        when (remainPercentage!!) {
+        var dailyCarbonDouble = (remainPercentage)?.toDouble()?.div(1000)
+        var dailyCarbonInt = (remainPercentage)?.toDouble()?.div(1000)?.toInt()
+        // 배출된 이산화탄소 양
+        when (dailyCarbonInt) {
             in 76..100 -> {
             }
             in 51..75 -> {
@@ -77,8 +76,10 @@ class HomeFragment : Fragment() {
                 polarBearImage.startAnimation(animation)
             }
             in 0..25 -> {
-//                glacierImage.setImageResource(0)
-//                polarBearImage.setImageResource(0)
+                glacierImage.setImageResource(R.drawable.glacier0)
+                polarBearImage.setImageResource(R.drawable.polar_bear1)
+                glacierImage.startAnimation(animation)
+                polarBearImage.startAnimation(animation)
             }
             else -> {
                 glacierImage.setImageResource(R.drawable.glacier0)
@@ -87,7 +88,7 @@ class HomeFragment : Fragment() {
                 polarBearImage.startAnimation(animation)
             }
         }
-        remainText.setText("오늘의 온도: $remainPercentage%")
+        remainText.setText("오늘의 탄소배출량 ${dailyCarbonDouble}kg")
 
 
         //오늘의 문구

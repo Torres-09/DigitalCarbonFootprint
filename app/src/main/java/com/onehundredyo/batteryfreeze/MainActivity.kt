@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var networkStatsManager: NetworkStatsManager
     lateinit var carbonData: CarbonData
     lateinit var db: DataBaseManager
+    private var totalDailyCarbon: Long = 0L
 
 //    fun compareDate(): Boolean {
 //        var currentDate: String = LocalDate.now().toString()
@@ -65,6 +66,7 @@ class MainActivity : AppCompatActivity() {
         listPackageInfo = mutableListOf()
 
         findPackageInfo()
+        totalDailyCarbon = getDaily()
 
         // 아래 메소드(initiateDatabase)는 DB에 주간,월간,연간데이터를 저장하게 함
         // 실행시간 30초 예상되는 메소드임,
@@ -75,6 +77,10 @@ class MainActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             initiateDatabase(listPackageInfo, packageManager, networkStatsManager)
         }
+    }
+
+    fun getTotalDailyCarbon(): Long {
+        return totalDailyCarbon
     }
 
     fun getDaily(): Long {
@@ -103,8 +109,8 @@ class MainActivity : AppCompatActivity() {
 
     fun changeFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
-            .replace(binding.mainFragPager.id, fragment).commit()
-
+            .replace(binding.mainFragPager.id, fragment)
+            .commit()
     }
 
     private fun findPackageInfo() {
