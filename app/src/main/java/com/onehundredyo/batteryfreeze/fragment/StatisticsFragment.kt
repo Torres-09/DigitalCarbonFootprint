@@ -146,13 +146,13 @@ class StatisticsFragment : Fragment() {
         monthlydata.barWidth = 0.35f
         monthlybarChart.data = monthlydata
 
-        // label 이름이랑 color 설정 - weekly
-        val yearlybarDataSet = BarDataSet(Weeklyentries, "")
+        // label 이름이랑 color 설정 - yearly
+        val yearlybarDataSet = BarDataSet(Yearlyentries, "")
         yearlybarDataSet.color = ColorTemplate.rgb("#1A73E9")
         yearlybarDataSet.barShadowColor = ColorTemplate.rgb("#F0F0F0")
         val yearlydata = BarData(yearlybarDataSet)
         yearlydata.barWidth = 0.35f
-        weeklybarChart.data = yearlydata
+        yearlybarChart.data = yearlydata
 
         // shape 둥글게 변경 - barchart
         val myradius = 40
@@ -203,18 +203,18 @@ class StatisticsFragment : Fragment() {
 
     fun getYearlyBarDataUsage(): ArrayList<DataUsage>
     {
-        YearDataList.add(DataUsage("0달", yearlyData[0].DataUsage))
-        YearDataList.add(DataUsage("1달", yearlyData[0].DataUsage))
-        YearDataList.add(DataUsage("2달", yearlyData[0].DataUsage))
-        YearDataList.add(DataUsage("3달", yearlyData[0].DataUsage))
-        YearDataList.add(DataUsage("4달", yearlyData[0].DataUsage))
-        YearDataList.add(DataUsage("5달", yearlyData[0].DataUsage))
-        YearDataList.add(DataUsage("6달", yearlyData[0].DataUsage))
-        YearDataList.add(DataUsage("7달", yearlyData[0].DataUsage))
-        YearDataList.add(DataUsage("8달", yearlyData[0].DataUsage))
-        YearDataList.add(DataUsage("9달", yearlyData[0].DataUsage))
-        YearDataList.add(DataUsage("10달", yearlyData[0].DataUsage))
-        YearDataList.add(DataUsage("11달", yearlyData[0].DataUsage))
+        YearDataList.add(DataUsage("1월", yearlyData[0].DataUsage))
+        YearDataList.add(DataUsage("2월", yearlyData[1].DataUsage))
+        YearDataList.add(DataUsage("3월", yearlyData[2].DataUsage))
+        YearDataList.add(DataUsage("4월", yearlyData[3].DataUsage))
+        YearDataList.add(DataUsage("5월", yearlyData[4].DataUsage))
+        YearDataList.add(DataUsage("6월", yearlyData[5].DataUsage))
+        YearDataList.add(DataUsage("7월", yearlyData[6].DataUsage))
+        YearDataList.add(DataUsage("8월", yearlyData[7].DataUsage))
+        YearDataList.add(DataUsage("9월", yearlyData[8].DataUsage))
+        YearDataList.add(DataUsage("10월", yearlyData[9].DataUsage))
+        YearDataList.add(DataUsage("11월", yearlyData[10].DataUsage))
+        YearDataList.add(DataUsage("12월", yearlyData[11].DataUsage))
 
         return YearDataList
     }
@@ -256,8 +256,8 @@ class StatisticsFragment : Fragment() {
 
                 // 막대 그래프 설정
                 position = XAxis.XAxisPosition.BOTTOM
-                textColor = ColorTemplate.rgb("#F0F0F0")
-//                valueFormatter = MyAxisFormatter()
+                textColor = ColorTemplate.rgb("#1A73E9")
+                valueFormatter = WeekAxisFormatter()
                 granularity = 1f
             }
 
@@ -311,8 +311,8 @@ class StatisticsFragment : Fragment() {
 
                 // 막대 그래프 설정
                 position = XAxis.XAxisPosition.BOTTOM
-                textColor = ColorTemplate.rgb("#F0F0F0")
-//                valueFormatter = MyAxisFormatter()
+                textColor = ColorTemplate.rgb("#1A73E9")
+                valueFormatter = MonthAxisFormatter()
                 granularity = 1f
             }
 
@@ -366,8 +366,8 @@ class StatisticsFragment : Fragment() {
 
                 // 막대 그래프 설정
                 position = XAxis.XAxisPosition.BOTTOM
-                textColor = ColorTemplate.rgb("#F0F0F0")
-//                valueFormatter = MyAxisFormatter()
+                textColor = ColorTemplate.rgb("#1A73E9")
+                valueFormatter = YearAxisFormatter()
                 granularity = 1f
             }
 
@@ -385,17 +385,40 @@ class StatisticsFragment : Fragment() {
     }
 
     // 막대 그래프 내부에 항목이름을 각각 적기 - barchart
-//    inner class MyAxisFormatter : IndexAxisValueFormatter() {
-//        override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-//            val index = value.toInt()
-//            Log.d(ContentValues.TAG, "getAxisLabel: index $index")
-//            return if (index < DataList.size) {
-//                DataList[index].title
-//            } else {
-//                ""
-//            }
-//        }
-//    }
+    inner class WeekAxisFormatter : IndexAxisValueFormatter() {
+        override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+            val index = value.toInt()
+            return if (index < WeekDataList.size) {
+                WeekDataList[index].title
+            } else {
+                ""
+            }
+        }
+    }
+
+    //month data index 입력
+    inner class MonthAxisFormatter : IndexAxisValueFormatter() {
+        override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+            val index = value.toInt()
+            return if (index < MonthDataList.size) {
+                MonthDataList[index].title
+            } else {
+                ""
+            }
+        }
+    }
+
+    //Year data index 설정
+    inner class YearAxisFormatter : IndexAxisValueFormatter() {
+        override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+            val index = value.toInt()
+            return if (index < YearDataList.size) {
+                YearDataList[index].title
+            } else {
+                ""
+            }
+        }
+    }
 
     private fun getDatabase() {
         val db = DataBaseManager.getInstance(mainActivity)!!
