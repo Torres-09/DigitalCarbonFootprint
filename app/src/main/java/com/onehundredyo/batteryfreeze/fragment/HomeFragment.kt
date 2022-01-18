@@ -1,7 +1,9 @@
 package com.onehundredyo.batteryfreeze.fragment
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,15 +13,21 @@ import android.widget.ImageView
 import com.onehundredyo.batteryfreeze.R
 import android.widget.TextView
 import com.onehundredyo.batteryfreeze.App
+import com.onehundredyo.batteryfreeze.MainActivity
+import com.onehundredyo.batteryfreeze.databinding.FragmentHomeBinding
 import java.time.LocalDate
-import java.util.*
-
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class HomeFragment : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
+    private var remainPercentage: Long? = 0L
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (activity != null && activity is MainActivity) {
+            remainPercentage = (activity as MainActivity?)?.getTotalDailyCarbon()
+        }
+    }
 
     fun compareDate(): Boolean {
         var currentDate: String = LocalDate.now().toString()
@@ -54,18 +62,9 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        Log.d("homefragment", "yeah${remainPercentage}")
         return inflater.inflate(R.layout.fragment_home, container, false)
-    }
-
-    companion object {
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
     }
 
     @SuppressLint("SetTextI18n")
@@ -82,8 +81,10 @@ class HomeFragment : Fragment() {
         //퍼센트에 따른 변화
         var randomNumber = (0..2).random()
         lateinit var textArray: Array<String>
-        var remainPercentage = 27
-        when (remainPercentage) {
+        var dailyCarbonDouble = (remainPercentage)?.toDouble()?.div(1000)
+        var dailyCarbonInt = (remainPercentage)?.toDouble()?.div(1000)?.toInt()
+        // 배출된 이산화탄소 양
+        when (dailyCarbonInt) {
             in 76..100 -> {
                 polarBearImage.setOnClickListener { setChatText(view, 3) }
             }
@@ -94,6 +95,8 @@ class HomeFragment : Fragment() {
 //                polarBearImage.setImageResource(R.drawable.polar_bear2)
 //                glacierImage.startAnimation(animation)
 //                polarBearImage.startAnimation(animation)
+                glacierImage.startAnimation(animation)
+                polarBearImage.startAnimation(animation)
             }
             in 26..50 -> {
                 polarBearImage.setOnClickListener { setChatText(view, 1) }
@@ -108,13 +111,18 @@ class HomeFragment : Fragment() {
 //                polarBearImage.setImageResource(0)
             }
             else -> {
+                glacierImage.setImageResource(R.drawable.glacier0)
+                polarBearImage.setImageResource(R.drawable.polar_bear1)
+                glacierImage.startAnimation(animation)
+                polarBearImage.startAnimation(animation)
             }
         }
-        remainText.setText("남은 목표량: $remainPercentage%")
+        remainText.setText("오늘의 탄소배출량 ${dailyCarbonDouble}kg")
         glacierImage.startAnimation(animation)
         polarBearImage.startAnimation(animation)
         chatBubble.startAnimation(animation)
         chatBubbleText.startAnimation(animation)
+
 
         //문구
 //        val todayGoalText: TextView = view.findViewById(R.id.todayGoalText)

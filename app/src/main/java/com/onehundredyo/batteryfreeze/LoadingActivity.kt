@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 
 class LoadingActivity : AppCompatActivity() {
-    private val SPLASH_TIME_OUT: Long = 2000
+    private val SPLASH_TIME_OUT: Long = 1200
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loading)
