@@ -42,6 +42,9 @@ import kotlinx.coroutines.launch
 class StatisticsFragment : Fragment() {
     private var DataList = ArrayList<DataUsage>()
     private lateinit var barChart: BarChart
+    private lateinit var monthlybarChart: BarChart
+    private lateinit var yearlybarChart: BarChart
+
     lateinit var mainActivity: MainActivity     // CONTEXT
     var yearlyData: MutableList<YearlyInfo> = mutableListOf(
         YearlyInfo(0, 0L),
@@ -92,10 +95,10 @@ class StatisticsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        barChart = view.findViewById(R.id.barchart)
-        DataList = getBarDataUsage()
+        monthlybarChart = view.findViewById(R.id.barchart)
+        DataList = getMonthlyBarDataUsage()
 
-        initBarChart()
+        initMonthlyBarChart()
 
         val entries: ArrayList<BarEntry> = ArrayList()
 
@@ -111,16 +114,16 @@ class StatisticsFragment : Fragment() {
         barDataSet.barShadowColor = ColorTemplate.rgb("#F0F0F0")
         val data = BarData(barDataSet)
         data.barWidth = 0.35f
-        barChart.data = data
+        monthlybarChart.data = data
 
         // shape 둥글게 변경 - barchart
         val myradius = 40
         val barChartRender =
-            CustomBarChartRender(barChart, barChart.animator, barChart.viewPortHandler)
+            CustomBarChartRender(monthlybarChart, monthlybarChart.animator, monthlybarChart.viewPortHandler)
         barChartRender.setRadius(myradius)
-        barChart.renderer = barChartRender
+        monthlybarChart.renderer = barChartRender
 
-        barChart.invalidate()
+        monthlybarChart.invalidate()
     }
 
     private fun getBarDataUsage(): ArrayList<DataUsage> {
@@ -136,9 +139,148 @@ class StatisticsFragment : Fragment() {
         return DataList
     }
 
+    fun getMonthlyBarDataUsage(): ArrayList<DataUsage>
+    {
+        DataList.add(DataUsage("3주전", monthlyData[0].DataUsage))
+        DataList.add(DataUsage("2주전", monthlyData[1].DataUsage))
+        DataList.add(DataUsage("1주전", monthlyData[2].DataUsage))
+        DataList.add(DataUsage("이번주", monthlyData[3].DataUsage))
+
+        return DataList
+    }
+
+    fun getYearlyBarDataUsage(): ArrayList<DataUsage>
+    {
+        DataList.add(DataUsage("0달", yearlyData[0].DataUsage))
+        DataList.add(DataUsage("1달", yearlyData[0].DataUsage))
+        DataList.add(DataUsage("2달", yearlyData[0].DataUsage))
+        DataList.add(DataUsage("3달", yearlyData[0].DataUsage))
+        DataList.add(DataUsage("4달", yearlyData[0].DataUsage))
+        DataList.add(DataUsage("5달", yearlyData[0].DataUsage))
+        DataList.add(DataUsage("6달", yearlyData[0].DataUsage))
+        DataList.add(DataUsage("7달", yearlyData[0].DataUsage))
+        DataList.add(DataUsage("8달", yearlyData[0].DataUsage))
+        DataList.add(DataUsage("9달", yearlyData[0].DataUsage))
+        DataList.add(DataUsage("10달", yearlyData[0].DataUsage))
+        DataList.add(DataUsage("11달", yearlyData[0].DataUsage))
+
+        return DataList
+    }
+
+    // week
     private fun initBarChart() {
 
         barChart.run {
+
+            // 막대 그래프 그림자 on
+            setDrawBarShadow(true)
+
+            // 차트 터치 X
+            setTouchEnabled(false)
+            // 줌 금지
+            setPinchZoom(false)
+
+            // 막대 그래프 올라가는 애니메이션 추가
+            animateXY(0, 800)
+
+            extraBottomOffset = 10f
+
+            axisLeft.run {
+                // 좌측 y축 제거
+                isEnabled = false
+
+
+            }
+            axisRight.run {
+                //우측 y축 제거
+                isEnabled = false
+            }
+
+
+            xAxis.run {
+                // 막대 그래프 바 grid 제거
+                setDrawGridLines(false)
+                setDrawAxisLine(false)
+
+                // 막대 그래프 설정
+                position = XAxis.XAxisPosition.BOTTOM
+                textColor = ColorTemplate.rgb("#F0F0F0")
+                valueFormatter = MyAxisFormatter()
+                granularity = 1f
+            }
+
+            legend.run {
+                // 하단 항목 이름 제거
+                isEnabled = false
+            }
+
+            description.run {
+                // 설명 제거
+                isEnabled = false
+
+            }
+        }
+    }
+
+    //month
+    private fun initMonthlyBarChart() {
+
+        monthlybarChart.run {
+
+            // 막대 그래프 그림자 on
+            setDrawBarShadow(true)
+
+            // 차트 터치 X
+            setTouchEnabled(false)
+            // 줌 금지
+            setPinchZoom(false)
+
+            // 막대 그래프 올라가는 애니메이션 추가
+            animateXY(0, 800)
+
+            extraBottomOffset = 10f
+
+            axisLeft.run {
+                // 좌측 y축 제거
+                isEnabled = false
+
+
+            }
+            axisRight.run {
+                //우측 y축 제거
+                isEnabled = false
+            }
+
+
+            xAxis.run {
+                // 막대 그래프 바 grid 제거
+                setDrawGridLines(false)
+                setDrawAxisLine(false)
+
+                // 막대 그래프 설정
+                position = XAxis.XAxisPosition.BOTTOM
+                textColor = ColorTemplate.rgb("#F0F0F0")
+                valueFormatter = MyAxisFormatter()
+                granularity = 1f
+            }
+
+            legend.run {
+                // 하단 항목 이름 제거
+                isEnabled = false
+            }
+
+            description.run {
+                // 설명 제거
+                isEnabled = false
+
+            }
+        }
+    }
+
+    //year
+    private fun initYearlyBarChart() {
+
+        yearlybarChart.run {
 
             // 막대 그래프 그림자 on
             setDrawBarShadow(true)

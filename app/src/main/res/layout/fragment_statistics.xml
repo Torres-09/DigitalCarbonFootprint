@@ -47,6 +47,68 @@
 
                 </LinearLayout>
 
+                <!-- Buttons -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:orientation="horizontal">
+
+                    <!-- first butoon -->
+<!--                    <com.google.android.material.button.MaterialButton-->
+<!--                        android:id="@+id/week_button"-->
+<!--                        style="?attr/borderlessButtonStyle"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginEnd="8dp"-->
+<!--                        android:text="주간" />-->
+
+<!--                    &lt;!&ndash; second button &ndash;&gt;-->
+<!--                    <com.google.android.material.button.MaterialButton-->
+<!--                        android:id="@+id/month_button"-->
+<!--                        style="?attr/borderlessButtonStyle"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="월간" />-->
+
+<!--                    &lt;!&ndash; third button &ndash;&gt;-->
+<!--                    <com.google.android.material.button.MaterialButton-->
+<!--                        android:id="@+id/year_button"-->
+<!--                        style="?attr/borderlessButtonStyle"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="연간" />-->
+
+                    <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:id="@+id/toggleButton"
+                        android:layout_width="wrap_content"
+                        app:singleSelection="true"
+                        android:layout_height="wrap_content">
+                        <Button
+                            android:id="@+id/weekbutton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="주간"
+                            style="?attr/materialButtonOutlinedStyle"
+                            />
+                        <Button
+                            android:id="@+id/monthbutton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="월간"
+                            style="?attr/materialButtonOutlinedStyle"
+                            />
+                        <Button
+                            android:id="@+id/yearbutton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="연간"
+                            style="?attr/materialButtonOutlinedStyle"
+                            />
+                    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                </LinearLayout>
+
                 <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/barchart"
                     android:layout_width="361dp"
@@ -58,37 +120,23 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <!-- Buttons -->
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                    <!-- first butoon -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/week_button"
-                        style="?attr/borderlessButtonStyle"
+                    <!-- Title, secondary and supporting text -->
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:text="주간" />
+                        android:layout_marginTop="8dp"
+                        android:text="데이터 사용량을 바탕으로 계산된 탄소 배출량입니다."
+                        android:textAppearance="?attr/textAppearanceBody2"
+                        android:textColor="?android:attr/textColorSecondary"
+                        />
 
-                    <!-- second button -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/month_button"
-                        style="?attr/borderlessButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="월간" />
-
-                    <!-- third button -->
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/year_button"
-                        style="?attr/borderlessButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="연간" />
 
                 </LinearLayout>
             </LinearLayout>
