@@ -17,7 +17,6 @@ import com.onehundredyo.batteryfreeze.MainActivity
 import com.onehundredyo.batteryfreeze.databinding.FragmentHomeBinding
 import java.time.LocalDate
 
-
 class HomeFragment : Fragment() {
     private var remainPercentage: Long? = 0L
     private var _binding: FragmentHomeBinding? = null
@@ -40,6 +39,25 @@ class HomeFragment : Fragment() {
             return true
     }
 
+    fun setChatText(view: View, level: Int) {
+        val chatBubbleText: TextView = view.findViewById(R.id.chatBubbleText)
+        var randomNumber = (0..2).random()
+        when (level) {
+            3 -> chatBubbleText.setText(resources.getStringArray(R.array.chat_list3)[randomNumber])
+            2 -> chatBubbleText.setText(resources.getStringArray(R.array.chat_list2)[randomNumber])
+            1 -> chatBubbleText.setText(resources.getStringArray(R.array.chat_list1)[randomNumber])
+            0 -> chatBubbleText.setText(resources.getStringArray(R.array.chat_list0)[randomNumber])
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            param1 = it.getString(ARG_PARAM1)
+            param2 = it.getString(ARG_PARAM2)
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,14 +73,24 @@ class HomeFragment : Fragment() {
         val glacierImage: ImageView = view.findViewById(R.id.glacierImage)
         val polarBearImage: ImageView = view.findViewById(R.id.polarBearImage)
         val remainText: TextView = view.findViewById(R.id.remainText)
+        val chatBubbleText: TextView = view.findViewById(R.id.chatBubbleText)
+        val chatBubble: ImageView = view.findViewById(R.id.chatBubble)
         val animation = AnimationUtils.loadAnimation(activity, R.anim.moving)
+        val todayGoalText: TextView = view.findViewById(R.id.todayGoalText)
+
+        //퍼센트에 따른 변화
+        var randomNumber = (0..2).random()
+        lateinit var textArray: Array<String>
         var dailyCarbonDouble = (remainPercentage)?.toDouble()?.div(1000)
         var dailyCarbonInt = (remainPercentage)?.toDouble()?.div(1000)?.toInt()
         // 배출된 이산화탄소 양
         when (dailyCarbonInt) {
             in 76..100 -> {
+                polarBearImage.setOnClickListener { setChatText(view, 3) }
             }
             in 51..75 -> {
+                polarBearImage.setOnClickListener { setChatText(view, 2) }
+
 //                glacierImage.setImageResource(R.drawable.glacier0)
 //                polarBearImage.setImageResource(R.drawable.polar_bear2)
 //                glacierImage.startAnimation(animation)
@@ -71,16 +99,16 @@ class HomeFragment : Fragment() {
                 polarBearImage.startAnimation(animation)
             }
             in 26..50 -> {
+                polarBearImage.setOnClickListener { setChatText(view, 1) }
+                textArray = resources.getStringArray(R.array.chat_list1)
                 glacierImage.setImageResource(R.drawable.glacier0)
                 polarBearImage.setImageResource(R.drawable.polar_bear1)
-                glacierImage.startAnimation(animation)
-                polarBearImage.startAnimation(animation)
             }
             in 0..25 -> {
-                glacierImage.setImageResource(R.drawable.glacier0)
-                polarBearImage.setImageResource(R.drawable.polar_bear1)
-                glacierImage.startAnimation(animation)
-                polarBearImage.startAnimation(animation)
+                polarBearImage.setOnClickListener { setChatText(view, 0) }
+                textArray = resources.getStringArray(R.array.chat_list0)
+//                glacierImage.setImageResource(0)
+//                polarBearImage.setImageResource(0)
             }
             else -> {
                 glacierImage.setImageResource(R.drawable.glacier0)
@@ -90,19 +118,28 @@ class HomeFragment : Fragment() {
             }
         }
         remainText.setText("오늘의 탄소배출량 ${dailyCarbonDouble}kg")
+        glacierImage.startAnimation(animation)
+        polarBearImage.startAnimation(animation)
+        chatBubble.startAnimation(animation)
+        chatBubbleText.startAnimation(animation)
 
 
-        //오늘의 문구
-        val todayGoalText: TextView = view.findViewById(R.id.todayGoalText)
-        if (compareDate()) {
-            todayGoalText.setText(App.prefs.getSavedText("savedDate", "error"))
-        } else {
-            val range = (0..6)
-            val randomNumber = range.random()
-            val textArray: Array<String> = resources.getStringArray(R.array.dailyMission)
-            val newText: String = textArray[randomNumber]
-            todayGoalText.setText(newText)
-            App.prefs.setSavedText("savedDate", newText)
-        }
+        //문구
+//        val todayGoalText: TextView = view.findViewById(R.id.todayGoalText)
+//        if (compareDate()) {
+//            todayGoalText.setText(App.prefs.getSavedText("savedDate", "error"))
+//        } else {
+//            val range = (0..6)
+//            val randomNumber = range.random()
+//            val textArray: Array<String> = resources.getStringArray(R.array.dailyMission)
+//            val newText: String = textArray[randomNumber]
+//            todayGoalText.setText(newText)
+//            App.prefs.setSavedText("savedDate", newText)
+//        }
+
+        //문구
+        randomNumber = (0..6).random()
+        textArray = resources.getStringArray(R.array.dailyMission)
+        todayGoalText.setText(textArray[randomNumber])
     }
 }
