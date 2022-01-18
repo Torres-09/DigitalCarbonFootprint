@@ -39,26 +39,47 @@ import kotlinx.coroutines.launch
 //monthlybarchart - monthly
 //yearlybarchart - yearly
 
-class StaticFragment : Fragment() {
+class StatisticsFragment : Fragment() {
     private var DataList = ArrayList<DataUsage>()
     private lateinit var barChart: BarChart
     private lateinit var monthlybarChart: BarChart
     private lateinit var yearlybarChart: BarChart
 
     lateinit var mainActivity: MainActivity     // CONTEXT
-    var yearlyData: MutableList<YearlyInfo> = mutableListOf()
-    var monthlyData: MutableList<MonthlyInfo> = mutableListOf()
-    var weeklyData: MutableList<WeeklyInfo> = mutableListOf()
+    var yearlyData: MutableList<YearlyInfo> = mutableListOf(
+        YearlyInfo(0, 0L),
+        YearlyInfo(1, 0L),
+        YearlyInfo(2, 0L),
+        YearlyInfo(3, 0L),
+        YearlyInfo(4, 0L),
+        YearlyInfo(5, 0L),
+        YearlyInfo(6, 0L),
+        YearlyInfo(7, 0L),
+        YearlyInfo(8, 0L),
+        YearlyInfo(9, 0L),
+        YearlyInfo(10, 0L),
+        YearlyInfo(11, 0L)
+    )
+    var monthlyData: MutableList<MonthlyInfo> = mutableListOf(
+        MonthlyInfo(0, 0L),
+        MonthlyInfo(1, 0L),
+        MonthlyInfo(2, 0L),
+        MonthlyInfo(3, 0L)
+    )
+    var weeklyData: MutableList<WeeklyInfo> = mutableListOf(
+        WeeklyInfo(0, 0L),
+        WeeklyInfo(1, 0L),
+        WeeklyInfo(2, 0L),
+        WeeklyInfo(3, 0L),
+        WeeklyInfo(4, 0L),
+        WeeklyInfo(5, 0L),
+        WeeklyInfo(6, 0L)
+    )
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
         // DB를 사용하기 위해 CONTEXT 를 얻어옴
-    }
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         getDatabase()
     }
 
@@ -69,6 +90,7 @@ class StaticFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_statistics, container, false)
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -104,7 +126,7 @@ class StaticFragment : Fragment() {
         monthlybarChart.invalidate()
     }
 
-    fun getBarDataUsage(): ArrayList<DataUsage> {
+    private fun getBarDataUsage(): ArrayList<DataUsage> {
 
         DataList.add(DataUsage("일요일", weeklyData[0].DataUsage))
         DataList.add(DataUsage("월요일", weeklyData[1].DataUsage))
@@ -323,18 +345,20 @@ class StaticFragment : Fragment() {
         }
     }
 
-
     private fun getDatabase() {
         val db = DataBaseManager.getInstance(mainActivity)!!
         CoroutineScope(Dispatchers.IO).launch {
-            for (i in (db!!.DatausageDAO().getAllYearlyData())) {
-                yearlyData.add(i)
+            val tmpYearlyInfo: MutableList<YearlyInfo> = db!!.DatausageDAO().getAllYearlyData()
+            val tmpMonthlyInfo: MutableList<MonthlyInfo> = db!!.DatausageDAO().getAllMonthlyData()
+            val tmpWeeklyInfo: MutableList<WeeklyInfo> = db!!.DatausageDAO().getAllWeeklyData()
+            for (i in tmpYearlyInfo.indices) {
+                yearlyData[i] = tmpYearlyInfo[i]
             }
-            for (i in db!!.DatausageDAO().getAllMonthlyData()) {
-                monthlyData.add(i)
+            for (i in tmpMonthlyInfo.indices) {
+                monthlyData[i] = tmpMonthlyInfo[i]
             }
-            for (i in db!!.DatausageDAO().getAllWeeklyData()) {
-                weeklyData.add(i)
+            for (i in tmpWeeklyInfo.indices) {
+                weeklyData[i] = tmpWeeklyInfo[i]
             }
         }
     }

@@ -7,9 +7,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.RelativeLayout
-import com.onehundredyo.batteryfreeze.adapter.MainFragmentStatePagerAdapter
 import com.onehundredyo.batteryfreeze.databinding.ActivityMainBinding
 import android.os.Process
 import android.provider.Settings
@@ -27,6 +24,7 @@ import kotlinx.coroutines.launch
 import androidx.fragment.app.Fragment
 import com.onehundredyo.batteryfreeze.DO.CarbonData
 import com.onehundredyo.batteryfreeze.fragment.*
+import java.time.LocalDate
 
 
 class MainActivity : AppCompatActivity() {
@@ -36,6 +34,12 @@ class MainActivity : AppCompatActivity() {
     lateinit var networkStatsManager: NetworkStatsManager
     lateinit var carbonData: CarbonData
     lateinit var db: DataBaseManager
+
+//    fun compareDate(): Boolean {
+//        var currentDate: String = LocalDate.now().toString()
+//        val savedDate: String = App.prefs.getSavedDate("savedDate", "")
+//        return currentDate == savedDate
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,12 +69,16 @@ class MainActivity : AppCompatActivity() {
         // 아래 메소드(initiateDatabase)는 DB에 주간,월간,연간데이터를 저장하게 함
         // 실행시간 30초 예상되는 메소드임,
         // DB에 주간,월간,연간데이터를 저장하게 함
-        initiateDatabase(listPackageInfo,packageManager,networkStatsManager)
+        // Coroutine 을 사용하여 메인쓰레드가 아닌 IO 쓰레드를 사용하여 DB Insert 작업 수행
 
+        //  버튼으로 업데이트 하도록 변경예정임.
+        CoroutineScope(Dispatchers.IO).launch {
+            initiateDatabase(listPackageInfo, packageManager, networkStatsManager)
+        }
     }
 
 
-    fun initNavigationBar() {
+    private fun initNavigationBar() {
         binding.bottomNavigation.run {
             setOnNavigationItemSelectedListener {
                 when (it.itemId) {
@@ -78,7 +86,7 @@ class MainActivity : AppCompatActivity() {
                         changeFragment(HomeFragment())
                     }
                     R.id.page_2 -> {
-                        changeFragment(StaticFragment())
+                        changeFragment(StatisticsFragment())
                     }
                 }
                 true
@@ -134,7 +142,7 @@ class MainActivity : AppCompatActivity() {
 //            applicationContext,
 //            DataBaseManager::class.java,
 //            "databasemanager"
-//        ).allowMainThreadQueries() 
+//        ).allowMainThreadQueries()
 //            .build()
 
         //코루틴 사용(IO 쓰레드 사용)

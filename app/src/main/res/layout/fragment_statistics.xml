@@ -5,15 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#78B2D9"
-    tools:context=".fragment.StaticFragment">
+    tools:context=".fragment.StatisticsFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="800dp"
         tools:context=".MainActivity">
-
-        <!-- TODO: Update blank fragment layout -->
-
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card"
@@ -21,11 +18,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_marginTop="15dp"
+            app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="20px"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:cardBackgroundColor="#78B2D9"
-            app:cardCornerRadius="20px"
             app:strokeColor="@color/white"
             app:strokeWidth="1dp"
             tools:visibility="visible">
@@ -142,16 +139,7 @@
 
 
                 </LinearLayout>
-
-
             </LinearLayout>
-
-
-
-
-
         </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 </FrameLayout>
