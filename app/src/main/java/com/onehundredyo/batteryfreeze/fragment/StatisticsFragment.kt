@@ -35,13 +35,16 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-//barchart - weekly
+//weeklybarchart - weekly
 //monthlybarchart - monthly
 //yearlybarchart - yearly
 
 class StatisticsFragment : Fragment() {
-    private var DataList = ArrayList<DataUsage>()
-    private lateinit var barChart: BarChart
+    private var WeekDataList = ArrayList<DataUsage>()
+    private var MonthDataList = ArrayList<DataUsage>()
+    private var YearDataList = ArrayList<DataUsage>()
+
+    private lateinit var weeklybarChart: BarChart
     private lateinit var monthlybarChart: BarChart
     private lateinit var yearlybarChart: BarChart
 
@@ -95,82 +98,131 @@ class StatisticsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        monthlybarChart = view.findViewById(R.id.barchart)
-        DataList = getMonthlyBarDataUsage()
+        weeklybarChart = view.findViewById(R.id.weeklybarchart)
+        monthlybarChart = view.findViewById(R.id.monthlychart)
+        yearlybarChart = view.findViewById(R.id.yearlychart)
 
+        WeekDataList = getWeeklyBarDataUsage()
+        MonthDataList = getMonthlyBarDataUsage()
+        YearDataList = getYearlyBarDataUsage()
+
+        initWeeklyBarChart()
         initMonthlyBarChart()
+        initYearlyBarChart()
 
-        val entries: ArrayList<BarEntry> = ArrayList()
+        val Weeklyentries: ArrayList<BarEntry> = ArrayList()
+        val Monthlyentries: ArrayList<BarEntry> = ArrayList()
+        val Yearlyentries: ArrayList<BarEntry> = ArrayList()
 
-        for (i in DataList.indices) {
-            val dataUsage = DataList[i]
-            entries.add(BarEntry(i.toFloat(), dataUsage.datausage.toFloat()))
+        for (i in WeekDataList.indices) {
+            val dataUsage = WeekDataList[i]
+            Weeklyentries.add(BarEntry(i.toFloat(), dataUsage.datausage.toFloat()))
+        }
+
+        for (i in MonthDataList.indices) {
+            val dataUsage = MonthDataList[i]
+            Monthlyentries.add(BarEntry(i.toFloat(), dataUsage.datausage.toFloat()))
+        }
+
+        for (i in YearDataList.indices) {
+            val dataUsage = YearDataList[i]
+            Yearlyentries.add(BarEntry(i.toFloat(), dataUsage.datausage.toFloat()))
         }
 
 
-        // label 이름이랑 color 설정 - barchart
-        val barDataSet = BarDataSet(entries, "")
-        barDataSet.color = ColorTemplate.rgb("#1A73E9")
-        barDataSet.barShadowColor = ColorTemplate.rgb("#F0F0F0")
-        val data = BarData(barDataSet)
-        data.barWidth = 0.35f
-        monthlybarChart.data = data
+        // label 이름이랑 color 설정 - weekly
+        val weeklybarDataSet = BarDataSet(Weeklyentries, "")
+        weeklybarDataSet.color = ColorTemplate.rgb("#1A73E9")
+        weeklybarDataSet.barShadowColor = ColorTemplate.rgb("#F0F0F0")
+        val weeklydata = BarData(weeklybarDataSet)
+        weeklydata.barWidth = 0.35f
+        weeklybarChart.data = weeklydata
+
+        // label 이름이랑 color 설정 - monthly
+        val monthlybarDataSet = BarDataSet(Monthlyentries, "")
+        monthlybarDataSet.color = ColorTemplate.rgb("#1A73E9")
+        monthlybarDataSet.barShadowColor = ColorTemplate.rgb("#F0F0F0")
+        val monthlydata = BarData(monthlybarDataSet)
+        monthlydata.barWidth = 0.35f
+        monthlybarChart.data = monthlydata
+
+        // label 이름이랑 color 설정 - weekly
+        val yearlybarDataSet = BarDataSet(Weeklyentries, "")
+        yearlybarDataSet.color = ColorTemplate.rgb("#1A73E9")
+        yearlybarDataSet.barShadowColor = ColorTemplate.rgb("#F0F0F0")
+        val yearlydata = BarData(yearlybarDataSet)
+        yearlydata.barWidth = 0.35f
+        weeklybarChart.data = yearlydata
 
         // shape 둥글게 변경 - barchart
         val myradius = 40
-        val barChartRender =
-            CustomBarChartRender(monthlybarChart, monthlybarChart.animator, monthlybarChart.viewPortHandler)
-        barChartRender.setRadius(myradius)
-        monthlybarChart.renderer = barChartRender
 
+
+        val weeklybarChartRender =
+            CustomBarChartRender(weeklybarChart, weeklybarChart.animator, weeklybarChart.viewPortHandler)
+        weeklybarChartRender.setRadius(myradius)
+        weeklybarChart.renderer = weeklybarChartRender
+
+        val monthlybarChartRender =
+            CustomBarChartRender(monthlybarChart, monthlybarChart.animator, monthlybarChart.viewPortHandler)
+        monthlybarChartRender.setRadius(myradius)
+        monthlybarChart.renderer = monthlybarChartRender
+
+        val yearlybarChartRender =
+            CustomBarChartRender(yearlybarChart, yearlybarChart.animator, yearlybarChart.viewPortHandler)
+        yearlybarChartRender.setRadius(myradius)
+        yearlybarChart.renderer = yearlybarChartRender
+
+        weeklybarChart.invalidate()
         monthlybarChart.invalidate()
+        yearlybarChart.invalidate()
     }
 
-    private fun getBarDataUsage(): ArrayList<DataUsage> {
+    private fun getWeeklyBarDataUsage(): ArrayList<DataUsage> {
 
-        DataList.add(DataUsage("일요일", weeklyData[0].DataUsage))
-        DataList.add(DataUsage("월요일", weeklyData[1].DataUsage))
-        DataList.add(DataUsage("화요일", weeklyData[2].DataUsage))
-        DataList.add(DataUsage("수요일", weeklyData[3].DataUsage))
-        DataList.add(DataUsage("목요일", weeklyData[4].DataUsage))
-        DataList.add(DataUsage("금요일", weeklyData[5].DataUsage))
-        DataList.add(DataUsage("토요일", weeklyData[6].DataUsage))
+        WeekDataList.add(DataUsage("일요일", weeklyData[0].DataUsage))
+        WeekDataList.add(DataUsage("월요일", weeklyData[1].DataUsage))
+        WeekDataList.add(DataUsage("화요일", weeklyData[2].DataUsage))
+        WeekDataList.add(DataUsage("수요일", weeklyData[3].DataUsage))
+        WeekDataList.add(DataUsage("목요일", weeklyData[4].DataUsage))
+        WeekDataList.add(DataUsage("금요일", weeklyData[5].DataUsage))
+        WeekDataList.add(DataUsage("토요일", weeklyData[6].DataUsage))
 
-        return DataList
+        return WeekDataList
     }
 
     fun getMonthlyBarDataUsage(): ArrayList<DataUsage>
     {
-        DataList.add(DataUsage("3주전", monthlyData[0].DataUsage))
-        DataList.add(DataUsage("2주전", monthlyData[1].DataUsage))
-        DataList.add(DataUsage("1주전", monthlyData[2].DataUsage))
-        DataList.add(DataUsage("이번주", monthlyData[3].DataUsage))
+        MonthDataList.add(DataUsage("3주전", monthlyData[0].DataUsage))
+        MonthDataList.add(DataUsage("2주전", monthlyData[1].DataUsage))
+        MonthDataList.add(DataUsage("1주전", monthlyData[2].DataUsage))
+        MonthDataList.add(DataUsage("이번주", monthlyData[3].DataUsage))
 
-        return DataList
+        return MonthDataList
     }
 
     fun getYearlyBarDataUsage(): ArrayList<DataUsage>
     {
-        DataList.add(DataUsage("0달", yearlyData[0].DataUsage))
-        DataList.add(DataUsage("1달", yearlyData[0].DataUsage))
-        DataList.add(DataUsage("2달", yearlyData[0].DataUsage))
-        DataList.add(DataUsage("3달", yearlyData[0].DataUsage))
-        DataList.add(DataUsage("4달", yearlyData[0].DataUsage))
-        DataList.add(DataUsage("5달", yearlyData[0].DataUsage))
-        DataList.add(DataUsage("6달", yearlyData[0].DataUsage))
-        DataList.add(DataUsage("7달", yearlyData[0].DataUsage))
-        DataList.add(DataUsage("8달", yearlyData[0].DataUsage))
-        DataList.add(DataUsage("9달", yearlyData[0].DataUsage))
-        DataList.add(DataUsage("10달", yearlyData[0].DataUsage))
-        DataList.add(DataUsage("11달", yearlyData[0].DataUsage))
+        YearDataList.add(DataUsage("0달", yearlyData[0].DataUsage))
+        YearDataList.add(DataUsage("1달", yearlyData[0].DataUsage))
+        YearDataList.add(DataUsage("2달", yearlyData[0].DataUsage))
+        YearDataList.add(DataUsage("3달", yearlyData[0].DataUsage))
+        YearDataList.add(DataUsage("4달", yearlyData[0].DataUsage))
+        YearDataList.add(DataUsage("5달", yearlyData[0].DataUsage))
+        YearDataList.add(DataUsage("6달", yearlyData[0].DataUsage))
+        YearDataList.add(DataUsage("7달", yearlyData[0].DataUsage))
+        YearDataList.add(DataUsage("8달", yearlyData[0].DataUsage))
+        YearDataList.add(DataUsage("9달", yearlyData[0].DataUsage))
+        YearDataList.add(DataUsage("10달", yearlyData[0].DataUsage))
+        YearDataList.add(DataUsage("11달", yearlyData[0].DataUsage))
 
-        return DataList
+        return YearDataList
     }
 
     // week
-    private fun initBarChart() {
+    private fun initWeeklyBarChart() {
 
-        barChart.run {
+        weeklybarChart.run {
 
             // 막대 그래프 그림자 on
             setDrawBarShadow(true)
@@ -205,7 +257,7 @@ class StatisticsFragment : Fragment() {
                 // 막대 그래프 설정
                 position = XAxis.XAxisPosition.BOTTOM
                 textColor = ColorTemplate.rgb("#F0F0F0")
-                valueFormatter = MyAxisFormatter()
+//                valueFormatter = MyAxisFormatter()
                 granularity = 1f
             }
 
@@ -260,7 +312,7 @@ class StatisticsFragment : Fragment() {
                 // 막대 그래프 설정
                 position = XAxis.XAxisPosition.BOTTOM
                 textColor = ColorTemplate.rgb("#F0F0F0")
-                valueFormatter = MyAxisFormatter()
+//                valueFormatter = MyAxisFormatter()
                 granularity = 1f
             }
 
@@ -315,7 +367,7 @@ class StatisticsFragment : Fragment() {
                 // 막대 그래프 설정
                 position = XAxis.XAxisPosition.BOTTOM
                 textColor = ColorTemplate.rgb("#F0F0F0")
-                valueFormatter = MyAxisFormatter()
+//                valueFormatter = MyAxisFormatter()
                 granularity = 1f
             }
 
@@ -333,17 +385,17 @@ class StatisticsFragment : Fragment() {
     }
 
     // 막대 그래프 내부에 항목이름을 각각 적기 - barchart
-    inner class MyAxisFormatter : IndexAxisValueFormatter() {
-        override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-            val index = value.toInt()
-            Log.d(ContentValues.TAG, "getAxisLabel: index $index")
-            return if (index < DataList.size) {
-                DataList[index].title
-            } else {
-                ""
-            }
-        }
-    }
+//    inner class MyAxisFormatter : IndexAxisValueFormatter() {
+//        override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+//            val index = value.toInt()
+//            Log.d(ContentValues.TAG, "getAxisLabel: index $index")
+//            return if (index < DataList.size) {
+//                DataList[index].title
+//            } else {
+//                ""
+//            }
+//        }
+//    }
 
     private fun getDatabase() {
         val db = DataBaseManager.getInstance(mainActivity)!!
