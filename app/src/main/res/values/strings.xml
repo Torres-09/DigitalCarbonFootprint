@@ -13,4 +13,24 @@
         <item>절전모드 사용해보셨나요?</item>
         <item>충전기 꽂고 주무시나요?</item>
     </string-array>
+    <string-array name="chat_list0">
+        <item>살려주...</item>
+        <item>집이 없어..</item>
+        <item>힝..</item>
+    </string-array>
+    <string-array name="chat_list1">
+        <item>a</item>
+        <item>b</item>
+        <item>c</item>
+    </string-array>
+    <string-array name="chat_list2">
+        <item>d</item>
+        <item>e</item>
+        <item>f</item>
+    </string-array>
+    <string-array name="chat_list3">
+        <item>g</item>
+        <item>h</item>
+        <item>i</item>
+    </string-array>
 </resources>

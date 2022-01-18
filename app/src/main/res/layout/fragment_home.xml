@@ -67,6 +67,30 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/chatBubble"
+            android:layout_width="97dp"
+            android:layout_height="104dp"
+            android:layout_marginBottom="352dp"
+            android:src="@drawable/chat_bubble2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.764"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/chatBubbleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/chat_font"
+            android:text="살려조.."
+            android:textColor="@color/black"
+            android:textSize="26sp"
+            app:layout_constraintBottom_toBottomOf="@+id/chatBubble"
+            app:layout_constraintEnd_toEndOf="@+id/chatBubble"
+            app:layout_constraintStart_toStartOf="@+id/chatBubble"
+            app:layout_constraintTop_toTopOf="@+id/chatBubble" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
