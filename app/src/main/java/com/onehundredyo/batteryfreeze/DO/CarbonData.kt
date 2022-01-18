@@ -11,7 +11,7 @@ import java.lang.Math.pow
 import java.util.*
 
 class CarbonData {
-    private var totalDailyCabon: Long
+    private var totalDailyCarbon: Long
     private var dailyCarbon: MutableMap<String, Long>
     private var weeklyCarbon: MutableList<Long>
     private var monthlyCarbon: MutableList<Long>
@@ -27,7 +27,7 @@ class CarbonData {
         packageManager: PackageManager,
         networkStatsManager: NetworkStatsManager
     ) {
-        this.totalDailyCabon = 0L
+        this.totalDailyCarbon = 0L
         this.listPackageInfo = listPackageInfo
         this.packageManager = packageManager
         this.networkStatsManager = networkStatsManager
@@ -40,7 +40,7 @@ class CarbonData {
     }
 
     fun getTotalDailyCarbon(): Long {
-        return this.totalDailyCabon
+        return this.totalDailyCarbon
     }
 
     fun setDailyCarbon() {
@@ -78,7 +78,7 @@ class CarbonData {
             } else {
                 dailyCarbon.set(packageName, dailyCarbon.getValue(packageName) + rxtxWifi)
             }
-            totalDailyCabon += rxtxWifi
+            totalDailyCarbon += rxtxWifi
         }
         for (i in listPackageInfo.indices) {
             var packageName = listPackageInfo.get(i).packageName
@@ -107,7 +107,7 @@ class CarbonData {
             } else {
                 dailyCarbon.set(packageName, dailyCarbon.getValue(packageName) + rxtxMobile)
             }
-            totalDailyCabon += rxtxMobile
+            totalDailyCarbon += rxtxMobile
         }
 
         // 맵을 리스트로 변경하여 소트한 후 저장

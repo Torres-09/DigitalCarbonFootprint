@@ -22,6 +22,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import androidx.fragment.app.Fragment
+import com.github.mikephil.charting.data.BarEntry
 import com.onehundredyo.batteryfreeze.DO.CarbonData
 import com.onehundredyo.batteryfreeze.fragment.*
 import java.time.LocalDate
@@ -34,19 +35,21 @@ class MainActivity : AppCompatActivity() {
     lateinit var networkStatsManager: NetworkStatsManager
     lateinit var carbonData: CarbonData
     lateinit var db: DataBaseManager
-    var fragment_flag = true
+    private var totalDailyCarbon: Long = 0L
+    var topFiveAppData: MutableList<AppUsageData> = mutableListOf(
+        AppUsageData("Nan", 0L),
+        AppUsageData("Nan", 0L),
+        AppUsageData("Nan", 0L),
+        AppUsageData("Nan", 0L),
+        AppUsageData("Nan", 0L)
+    )
 
 //    fun compareDate(): Boolean {
 //        var currentDate: String = LocalDate.now().toString()
 //        val savedDate: String = App.prefs.getSavedDate("savedDate", "")
 //        return currentDate == savedDate
 //    }
-    fun getFlag(): Boolean{
-        return fragment_flag
-    }
-    fun setFlag(){
-        fragment_flag = false
-    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -76,16 +79,32 @@ class MainActivity : AppCompatActivity() {
         // 실행시간 30초 예상되는 메소드임,
         // DB에 주간,월간,연간데이터를 저장하게 함
         // Coroutine 을 사용하여 메인쓰레드가 아닌 IO 쓰레드를 사용하여 DB Insert 작업 수행
-
+        carbonData = CarbonData(listPackageInfo, packageManager, networkStatsManager)
         //  버튼으로 업데이트 하도록 변경예정임.
         CoroutineScope(Dispatchers.IO).launch {
-            initiateDatabase(listPackageInfo, packageManager, networkStatsManager)
+            initiateDatabase()
         }
+        totalDailyCarbon = getDaily()
+        setTopFiveApp()
+    }
+
+    fun getTotalDailyCarbon(): Long {
+        return totalDailyCarbon
     }
 
     fun getDaily(): Long {
         carbonData.setDailyCarbon()
         return carbonData.getTotalDailyCarbon()
+    }
+
+    fun setTopFiveApp(){
+        var tmpList: MutableList<Pair<String, Long>> = carbonData.getTopFiveApp()
+        for(i in topFiveAppData.indices){
+            topFiveAppData[i] = AppUsageData(tmpList[i].first, tmpList[i].second)
+        }
+    }
+    fun getTopFiveApp(): MutableList<AppUsageData>{
+        return topFiveAppData
     }
 
     private fun initNavigationBar() {
@@ -108,7 +127,6 @@ class MainActivity : AppCompatActivity() {
     fun changeFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(binding.mainFragPager.id, fragment).commit()
-
     }
 
     private fun findPackageInfo() {
@@ -132,12 +150,8 @@ class MainActivity : AppCompatActivity() {
 
 
     // initiateDatabase 는 실행할 때 마다 기존데이터 덮어쓰게됨
-    private fun initiateDatabase(
-        listPackageInfo: MutableList<PackageInfo>,
-        packageManager: PackageManager,
-        networkStatsManager: NetworkStatsManager
-    ) {
-        carbonData = CarbonData(listPackageInfo, packageManager, networkStatsManager)
+    private fun initiateDatabase(){
+
         carbonData.setWeeklyCarbon()
         carbonData.setMonthlyCarbon()
         carbonData.setYearlyCarbon()
@@ -147,14 +161,6 @@ class MainActivity : AppCompatActivity() {
         val monthlyCarbon: MutableList<Long> = carbonData.getMonthlyCarbon()
         val yearlyCarbon: MutableList<Long> = carbonData.getYearlyCarbon()
         val topFiveApp: MutableList<Pair<String, Long>> = carbonData.getTopFiveApp()
-
-        // 메인쓰레드 사용(권장하지 않음)
-//        val db = Room.databaseBuilder(
-//            applicationContext,
-//            DataBaseManager::class.java,
-//            "databasemanager"
-//        ).allowMainThreadQueries()
-//            .build()
 
         //코루틴 사용(IO 쓰레드 사용)
         db = DataBaseManager.getInstance(applicationContext)!!

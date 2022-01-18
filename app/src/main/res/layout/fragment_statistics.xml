@@ -9,9 +9,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:context=".MainActivity"
-        android:layout_margin="16dp">
+        android:layout_height="match_parent"
+        android:layout_margin="16dp"
+        tools:context=".MainActivity">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/card"
@@ -42,44 +42,17 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
 
-                <!-- Buttons -->
-
-
-                <!-- first butoon -->
-                <!--                    <com.google.android.material.button.MaterialButton-->
-                <!--                        android:id="@+id/week_button"-->
-                <!--                        style="?attr/borderlessButtonStyle"-->
-                <!--                        android:layout_width="wrap_content"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_marginEnd="8dp"-->
-                <!--                        android:text="주간" />-->
-
-                <!--                    &lt;!&ndash; second button &ndash;&gt;-->
-                <!--                    <com.google.android.material.button.MaterialButton-->
-                <!--                        android:id="@+id/month_button"-->
-                <!--                        style="?attr/borderlessButtonStyle"-->
-                <!--                        android:layout_width="wrap_content"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:text="월간" />-->
-
-                <!--                    &lt;!&ndash; third button &ndash;&gt;-->
-                <!--                    <com.google.android.material.button.MaterialButton-->
-                <!--                        android:id="@+id/year_button"-->
-                <!--                        style="?attr/borderlessButtonStyle"-->
-                <!--                        android:layout_width="wrap_content"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:text="연간" />-->
-
                 <com.google.android.material.button.MaterialButtonToggleGroup
                     android:id="@+id/toggleButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:singleSelection="true"
                     android:layout_marginTop="20dp"
                     android:textSize="12sp"
-                    app:layout_constraintTop_toBottomOf="@id/carbonString"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent">
+                    app:layout_constraintTop_toBottomOf="@id/carbonString"
+                    app:selectionRequired="true"
+                    app:singleSelection="true">
 
                     <Button
                         android:id="@+id/weekbutton"
@@ -103,29 +76,73 @@
                         android:text="연간" />
                 </com.google.android.material.button.MaterialButtonToggleGroup>
 
-
-                <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/barchart"
-                    android:layout_width="361dp"
-                    android:layout_height="334dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                <HorizontalScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/toggleButton" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/toggleButton"
+                    >
 
-
-
-                    <!-- Title, secondary and supporting text -->
-                    <TextView
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="데이터 사용량을 바탕으로 계산된 탄소 배출량입니다."
-                        android:textAppearance="?attr/textAppearanceBody2"
-                        android:textColor="?android:attr/textColorSecondary"
-                        app:layout_constraintTop_toBottomOf="@id/barchart"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        android:layout_height="wrap_content">
+
+<!--                        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            >-->
+
+                            <com.github.mikephil.charting.charts.BarChart
+                                android:id="@+id/weeklybarchart"
+                                android:layout_width="300dp"
+                                android:layout_height="200dp"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginBottom="16dp"/>
+<!--                                app:layout_constraintStart_toStartOf="parent"-->
+<!--                                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                                app:layout_constraintRight_toRightOf="parent"-->
+<!--                                app:layout_constraintTop_toTopOf="parent"/>-->
+
+                            <com.github.mikephil.charting.charts.BarChart
+                                android:id="@+id/monthlychart"
+                                android:layout_width="300dp"
+                                android:layout_height="200dp"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginBottom="16dp"/>
+<!--                                app:layout_constraintStart_toStartOf="parent"-->
+<!--                                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                                app:layout_constraintRight_toRightOf="parent"-->
+<!--                                app:layout_constraintTop_toTopOf="parent"/>-->
+
+                            <com.github.mikephil.charting.charts.BarChart
+                                android:id="@+id/yearlychart"
+                                android:layout_width="300dp"
+                                android:layout_height="200dp"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginBottom="16dp"/>
+<!--                                app:layout_constraintStart_toStartOf="parent"-->
+<!--                                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                                app:layout_constraintRight_toRightOf="parent"-->
+<!--                                app:layout_constraintTop_toTopOf="parent"/>-->
+
+
+<!--                        </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </HorizontalScrollView>
+
+
+                <!-- Title, secondary and supporting text -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="데이터 사용량을 바탕으로 계산된 탄소 배출량입니다."
+                    android:textAppearance="?attr/textAppearanceBody2"
+                    android:textColor="?android:attr/textColorSecondary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
