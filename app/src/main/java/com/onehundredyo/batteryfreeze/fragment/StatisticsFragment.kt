@@ -38,7 +38,7 @@ class StatisticsFragment : Fragment() {
         // DB를 사용하기 위해 CONTEXT 를 얻어옴
         getDatabase()
     }
-    
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

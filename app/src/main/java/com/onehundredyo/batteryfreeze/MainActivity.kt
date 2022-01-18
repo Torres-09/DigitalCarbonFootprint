@@ -75,6 +75,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun getDaily(): Long {
+        var carbonData1 = CarbonData(listPackageInfo, packageManager, networkStatsManager)
+        carbonData1.setDailyCarbon()
+
+        return carbonData1.getTotalDailyCarbon()
+    }
 
     fun initNavigationBar() {
         binding.bottomNavigation.run {
