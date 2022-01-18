@@ -25,6 +25,7 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
 import com.google.android.material.shadow.ShadowRenderer
+import com.onehundredyo.batteryfreeze.DO.AppUsageData
 import com.onehundredyo.batteryfreeze.DO.MonthlyInfo
 import com.onehundredyo.batteryfreeze.DO.WeeklyInfo
 import com.onehundredyo.batteryfreeze.DO.YearlyInfo
@@ -47,8 +48,9 @@ class StatisticsFragment : Fragment() {
     private lateinit var weeklybarChart: BarChart
     private lateinit var monthlybarChart: BarChart
     private lateinit var yearlybarChart: BarChart
-
     lateinit var mainActivity: MainActivity     // CONTEXT
+    private lateinit var topFiveData: MutableList<AppUsageData>
+
     var yearlyData: MutableList<YearlyInfo> = mutableListOf(
         YearlyInfo(0, 0L),
         YearlyInfo(1, 0L),
@@ -79,11 +81,43 @@ class StatisticsFragment : Fragment() {
         WeeklyInfo(6, 0L)
     )
 
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
         // DB를 사용하기 위해 CONTEXT 를 얻어옴
         getDatabase()
+        if (activity != null && activity is MainActivity) {
+            topFiveData = (activity as MainActivity?)?.getTopFiveApp()!!
+            Log.d("통계" ,topFiveData.toString())
+        }
+    }
+
+
+
+    private fun getDatabase() {
+        val db = DataBaseManager.getInstance(mainActivity)!!
+        CoroutineScope(Dispatchers.IO).launch {
+            val tmpYearlyInfo: MutableList<YearlyInfo> = db!!.DatausageDAO().getAllYearlyData()
+            val tmpMonthlyInfo: MutableList<MonthlyInfo> = db!!.DatausageDAO().getAllMonthlyData()
+            val tmpWeeklyInfo: MutableList<WeeklyInfo> = db!!.DatausageDAO().getAllWeeklyData()
+//            val tmpTopFiveAppData: MutableList<AppUsageData> = db!!.DatausageDAO().getAllTopFiveAppData()
+
+            for (i in tmpYearlyInfo.indices) {
+                yearlyData[i] = tmpYearlyInfo[i]
+            }
+            for (i in tmpMonthlyInfo.indices) {
+                monthlyData[i] = tmpMonthlyInfo[i]
+            }
+            for (i in tmpWeeklyInfo.indices) {
+                weeklyData[i] = tmpWeeklyInfo[i]
+            }
+//            Log.d("DB에서 받아왔음", tmpTopFiveAppData.toString())
+//            for (i in tmpTopFiveAppData.indices){
+//                topFiveAppData[i] = tmpTopFiveAppData[i]
+//            }
+//            Log.d("DB에서 가져온 5위", topFiveAppData.toString())
+        }
     }
 
     override fun onCreateView(
@@ -420,23 +454,7 @@ class StatisticsFragment : Fragment() {
         }
     }
 
-    private fun getDatabase() {
-        val db = DataBaseManager.getInstance(mainActivity)!!
-        CoroutineScope(Dispatchers.IO).launch {
-            val tmpYearlyInfo: MutableList<YearlyInfo> = db!!.DatausageDAO().getAllYearlyData()
-            val tmpMonthlyInfo: MutableList<MonthlyInfo> = db!!.DatausageDAO().getAllMonthlyData()
-            val tmpWeeklyInfo: MutableList<WeeklyInfo> = db!!.DatausageDAO().getAllWeeklyData()
-            for (i in tmpYearlyInfo.indices) {
-                yearlyData[i] = tmpYearlyInfo[i]
-            }
-            for (i in tmpMonthlyInfo.indices) {
-                monthlyData[i] = tmpMonthlyInfo[i]
-            }
-            for (i in tmpWeeklyInfo.indices) {
-                weeklyData[i] = tmpWeeklyInfo[i]
-            }
-        }
-    }
+
 
     // change barchart shape circular - barchart
 

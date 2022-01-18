@@ -1,6 +1,7 @@
 package com.onehundredyo.batteryfreeze.dataBaseHelper
 
 import androidx.room.*
+import com.onehundredyo.batteryfreeze.DO.AppUsageData
 import com.onehundredyo.batteryfreeze.DO.MonthlyInfo
 import com.onehundredyo.batteryfreeze.DO.WeeklyInfo
 import com.onehundredyo.batteryfreeze.DO.YearlyInfo
@@ -17,6 +18,8 @@ interface DatausageDAO {
     fun insertMonthData(data:MonthlyInfo)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertWeekData(data: WeeklyInfo)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertTopFiveAppData(data:AppUsageData)
 
     // UPDATE
     @Update
@@ -25,6 +28,8 @@ interface DatausageDAO {
     fun updateMonthData(data: MonthlyInfo)
     @Update
     fun updateWeekData(data: WeeklyInfo)
+    @Update
+    fun updateTopFiveAppData(data: AppUsageData)
 
     // DELETE
     @Delete
@@ -33,6 +38,8 @@ interface DatausageDAO {
     fun deleteMonthData(data: MonthlyInfo)
     @Delete
     fun deleteWeekData(data: WeeklyInfo)
+    @Delete
+    fun deleteTopFiveAppData(data:AppUsageData)
 
     // QUERY
     @Query("SELECT * FROM yearlyinfo")
@@ -41,6 +48,8 @@ interface DatausageDAO {
     fun getAllMonthlyData(): MutableList<MonthlyInfo>
     @Query("SELECT * FROM weeklyinfo")
     fun getAllWeeklyData(): MutableList<WeeklyInfo>
+    @Query("SELECT * FROM appusagedata ORDER BY(DataUsage)")
+    fun getAllTopFiveAppData(): MutableList<AppUsageData>
 
     // Table DELETE QUERY 
     @Query("DELETE FROM yearlyinfo")
@@ -49,4 +58,6 @@ interface DatausageDAO {
     fun deleteAllMonthlyData()
     @Query("DELETE FROM weeklyinfo")
     fun deleteAllWeeklyData()
+    @Query("DELETE FROM appusagedata")
+    fun deleteAllTopFiveAppData()
 }

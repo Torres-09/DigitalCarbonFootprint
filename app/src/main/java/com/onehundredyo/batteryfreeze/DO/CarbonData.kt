@@ -16,6 +16,7 @@ class CarbonData {
     private var weeklyCarbon: MutableList<Long>
     private var monthlyCarbon: MutableList<Long>
     private var yearlyCarbon: MutableList<Long>
+    private var topFiveApp: MutableList<Pair<String, Long>>
     val listPackageInfo: MutableList<PackageInfo>
     val packageManager: PackageManager
     val networkStatsManager: NetworkStatsManager
@@ -35,6 +36,7 @@ class CarbonData {
         monthlyCarbon = mutableListOf(0, 0, 0, 0)
         yearlyCarbon = mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
         timeData = TimeData()
+        topFiveApp = mutableListOf()
     }
 
     fun getTotalDailyCarbon(): Long {
@@ -107,10 +109,51 @@ class CarbonData {
             }
             totalDailyCarbon += rxtxMobile
         }
+
+        // 맵을 리스트로 변경하여 소트한 후 저장
+        var list: List<Pair<String, Long>> =
+            dailyCarbon.toList().sortedWith(compareBy { it.second }).reversed().subList(0, 5)
+
+        Log.d("CARBON DATA", list.toString())
+
+//        for(i in 0..4){
+//            // 패키지명을 어플명으로 변경하여 Pair 에 저장
+//            topFiveApp[i] =
+//                Pair(
+//                    packageManager.getApplicationLabel(
+//                        packageManager.getApplicationInfo(
+//                            list[i].first,
+//                            PackageManager.GET_META_DATA
+//                        )
+//                    ).toString(), list[i].second
+//                )
+//            Log.d("CARBONDATA", topFiveApp.toString())
+//
+//        }
+        for (i in list.indices) {
+            // 패키지명을 어플명으로 변경하여 Pair 에 저장
+            topFiveApp.add(
+                Pair(
+                    packageManager.getApplicationLabel(
+                        packageManager.getApplicationInfo(
+                            list[i].first,
+                            PackageManager.GET_META_DATA
+                        )
+                    ).toString(), list[i].second
+                )
+            )
+
+            Log.d("CARBONDATA", topFiveApp.toString())
+
+        }
     }
 
     fun getDailyCarbon(): MutableMap<String, Long> {
         return this.dailyCarbon
+    }
+
+    fun getTopFiveApp(): MutableList<Pair<String, Long>> {
+        return this.topFiveApp
     }
 
     fun setWeeklyCarbon() {

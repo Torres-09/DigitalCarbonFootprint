@@ -56,7 +56,6 @@ class HomeFragment : Fragment() {
         val polarBearImage: ImageView = view.findViewById(R.id.polarBearImage)
         val remainText: TextView = view.findViewById(R.id.remainText)
         val animation = AnimationUtils.loadAnimation(activity, R.anim.moving)
-
         var dailyCarbonDouble = (remainPercentage)?.toDouble()?.div(1000)
         var dailyCarbonInt = (remainPercentage)?.toDouble()?.div(1000)?.toInt()
         // 배출된 이산화탄소 양
@@ -68,6 +67,8 @@ class HomeFragment : Fragment() {
 //                polarBearImage.setImageResource(R.drawable.polar_bear2)
 //                glacierImage.startAnimation(animation)
 //                polarBearImage.startAnimation(animation)
+                glacierImage.startAnimation(animation)
+                polarBearImage.startAnimation(animation)
             }
             in 26..50 -> {
                 glacierImage.setImageResource(R.drawable.glacier0)
