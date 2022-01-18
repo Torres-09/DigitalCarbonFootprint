@@ -29,7 +29,6 @@ class HomeFragment : Fragment() {
         if(activity != null && activity is MainActivity){
             remainPercentage = (activity as MainActivity?)?.getDaily()
         }
-
     }
 
     fun compareDate(): Boolean {
@@ -62,13 +61,16 @@ class HomeFragment : Fragment() {
 
         //퍼센트에 따른 변화
         when (remainPercentage!!) {
-            in 76..100 -> {
+            in 76..100 -> {glacierImage.startAnimation(animation)
+                polarBearImage.startAnimation(animation)
             }
             in 51..75 -> {
 //                glacierImage.setImageResource(R.drawable.glacier0)
 //                polarBearImage.setImageResource(R.drawable.polar_bear2)
 //                glacierImage.startAnimation(animation)
 //                polarBearImage.startAnimation(animation)
+                glacierImage.startAnimation(animation)
+                polarBearImage.startAnimation(animation)
             }
             in 26..50 -> {
                 glacierImage.setImageResource(R.drawable.glacier0)
@@ -79,6 +81,8 @@ class HomeFragment : Fragment() {
             in 0..25 -> {
 //                glacierImage.setImageResource(0)
 //                polarBearImage.setImageResource(0)
+                glacierImage.startAnimation(animation)
+                polarBearImage.startAnimation(animation)
             }
             else -> {
                 glacierImage.setImageResource(R.drawable.glacier0)

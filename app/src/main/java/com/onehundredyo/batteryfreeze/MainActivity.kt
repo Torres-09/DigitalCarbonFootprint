@@ -34,13 +34,19 @@ class MainActivity : AppCompatActivity() {
     lateinit var networkStatsManager: NetworkStatsManager
     lateinit var carbonData: CarbonData
     lateinit var db: DataBaseManager
+    var fragment_flag = true
 
 //    fun compareDate(): Boolean {
 //        var currentDate: String = LocalDate.now().toString()
 //        val savedDate: String = App.prefs.getSavedDate("savedDate", "")
 //        return currentDate == savedDate
 //    }
-
+    fun getFlag(): Boolean{
+        return fragment_flag
+    }
+    fun setFlag(){
+        fragment_flag = false
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -78,10 +84,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getDaily(): Long {
-        var carbonData1 = CarbonData(listPackageInfo, packageManager, networkStatsManager)
-        carbonData1.setDailyCarbon()
-
-        return carbonData1.getTotalDailyCarbon()
+        carbonData.setDailyCarbon()
+        return carbonData.getTotalDailyCarbon()
     }
 
     private fun initNavigationBar() {
@@ -142,6 +146,7 @@ class MainActivity : AppCompatActivity() {
         val weeklyCarbon: MutableList<Long> = carbonData.getWeeklyCarbon()
         val monthlyCarbon: MutableList<Long> = carbonData.getMonthlyCarbon()
         val yearlyCarbon: MutableList<Long> = carbonData.getYearlyCarbon()
+        val topFiveApp: MutableList<Pair<String, Long>> = carbonData.getTopFiveApp()
 
         // 메인쓰레드 사용(권장하지 않음)
 //        val db = Room.databaseBuilder(
@@ -168,6 +173,12 @@ class MainActivity : AppCompatActivity() {
                 Log.d(TAG + "INSERT: ", "${yearData} 달 / 사용량:${yearlyCarbon[yearData]}")
                 db!!.DatausageDAO().insertYearData(YearlyInfo(yearData, yearlyCarbon[yearData]))
             }
+            db!!.DatausageDAO().deleteAllTopFiveAppData()
+            for(appData in topFiveApp){
+                Log.d(TAG + "INSERT: ", "이름: ${appData.first}  / 사용량:${appData.second}")
+                db!!.DatausageDAO().insertTopFiveAppData(AppUsageData(appData.first, appData.second))
+            }
+
         }
     }
 

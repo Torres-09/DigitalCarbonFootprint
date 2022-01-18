@@ -8,15 +8,15 @@ import android.net.ConnectivityManager
 import android.util.Log
 import com.onehundredyo.batteryfreeze.Constants.*
 import java.lang.Math.pow
-import java.math.*
 import java.util.*
 
 class CarbonData {
-    var totalDailyCabon: Long
-    var dailyCabon: MutableMap<String, Long>
-    var weeklyCabon: MutableList<Long>
-    var monthlyCabon: MutableList<Long>
-    var yearlyCabon: MutableList<Long>
+    private var totalDailyCabon: Long
+    private var dailyCarbon: MutableMap<String, Long>
+    private var weeklyCarbon: MutableList<Long>
+    private var monthlyCarbon: MutableList<Long>
+    private var yearlyCarbon: MutableList<Long>
+    private var topFiveApp: MutableList<Pair<String, Long>>
     val listPackageInfo: MutableList<PackageInfo>
     val packageManager: PackageManager
     val networkStatsManager: NetworkStatsManager
@@ -31,11 +31,12 @@ class CarbonData {
         this.listPackageInfo = listPackageInfo
         this.packageManager = packageManager
         this.networkStatsManager = networkStatsManager
-        dailyCabon = mutableMapOf()
-        weeklyCabon = mutableListOf(0, 0, 0, 0, 0, 0, 0)
-        monthlyCabon = mutableListOf(0, 0, 0, 0)
-        yearlyCabon = mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+        dailyCarbon = mutableMapOf()
+        weeklyCarbon = mutableListOf(0, 0, 0, 0, 0, 0, 0)
+        monthlyCarbon = mutableListOf(0, 0, 0, 0)
+        yearlyCarbon = mutableListOf(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
         timeData = TimeData()
+        topFiveApp = mutableListOf()
     }
 
     fun getTotalDailyCarbon(): Long {
@@ -72,10 +73,10 @@ class CarbonData {
             }
 
             rxtxWifi = transData(rxtxWifi)
-            if (!dailyCabon.containsKey(packageName)) {
-                dailyCabon.put(packageName, rxtxWifi)
+            if (!dailyCarbon.containsKey(packageName)) {
+                dailyCarbon.put(packageName, rxtxWifi)
             } else {
-                dailyCabon.set(packageName, dailyCabon.getValue(packageName) + rxtxWifi)
+                dailyCarbon.set(packageName, dailyCarbon.getValue(packageName) + rxtxWifi)
             }
             totalDailyCabon += rxtxWifi
         }
@@ -101,17 +102,58 @@ class CarbonData {
             }
 
             rxtxMobile = transData(rxtxMobile)
-            if (!dailyCabon.containsKey(packageName)) {
-                dailyCabon.put(packageName, rxtxMobile)
+            if (!dailyCarbon.containsKey(packageName)) {
+                dailyCarbon.put(packageName, rxtxMobile)
             } else {
-                dailyCabon.set(packageName, dailyCabon.getValue(packageName) + rxtxMobile)
+                dailyCarbon.set(packageName, dailyCarbon.getValue(packageName) + rxtxMobile)
             }
             totalDailyCabon += rxtxMobile
+        }
+
+        // 맵을 리스트로 변경하여 소트한 후 저장
+        var list: List<Pair<String, Long>> =
+            dailyCarbon.toList().sortedWith(compareBy { it.second }).reversed().subList(0, 5)
+
+        Log.d("CARBON DATA", list.toString())
+
+//        for(i in 0..4){
+//            // 패키지명을 어플명으로 변경하여 Pair 에 저장
+//            topFiveApp[i] =
+//                Pair(
+//                    packageManager.getApplicationLabel(
+//                        packageManager.getApplicationInfo(
+//                            list[i].first,
+//                            PackageManager.GET_META_DATA
+//                        )
+//                    ).toString(), list[i].second
+//                )
+//            Log.d("CARBONDATA", topFiveApp.toString())
+//
+//        }
+        for (i in list.indices) {
+            // 패키지명을 어플명으로 변경하여 Pair 에 저장
+            topFiveApp.add(
+                Pair(
+                    packageManager.getApplicationLabel(
+                        packageManager.getApplicationInfo(
+                            list[i].first,
+                            PackageManager.GET_META_DATA
+                        )
+                    ).toString(), list[i].second
+                )
+            )
+
+            Log.d("CARBONDATA", topFiveApp.toString())
+
         }
     }
 
     fun getDailyCarbon(): MutableMap<String, Long> {
-        return this.dailyCabon
+        return this.dailyCarbon
+    }
+
+    fun getTopFiveApp(): MutableList<Pair<String, Long>> {
+        return this.topFiveApp
     }
 
     fun setWeeklyCarbon() {
@@ -137,7 +179,7 @@ class CarbonData {
                     rxtxWifi += bucketWifi.rxBytes
                     rxtxWifi += bucketWifi.txBytes
                 }
-                weeklyCabon[time] += rxtxWifi
+                weeklyCarbon[time] += rxtxWifi
             }
         }
         for (time in startTimeList.indices) {
@@ -161,16 +203,16 @@ class CarbonData {
                     rxtxMobile += bucketMobile.rxBytes
                     rxtxMobile += bucketMobile.txBytes
                 }
-                weeklyCabon[time] += rxtxMobile
+                weeklyCarbon[time] += rxtxMobile
             }
         }
     }
 
     fun getWeeklyCarbon(): MutableList<Long> {
-        for (i in weeklyCabon.indices) {
-            weeklyCabon[i] = transData(weeklyCabon[i])
+        for (i in weeklyCarbon.indices) {
+            weeklyCarbon[i] = transData(weeklyCarbon[i])
         }
-        return this.weeklyCabon
+        return this.weeklyCarbon
     }
 
     fun setMonthlyCarbon() {
@@ -198,7 +240,7 @@ class CarbonData {
                     rxtxWifi += bucketWifi.rxBytes
                     rxtxWifi += bucketWifi.txBytes
                 }
-                monthlyCabon[time] += rxtxWifi
+                monthlyCarbon[time] += rxtxWifi
             }
         }
         // 데이터 사용량
@@ -225,16 +267,16 @@ class CarbonData {
                     rxtxMobile += bucketMobile.txBytes
                 }
 
-                monthlyCabon[time] += rxtxMobile
+                monthlyCarbon[time] += rxtxMobile
             }
         }
     }
 
     fun getMonthlyCarbon(): MutableList<Long> {
-        for (i in monthlyCabon.indices) {
-            monthlyCabon[i] = transData(monthlyCabon[i])
+        for (i in monthlyCarbon.indices) {
+            monthlyCarbon[i] = transData(monthlyCarbon[i])
         }
-        return this.monthlyCabon
+        return this.monthlyCarbon
     }
 
     fun setYearlyCarbon() {
@@ -260,7 +302,7 @@ class CarbonData {
                     rxtxWifi += bucketWifi.rxBytes
                     rxtxWifi += bucketWifi.txBytes
                 }
-                yearlyCabon[time] += rxtxWifi
+                yearlyCarbon[time] += rxtxWifi
             }
         }
         for (time in startTimeList.indices) {
@@ -284,16 +326,16 @@ class CarbonData {
                     rxtxMobile += bucketMobile.rxBytes
                     rxtxMobile += bucketMobile.txBytes
                 }
-                yearlyCabon[time] += rxtxMobile
+                yearlyCarbon[time] += rxtxMobile
             }
         }
     }
 
     fun getYearlyCarbon(): MutableList<Long> {
-        for (i in yearlyCabon.indices) {
-            yearlyCabon[i] = transData(yearlyCabon[i])
+        for (i in yearlyCarbon.indices) {
+            yearlyCarbon[i] = transData(yearlyCarbon[i])
         }
-        return this.yearlyCabon
+        return this.yearlyCarbon
     }
 
     fun transData(data: Long): Long {
