@@ -41,13 +41,7 @@ class HomeFragment : Fragment() {
         } else
             return true
     }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-        }
-    }
-
+    
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,8 +50,6 @@ class HomeFragment : Fragment() {
         Log.d("homefragment", "yeah${remainPercentage}")
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
-
-    companion object {}
 
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
