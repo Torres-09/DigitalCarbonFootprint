@@ -59,78 +59,108 @@
                         style="?attr/materialButtonOutlinedStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
-                        android:text="주간" />
+                        android:backgroundTint="@color/button_selection"
+                        android:text="주간"
+                        android:textColor="@color/button_selection_text" />
 
                     <Button
                         android:id="@+id/monthbutton"
                         style="?attr/materialButtonOutlinedStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
-                        android:text="월간" />
+                        android:backgroundTint="@color/button_selection"
+                        android:text="월간"
+                        android:textColor="@color/button_selection_text" />
 
                     <Button
                         android:id="@+id/yearbutton"
                         style="?attr/materialButtonOutlinedStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
-                        android:text="연간" />
+                        android:backgroundTint="@color/button_selection"
+                        android:text="연간"
+                        android:textColor="@color/button_selection_text" />
                 </com.google.android.material.button.MaterialButtonToggleGroup>
 
-                <HorizontalScrollView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toStartOf="parent"
+                <com.onehundredyo.batteryfreeze.customs.CustomViewPager
+                    android:id="@+id/chartViewPager"
+                    android:layout_width="300dp"
+                    android:layout_height="200dp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/toggleButton"
-                    >
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/toggleButton">
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                    <com.github.mikephil.charting.charts.BarChart
+                        android:id="@+id/weeklybarchart"
+                        android:layout_width="300dp"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp" />
 
-<!--                        <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            >-->
+                    <com.github.mikephil.charting.charts.BarChart
+                        android:id="@+id/monthlybarchart"
+                        android:layout_width="300dp"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp" />
 
-                            <com.github.mikephil.charting.charts.BarChart
-                                android:id="@+id/weeklybarchart"
-                                android:layout_width="300dp"
-                                android:layout_height="200dp"
-                                android:layout_marginTop="16dp"
-                                android:layout_marginBottom="16dp"/>
-<!--                                app:layout_constraintStart_toStartOf="parent"-->
-<!--                                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                                app:layout_constraintRight_toRightOf="parent"-->
-<!--                                app:layout_constraintTop_toTopOf="parent"/>-->
+                    <com.github.mikephil.charting.charts.BarChart
+                        android:id="@+id/yearlybarchart"
+                        android:layout_width="300dp"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp" />
+                </com.onehundredyo.batteryfreeze.customs.CustomViewPager>
 
-                            <com.github.mikephil.charting.charts.BarChart
-                                android:id="@+id/monthlychart"
-                                android:layout_width="300dp"
-                                android:layout_height="200dp"
-                                android:layout_marginTop="16dp"
-                                android:layout_marginBottom="16dp"/>
-<!--                                app:layout_constraintStart_toStartOf="parent"-->
-<!--                                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                                app:layout_constraintRight_toRightOf="parent"-->
-<!--                                app:layout_constraintTop_toTopOf="parent"/>-->
+                <!--                <HorizontalScrollView-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    app:layout_constraintStart_toStartOf="parent"-->
+                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                    app:layout_constraintTop_toBottomOf="@+id/toggleButton"-->
+                <!--                    >-->
 
-                            <com.github.mikephil.charting.charts.BarChart
-                                android:id="@+id/yearlychart"
-                                android:layout_width="300dp"
-                                android:layout_height="200dp"
-                                android:layout_marginTop="16dp"
-                                android:layout_marginBottom="16dp"/>
-<!--                                app:layout_constraintStart_toStartOf="parent"-->
-<!--                                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                                app:layout_constraintRight_toRightOf="parent"-->
-<!--                                app:layout_constraintTop_toTopOf="parent"/>-->
+                <!--                    <androidx.appcompat.widget.LinearLayoutCompat-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="wrap_content">-->
+
+                <!--&lt;!&ndash;                        <androidx.constraintlayout.widget.ConstraintLayout&ndash;&gt;-->
+                <!--&lt;!&ndash;                            android:layout_width="wrap_content"&ndash;&gt;-->
+                <!--&lt;!&ndash;                            android:layout_height="wrap_content"&ndash;&gt;-->
+                <!--&lt;!&ndash;                            >&ndash;&gt;-->
+
+                <!--                                app:layout_constraintStart_toStartOf="parent"-->
+                <!--                                app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                                app:layout_constraintRight_toRightOf="parent"-->
+                <!--                                app:layout_constraintTop_toTopOf="parent"/>-->
+
+                <!--                            <com.github.mikephil.charting.charts.BarChart-->
+                <!--                                android:id="@+id/monthlychart"-->
+                <!--                                android:layout_width="300dp"-->
+                <!--                                android:layout_height="200dp"-->
+                <!--                                android:layout_marginTop="16dp"-->
+                <!--                                android:layout_marginBottom="16dp"/>-->
+                <!--&lt;!&ndash;                                app:layout_constraintStart_toStartOf="parent"&ndash;&gt;-->
+                <!--&lt;!&ndash;                                app:layout_constraintEnd_toEndOf="parent"&ndash;&gt;-->
+                <!--&lt;!&ndash;                                app:layout_constraintRight_toRightOf="parent"&ndash;&gt;-->
+                <!--&lt;!&ndash;                                app:layout_constraintTop_toTopOf="parent"/>&ndash;&gt;-->
+
+                <!--                            <com.github.mikephil.charting.charts.BarChart-->
+                <!--                                android:id="@+id/yearlychart"-->
+                <!--                                android:layout_width="300dp"-->
+                <!--                                android:layout_height="200dp"-->
+                <!--                                android:layout_marginTop="16dp"-->
+                <!--                                android:layout_marginBottom="16dp"/>-->
+                <!--&lt;!&ndash;                                app:layout_constraintStart_toStartOf="parent"&ndash;&gt;-->
+                <!--&lt;!&ndash;                                app:layout_constraintEnd_toEndOf="parent"&ndash;&gt;-->
+                <!--&lt;!&ndash;                                app:layout_constraintRight_toRightOf="parent"&ndash;&gt;-->
+                <!--&lt;!&ndash;                                app:layout_constraintTop_toTopOf="parent"/>&ndash;&gt;-->
 
 
-<!--                        </androidx.constraintlayout.widget.ConstraintLayout>-->
+                <!--&lt;!&ndash;                        </androidx.constraintlayout.widget.ConstraintLayout>&ndash;&gt;-->
 
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-                </HorizontalScrollView>
+                <!--                    </androidx.appcompat.widget.LinearLayoutCompat>-->
+                <!--                </HorizontalScrollView>-->
 
 
                 <!-- Title, secondary and supporting text -->
@@ -140,26 +170,26 @@
                     android:text="데이터 사용량을 바탕으로 계산된 탄소 배출량입니다."
                     android:textAppearance="?attr/textAppearanceBody2"
                     android:textColor="?android:attr/textColorSecondary"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/chartViewPager" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp">
 
         <androidx.cardview.widget.CardView
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            >
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
         </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
