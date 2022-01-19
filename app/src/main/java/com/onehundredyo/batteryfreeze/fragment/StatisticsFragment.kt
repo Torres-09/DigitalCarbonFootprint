@@ -30,6 +30,7 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
 import com.google.android.material.shadow.ShadowRenderer
+import com.google.android.material.transition.MaterialSharedAxis
 import com.onehundredyo.batteryfreeze.DO.AppUsageData
 import com.onehundredyo.batteryfreeze.DO.MonthlyInfo
 import com.onehundredyo.batteryfreeze.DO.WeeklyInfo
@@ -181,6 +182,7 @@ class StatisticsFragment : Fragment() {
         // label 이름이랑 color 설정 - weekly
         val weeklybarDataSet = BarDataSet(Weeklyentries, "")
         weeklybarDataSet.color = ColorTemplate.rgb("#1A73E9")
+        weeklybarDataSet.valueTextSize = 12f
         weeklybarDataSet.barShadowColor = ColorTemplate.rgb("#F0F0F0")
         val weeklydata = BarData(weeklybarDataSet)
         weeklydata.barWidth = 0.35f
@@ -189,6 +191,7 @@ class StatisticsFragment : Fragment() {
         // label 이름이랑 color 설정 - monthly
         val monthlybarDataSet = BarDataSet(Monthlyentries, "")
         monthlybarDataSet.color = ColorTemplate.rgb("#1A73E9")
+        monthlybarDataSet.valueTextSize = 12f
         monthlybarDataSet.barShadowColor = ColorTemplate.rgb("#F0F0F0")
         val monthlydata = BarData(monthlybarDataSet)
         monthlydata.barWidth = 0.35f
@@ -197,6 +200,7 @@ class StatisticsFragment : Fragment() {
         // label 이름이랑 color 설정 - yearly
         val yearlybarDataSet = BarDataSet(Yearlyentries, "")
         yearlybarDataSet.color = ColorTemplate.rgb("#1A73E9")
+        yearlybarDataSet.valueTextSize = 12f
         yearlybarDataSet.barShadowColor = ColorTemplate.rgb("#F0F0F0")
         val yearlydata = BarData(yearlybarDataSet)
         yearlydata.barWidth = 0.35f
@@ -285,13 +289,13 @@ class StatisticsFragment : Fragment() {
     }
     private fun getWeeklyBarDataUsage(): ArrayList<DataUsage> {
 
-        WeekDataList.add(DataUsage("일요일", weeklyData[0].DataUsage))
-        WeekDataList.add(DataUsage("월요일", weeklyData[1].DataUsage))
-        WeekDataList.add(DataUsage("화요일", weeklyData[2].DataUsage))
-        WeekDataList.add(DataUsage("수요일", weeklyData[3].DataUsage))
-        WeekDataList.add(DataUsage("목요일", weeklyData[4].DataUsage))
-        WeekDataList.add(DataUsage("금요일", weeklyData[5].DataUsage))
-        WeekDataList.add(DataUsage("토요일", weeklyData[6].DataUsage))
+        WeekDataList.add(DataUsage("일", weeklyData[0].DataUsage))
+        WeekDataList.add(DataUsage("월", weeklyData[1].DataUsage))
+        WeekDataList.add(DataUsage("화", weeklyData[2].DataUsage))
+        WeekDataList.add(DataUsage("수", weeklyData[3].DataUsage))
+        WeekDataList.add(DataUsage("목", weeklyData[4].DataUsage))
+        WeekDataList.add(DataUsage("금", weeklyData[5].DataUsage))
+        WeekDataList.add(DataUsage("토", weeklyData[6].DataUsage))
 
         return WeekDataList
     }
@@ -299,25 +303,25 @@ class StatisticsFragment : Fragment() {
     fun getMonthlyBarDataUsage(): ArrayList<DataUsage> {
         MonthDataList.add(DataUsage("3주전", monthlyData[0].DataUsage))
         MonthDataList.add(DataUsage("2주전", monthlyData[1].DataUsage))
-        MonthDataList.add(DataUsage("1주전", monthlyData[2].DataUsage))
+        MonthDataList.add(DataUsage("지난주", monthlyData[2].DataUsage))
         MonthDataList.add(DataUsage("이번주", monthlyData[3].DataUsage))
 
         return MonthDataList
     }
 
     fun getYearlyBarDataUsage(): ArrayList<DataUsage> {
-        YearDataList.add(DataUsage("1월", yearlyData[0].DataUsage))
-        YearDataList.add(DataUsage("2월", yearlyData[1].DataUsage))
-        YearDataList.add(DataUsage("3월", yearlyData[2].DataUsage))
-        YearDataList.add(DataUsage("4월", yearlyData[3].DataUsage))
-        YearDataList.add(DataUsage("5월", yearlyData[4].DataUsage))
-        YearDataList.add(DataUsage("6월", yearlyData[5].DataUsage))
-        YearDataList.add(DataUsage("7월", yearlyData[6].DataUsage))
-        YearDataList.add(DataUsage("8월", yearlyData[7].DataUsage))
-        YearDataList.add(DataUsage("9월", yearlyData[8].DataUsage))
-        YearDataList.add(DataUsage("10월", yearlyData[9].DataUsage))
-        YearDataList.add(DataUsage("11월", yearlyData[10].DataUsage))
-        YearDataList.add(DataUsage("12월", yearlyData[11].DataUsage))
+//        YearDataList.add(DataUsage("1월", yearlyData[0].DataUsage))
+//        YearDataList.add(DataUsage("2월", yearlyData[1].DataUsage))
+//        YearDataList.add(DataUsage("3월", yearlyData[2].DataUsage))
+//        YearDataList.add(DataUsage("4월", yearlyData[3].DataUsage))
+//        YearDataList.add(DataUsage("5월", yearlyData[4].DataUsage))
+//        YearDataList.add(DataUsage("6월", yearlyData[5].DataUsage))
+//        YearDataList.add(DataUsage("7월", yearlyData[6].DataUsage))
+//        YearDataList.add(DataUsage("8월", yearlyData[7].DataUsage))
+        YearDataList.add(DataUsage("3달전", yearlyData[8].DataUsage))
+        YearDataList.add(DataUsage("2달전", yearlyData[9].DataUsage))
+        YearDataList.add(DataUsage("지난달", yearlyData[10].DataUsage))
+        YearDataList.add(DataUsage("이번달", yearlyData[11].DataUsage))
 
         return YearDataList
     }
@@ -338,11 +342,14 @@ class StatisticsFragment : Fragment() {
             // 막대 그래프 올라가는 애니메이션 추가
             animateXY(0, 800)
 
+
             extraBottomOffset = 10f
+//            extraBottomOffset = 0f
 
             axisLeft.run {
                 // 좌측 y축 제거
                 isEnabled = false
+                axisMinimum = -4f
             }
             axisRight.run {
                 //우측 y축 제거
@@ -353,7 +360,7 @@ class StatisticsFragment : Fragment() {
             xAxis.run {
                 // 막대 그래프 바 grid 제거
                 setDrawGridLines(false)
-                setDrawAxisLine(false)
+//                setDrawAxisLine(false)
 
                 // 막대 그래프 설정
                 position = XAxis.XAxisPosition.BOTTOM
@@ -361,6 +368,8 @@ class StatisticsFragment : Fragment() {
                 valueFormatter = WeekAxisFormatter()
                 granularity = 1f
             }
+
+
 
             legend.run {
                 // 하단 항목 이름 제거
@@ -396,8 +405,7 @@ class StatisticsFragment : Fragment() {
             axisLeft.run {
                 // 좌측 y축 제거
                 isEnabled = false
-
-
+                axisMinimum = -4f
             }
             axisRight.run {
                 //우측 y축 제거
@@ -408,7 +416,7 @@ class StatisticsFragment : Fragment() {
             xAxis.run {
                 // 막대 그래프 바 grid 제거
                 setDrawGridLines(false)
-                setDrawAxisLine(false)
+//                setDrawAxisLine(false)
 
                 // 막대 그래프 설정
                 position = XAxis.XAxisPosition.BOTTOM
@@ -451,8 +459,7 @@ class StatisticsFragment : Fragment() {
             axisLeft.run {
                 // 좌측 y축 제거
                 isEnabled = false
-
-
+                axisMinimum = -4f
             }
             axisRight.run {
                 //우측 y축 제거
@@ -463,7 +470,7 @@ class StatisticsFragment : Fragment() {
             xAxis.run {
                 // 막대 그래프 바 grid 제거
                 setDrawGridLines(false)
-                setDrawAxisLine(false)
+//                setDrawAxisLine(false)
 
                 // 막대 그래프 설정
                 position = XAxis.XAxisPosition.BOTTOM
