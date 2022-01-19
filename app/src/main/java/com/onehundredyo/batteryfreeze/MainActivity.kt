@@ -16,6 +16,7 @@ import android.content.ContentValues.TAG
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.util.Log
+import androidx.annotation.NonNull
 import com.onehundredyo.batteryfreeze.DO.*
 import com.onehundredyo.batteryfreeze.dataBaseHelper.DataBaseManager
 import kotlinx.coroutines.CoroutineScope
@@ -23,9 +24,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import androidx.fragment.app.Fragment
 import com.github.mikephil.charting.data.BarEntry
+import com.google.android.material.bottomnavigation.BottomNavigationItemView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.onehundredyo.batteryfreeze.DO.CarbonData
 import com.onehundredyo.batteryfreeze.fragment.*
+import java.nio.file.Files.list
 import java.time.LocalDate
+import java.util.Collections.list
 
 
 class MainActivity : AppCompatActivity() {
@@ -122,6 +127,7 @@ class MainActivity : AppCompatActivity() {
             }
             selectedItemId = R.id.page_1
         }
+        binding.bottomNavigation.setItemIconSize(90)
     }
 
     fun changeFragment(fragment: Fragment) {
@@ -147,7 +153,6 @@ class MainActivity : AppCompatActivity() {
         val mode = appOps.checkOpNoThrow(OPSTR_GET_USAGE_STATS, Process.myUid(), packageName)
         return mode == MODE_ALLOWED
     }
-
 
     // initiateDatabase 는 실행할 때 마다 기존데이터 덮어쓰게됨
     private fun initiateDatabase(){
@@ -184,7 +189,6 @@ class MainActivity : AppCompatActivity() {
                 Log.d(TAG + "INSERT: ", "이름: ${appData.first}  / 사용량:${appData.second}")
                 db!!.DatausageDAO().insertTopFiveAppData(AppUsageData(appData.first, appData.second))
             }
-
         }
     }
 
