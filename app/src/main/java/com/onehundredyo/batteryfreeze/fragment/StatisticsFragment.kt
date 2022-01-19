@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.viewpager.widget.ViewPager
 import com.example.myapplication.DataUsage
 import com.github.mikephil.charting.animation.ChartAnimator
 import com.github.mikephil.charting.charts.BarChart
@@ -31,6 +33,8 @@ import com.onehundredyo.batteryfreeze.DO.WeeklyInfo
 import com.onehundredyo.batteryfreeze.DO.YearlyInfo
 import com.onehundredyo.batteryfreeze.MainActivity
 import com.onehundredyo.batteryfreeze.R
+import com.onehundredyo.batteryfreeze.adapter.StatisticsViewPagerAdapter
+import com.onehundredyo.batteryfreeze.customs.CustomViewPager
 import com.onehundredyo.batteryfreeze.dataBaseHelper.DataBaseManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -48,6 +52,10 @@ class StatisticsFragment : Fragment() {
     private lateinit var weeklybarChart: BarChart
     private lateinit var monthlybarChart: BarChart
     private lateinit var yearlybarChart: BarChart
+    private lateinit var chartViewPager: CustomViewPager
+    private lateinit var weekbutton: Button
+    private lateinit var monthbutton: Button
+    private lateinit var yearbutton: Button
     lateinit var mainActivity: MainActivity     // CONTEXT
     private lateinit var topFiveData: MutableList<AppUsageData>
 
@@ -94,7 +102,6 @@ class StatisticsFragment : Fragment() {
     }
 
 
-
     private fun getDatabase() {
         val db = DataBaseManager.getInstance(mainActivity)!!
         CoroutineScope(Dispatchers.IO).launch {
@@ -112,11 +119,6 @@ class StatisticsFragment : Fragment() {
             for (i in tmpWeeklyInfo.indices) {
                 weeklyData[i] = tmpWeeklyInfo[i]
             }
-//            Log.d("DB에서 받아왔음", tmpTopFiveAppData.toString())
-//            for (i in tmpTopFiveAppData.indices){
-//                topFiveAppData[i] = tmpTopFiveAppData[i]
-//            }
-//            Log.d("DB에서 가져온 5위", topFiveAppData.toString())
         }
     }
 
@@ -132,9 +134,16 @@ class StatisticsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        weekbutton = view.findViewById(R.id.weekbutton)
+        monthbutton = view.findViewById(R.id.monthbutton)
+        yearbutton = view.findViewById(R.id.yearbutton)
+        setOnclickListenerOnToggleButton()
+
+
+
         weeklybarChart = view.findViewById(R.id.weeklybarchart)
-        monthlybarChart = view.findViewById(R.id.monthlychart)
-        yearlybarChart = view.findViewById(R.id.yearlychart)
+        monthlybarChart = view.findViewById(R.id.monthlybarchart)
+        yearlybarChart = view.findViewById(R.id.yearlybarchart)
 
         WeekDataList = getWeeklyBarDataUsage()
         MonthDataList = getMonthlyBarDataUsage()
@@ -189,7 +198,7 @@ class StatisticsFragment : Fragment() {
         yearlybarChart.data = yearlydata
 
         // shape 둥글게 변경 - barchart
-        val myradius = 40
+        val myradius = 10
 
 
         val weeklybarChartRender =
@@ -210,8 +219,50 @@ class StatisticsFragment : Fragment() {
         weeklybarChart.invalidate()
         monthlybarChart.invalidate()
         yearlybarChart.invalidate()
+
+        // 바차트 뷰 페이저 어댑터
+        val adapter = StatisticsViewPagerAdapter()
+        chartViewPager = view.findViewById(R.id.chartViewPager)
+        // 스와이프를 막음 , 버튼으로만 조작
+        chartViewPager.setPagingEnabled(false)
+        // 3개로 설정안하면 차트를 한번만 볼 수 있고 돌아가면 다시는 못 봄
+        chartViewPager.offscreenPageLimit = 3
+        chartViewPager.adapter = adapter
     }
 
+    private fun setOnclickListenerOnToggleButton(){
+        weekbutton.setOnClickListener(View.OnClickListener{
+            if(it.id == R.id.weekbutton){
+                // 현재 주간차트를 보여주는중이 아니면
+                if( chartViewPager.currentItem != 0){
+                    // setCurrentItem 의 두번째 인자 true 로 하면 손으로 넘기는 느낌
+                    // false 로 하면 짠! 하고 바뀜
+                    chartViewPager.setCurrentItem(0, true)
+
+                }
+            }
+        })
+        monthbutton.setOnClickListener(View.OnClickListener {
+            if(it.id == R.id.monthbutton){
+                // 현재 월간차트를 보여주는중이 아니면 월간차트로 변경
+                if( chartViewPager.currentItem != 1){
+                    // setCurrentItem 의 두번째 인자 true 로 하면 손으로 넘기는 느낌
+                    // false 로 하면 짠! 하고 바뀜
+                    chartViewPager.setCurrentItem(1, true)
+                }
+            }
+        })
+        yearbutton.setOnClickListener(View.OnClickListener {
+            if(it.id == R.id.yearbutton){
+                // 현재 주간차트를 보여주는중이 아니면
+                if( chartViewPager.currentItem != 2){
+                    // setCurrentItem 의 두번째 인자 true 로 하면 손으로 넘기는 느낌
+                    // false 로 하면 짠! 하고 바뀜
+                    chartViewPager.setCurrentItem(2, true)
+                }
+            }
+        })
+    }
     private fun getWeeklyBarDataUsage(): ArrayList<DataUsage> {
 
         WeekDataList.add(DataUsage("일요일", weeklyData[0].DataUsage))
