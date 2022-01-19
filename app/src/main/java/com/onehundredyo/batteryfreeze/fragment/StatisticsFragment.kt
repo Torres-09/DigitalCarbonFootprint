@@ -1,6 +1,5 @@
 package com.onehundredyo.batteryfreeze.fragment
 
-import android.content.ContentValues
 import android.content.Context
 import android.graphics.*
 import android.os.Bundle
@@ -9,14 +8,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.anychart.AnyChart
+import com.anychart.AnyChartView
+import com.anychart.chart.common.dataentry.DataEntry
+import com.anychart.chart.common.dataentry.ValueDataEntry
+import com.anychart.charts.Pie
+import com.anychart.graphics.vector.SolidFill
+import android.widget.Button
+import androidx.viewpager.widget.ViewPager
 import com.example.myapplication.DataUsage
 import com.github.mikephil.charting.animation.ChartAnimator
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
@@ -25,12 +30,15 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.Utils
 import com.github.mikephil.charting.utils.ViewPortHandler
 import com.google.android.material.shadow.ShadowRenderer
+import com.google.android.material.transition.MaterialSharedAxis
 import com.onehundredyo.batteryfreeze.DO.AppUsageData
 import com.onehundredyo.batteryfreeze.DO.MonthlyInfo
 import com.onehundredyo.batteryfreeze.DO.WeeklyInfo
 import com.onehundredyo.batteryfreeze.DO.YearlyInfo
 import com.onehundredyo.batteryfreeze.MainActivity
 import com.onehundredyo.batteryfreeze.R
+import com.onehundredyo.batteryfreeze.adapter.StatisticsViewPagerAdapter
+import com.onehundredyo.batteryfreeze.customs.CustomViewPager
 import com.onehundredyo.batteryfreeze.dataBaseHelper.DataBaseManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -45,9 +53,14 @@ class StatisticsFragment : Fragment() {
     private var MonthDataList = ArrayList<DataUsage>()
     private var YearDataList = ArrayList<DataUsage>()
 
+    private lateinit var dailyPieChart: AnyChartView
     private lateinit var weeklybarChart: BarChart
     private lateinit var monthlybarChart: BarChart
     private lateinit var yearlybarChart: BarChart
+    private lateinit var chartViewPager: CustomViewPager
+    private lateinit var weekbutton: Button
+    private lateinit var monthbutton: Button
+    private lateinit var yearbutton: Button
     lateinit var mainActivity: MainActivity     // CONTEXT
     private lateinit var topFiveData: MutableList<AppUsageData>
 
@@ -89,11 +102,9 @@ class StatisticsFragment : Fragment() {
         getDatabase()
         if (activity != null && activity is MainActivity) {
             topFiveData = (activity as MainActivity?)?.getTopFiveApp()!!
-            Log.d("통계" ,topFiveData.toString())
+            Log.d("통계", topFiveData.toString())
         }
     }
-
-
 
     private fun getDatabase() {
         val db = DataBaseManager.getInstance(mainActivity)!!
@@ -112,11 +123,6 @@ class StatisticsFragment : Fragment() {
             for (i in tmpWeeklyInfo.indices) {
                 weeklyData[i] = tmpWeeklyInfo[i]
             }
-//            Log.d("DB에서 받아왔음", tmpTopFiveAppData.toString())
-//            for (i in tmpTopFiveAppData.indices){
-//                topFiveAppData[i] = tmpTopFiveAppData[i]
-//            }
-//            Log.d("DB에서 가져온 5위", topFiveAppData.toString())
         }
     }
 
@@ -132,14 +138,23 @@ class StatisticsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        weekbutton = view.findViewById(R.id.weekbutton)
+        monthbutton = view.findViewById(R.id.monthbutton)
+        yearbutton = view.findViewById(R.id.yearbutton)
+        setOnclickListenerOnToggleButton()
+
+
+
         weeklybarChart = view.findViewById(R.id.weeklybarchart)
-        monthlybarChart = view.findViewById(R.id.monthlychart)
-        yearlybarChart = view.findViewById(R.id.yearlychart)
+        monthlybarChart = view.findViewById(R.id.monthlybarchart)
+        yearlybarChart = view.findViewById(R.id.yearlybarchart)
+        dailyPieChart = view.findViewById(R.id.piechart)
 
         WeekDataList = getWeeklyBarDataUsage()
         MonthDataList = getMonthlyBarDataUsage()
         YearDataList = getYearlyBarDataUsage()
 
+        initDailyPieChart()
         initWeeklyBarChart()
         initMonthlyBarChart()
         initYearlyBarChart()
@@ -167,6 +182,7 @@ class StatisticsFragment : Fragment() {
         // label 이름이랑 color 설정 - weekly
         val weeklybarDataSet = BarDataSet(Weeklyentries, "")
         weeklybarDataSet.color = ColorTemplate.rgb("#1A73E9")
+        weeklybarDataSet.valueTextSize = 12f
         weeklybarDataSet.barShadowColor = ColorTemplate.rgb("#F0F0F0")
         val weeklydata = BarData(weeklybarDataSet)
         weeklydata.barWidth = 0.35f
@@ -175,6 +191,7 @@ class StatisticsFragment : Fragment() {
         // label 이름이랑 color 설정 - monthly
         val monthlybarDataSet = BarDataSet(Monthlyentries, "")
         monthlybarDataSet.color = ColorTemplate.rgb("#1A73E9")
+        monthlybarDataSet.valueTextSize = 12f
         monthlybarDataSet.barShadowColor = ColorTemplate.rgb("#F0F0F0")
         val monthlydata = BarData(monthlybarDataSet)
         monthlydata.barWidth = 0.35f
@@ -183,72 +200,126 @@ class StatisticsFragment : Fragment() {
         // label 이름이랑 color 설정 - yearly
         val yearlybarDataSet = BarDataSet(Yearlyentries, "")
         yearlybarDataSet.color = ColorTemplate.rgb("#1A73E9")
+        yearlybarDataSet.valueTextSize = 12f
         yearlybarDataSet.barShadowColor = ColorTemplate.rgb("#F0F0F0")
         val yearlydata = BarData(yearlybarDataSet)
         yearlydata.barWidth = 0.35f
         yearlybarChart.data = yearlydata
 
         // shape 둥글게 변경 - barchart
-        val myradius = 40
+        val myradius = 10
 
 
         val weeklybarChartRender =
-            CustomBarChartRender(weeklybarChart, weeklybarChart.animator, weeklybarChart.viewPortHandler)
+            CustomBarChartRender(
+                weeklybarChart,
+                weeklybarChart.animator,
+                weeklybarChart.viewPortHandler
+            )
         weeklybarChartRender.setRadius(myradius)
         weeklybarChart.renderer = weeklybarChartRender
 
         val monthlybarChartRender =
-            CustomBarChartRender(monthlybarChart, monthlybarChart.animator, monthlybarChart.viewPortHandler)
+            CustomBarChartRender(
+                monthlybarChart,
+                monthlybarChart.animator,
+                monthlybarChart.viewPortHandler
+            )
         monthlybarChartRender.setRadius(myradius)
         monthlybarChart.renderer = monthlybarChartRender
 
         val yearlybarChartRender =
-            CustomBarChartRender(yearlybarChart, yearlybarChart.animator, yearlybarChart.viewPortHandler)
+            CustomBarChartRender(
+                yearlybarChart,
+                yearlybarChart.animator,
+                yearlybarChart.viewPortHandler
+            )
         yearlybarChartRender.setRadius(myradius)
         yearlybarChart.renderer = yearlybarChartRender
 
         weeklybarChart.invalidate()
         monthlybarChart.invalidate()
         yearlybarChart.invalidate()
+
+        
+        // 바차트 뷰 페이저 어댑터
+        val adapter = StatisticsViewPagerAdapter()
+        chartViewPager = view.findViewById(R.id.chartViewPager)
+        // 스와이프를 막음 , 버튼으로만 조작
+        chartViewPager.setPagingEnabled(false)
+        // 3개로 설정안하면 차트를 한번만 볼 수 있고 돌아가면 다시는 못 봄
+        chartViewPager.offscreenPageLimit = 3
+        chartViewPager.adapter = adapter
     }
 
+    private fun setOnclickListenerOnToggleButton(){
+        weekbutton.setOnClickListener(View.OnClickListener{
+            if(it.id == R.id.weekbutton){
+                // 현재 주간차트를 보여주는중이 아니면
+                if( chartViewPager.currentItem != 0){
+                    // setCurrentItem 의 두번째 인자 true 로 하면 손으로 넘기는 느낌
+                    // false 로 하면 짠! 하고 바뀜
+                    chartViewPager.setCurrentItem(0, true)
+
+                }
+            }
+        })
+        monthbutton.setOnClickListener(View.OnClickListener {
+            if(it.id == R.id.monthbutton){
+                // 현재 월간차트를 보여주는중이 아니면 월간차트로 변경
+                if( chartViewPager.currentItem != 1){
+                    // setCurrentItem 의 두번째 인자 true 로 하면 손으로 넘기는 느낌
+                    // false 로 하면 짠! 하고 바뀜
+                    chartViewPager.setCurrentItem(1, true)
+                }
+            }
+        })
+        yearbutton.setOnClickListener(View.OnClickListener {
+            if(it.id == R.id.yearbutton){
+                // 현재 주간차트를 보여주는중이 아니면
+                if( chartViewPager.currentItem != 2){
+                    // setCurrentItem 의 두번째 인자 true 로 하면 손으로 넘기는 느낌
+                    // false 로 하면 짠! 하고 바뀜
+                    chartViewPager.setCurrentItem(2, true)
+                }
+            }
+        })
+    }
     private fun getWeeklyBarDataUsage(): ArrayList<DataUsage> {
 
-        WeekDataList.add(DataUsage("일요일", weeklyData[0].DataUsage))
-        WeekDataList.add(DataUsage("월요일", weeklyData[1].DataUsage))
-        WeekDataList.add(DataUsage("화요일", weeklyData[2].DataUsage))
-        WeekDataList.add(DataUsage("수요일", weeklyData[3].DataUsage))
-        WeekDataList.add(DataUsage("목요일", weeklyData[4].DataUsage))
-        WeekDataList.add(DataUsage("금요일", weeklyData[5].DataUsage))
-        WeekDataList.add(DataUsage("토요일", weeklyData[6].DataUsage))
+        WeekDataList.add(DataUsage("일", weeklyData[0].DataUsage))
+        WeekDataList.add(DataUsage("월", weeklyData[1].DataUsage))
+        WeekDataList.add(DataUsage("화", weeklyData[2].DataUsage))
+        WeekDataList.add(DataUsage("수", weeklyData[3].DataUsage))
+        WeekDataList.add(DataUsage("목", weeklyData[4].DataUsage))
+        WeekDataList.add(DataUsage("금", weeklyData[5].DataUsage))
+        WeekDataList.add(DataUsage("토", weeklyData[6].DataUsage))
 
         return WeekDataList
     }
 
-    fun getMonthlyBarDataUsage(): ArrayList<DataUsage>
-    {
+    fun getMonthlyBarDataUsage(): ArrayList<DataUsage> {
         MonthDataList.add(DataUsage("3주전", monthlyData[0].DataUsage))
         MonthDataList.add(DataUsage("2주전", monthlyData[1].DataUsage))
-        MonthDataList.add(DataUsage("1주전", monthlyData[2].DataUsage))
+        MonthDataList.add(DataUsage("지난주", monthlyData[2].DataUsage))
         MonthDataList.add(DataUsage("이번주", monthlyData[3].DataUsage))
 
         return MonthDataList
     }
 
-    fun getYearlyBarDataUsage(): ArrayList<DataUsage>
-    {
-        YearDataList.add(DataUsage("1월", yearlyData[0].DataUsage))
-        YearDataList.add(DataUsage("2월", yearlyData[1].DataUsage))
-        YearDataList.add(DataUsage("3월", yearlyData[2].DataUsage))
-        YearDataList.add(DataUsage("4월", yearlyData[3].DataUsage))
-        YearDataList.add(DataUsage("5월", yearlyData[4].DataUsage))
-        YearDataList.add(DataUsage("6월", yearlyData[5].DataUsage))
-        YearDataList.add(DataUsage("7월", yearlyData[6].DataUsage))
-        YearDataList.add(DataUsage("8월", yearlyData[7].DataUsage))
-        YearDataList.add(DataUsage("9월", yearlyData[8].DataUsage))
-        YearDataList.add(DataUsage("10월", yearlyData[9].DataUsage))
-        YearDataList.add(DataUsage("11월", yearlyData[10].DataUsage))
-        YearDataList.add(DataUsage("12월", yearlyData[11].DataUsage))
+    fun getYearlyBarDataUsage(): ArrayList<DataUsage> {
+//        YearDataList.add(DataUsage("1월", yearlyData[0].DataUsage))
+//        YearDataList.add(DataUsage("2월", yearlyData[1].DataUsage))
+//        YearDataList.add(DataUsage("3월", yearlyData[2].DataUsage))
+//        YearDataList.add(DataUsage("4월", yearlyData[3].DataUsage))
+//        YearDataList.add(DataUsage("5월", yearlyData[4].DataUsage))
+//        YearDataList.add(DataUsage("6월", yearlyData[5].DataUsage))
+//        YearDataList.add(DataUsage("7월", yearlyData[6].DataUsage))
+//        YearDataList.add(DataUsage("8월", yearlyData[7].DataUsage))
+        YearDataList.add(DataUsage("3달전", yearlyData[8].DataUsage))
+        YearDataList.add(DataUsage("2달전", yearlyData[9].DataUsage))
+        YearDataList.add(DataUsage("지난달", yearlyData[10].DataUsage))
+        YearDataList.add(DataUsage("이번달", yearlyData[11].DataUsage))
 
         return YearDataList
     }
@@ -269,13 +340,14 @@ class StatisticsFragment : Fragment() {
             // 막대 그래프 올라가는 애니메이션 추가
             animateXY(0, 800)
 
+
             extraBottomOffset = 10f
+//            extraBottomOffset = 0f
 
             axisLeft.run {
                 // 좌측 y축 제거
                 isEnabled = false
-
-
+                axisMinimum = -4f
             }
             axisRight.run {
                 //우측 y축 제거
@@ -286,7 +358,7 @@ class StatisticsFragment : Fragment() {
             xAxis.run {
                 // 막대 그래프 바 grid 제거
                 setDrawGridLines(false)
-                setDrawAxisLine(false)
+//                setDrawAxisLine(false)
 
                 // 막대 그래프 설정
                 position = XAxis.XAxisPosition.BOTTOM
@@ -294,6 +366,8 @@ class StatisticsFragment : Fragment() {
                 valueFormatter = WeekAxisFormatter()
                 granularity = 1f
             }
+
+
 
             legend.run {
                 // 하단 항목 이름 제거
@@ -329,8 +403,7 @@ class StatisticsFragment : Fragment() {
             axisLeft.run {
                 // 좌측 y축 제거
                 isEnabled = false
-
-
+                axisMinimum = -4f
             }
             axisRight.run {
                 //우측 y축 제거
@@ -341,7 +414,7 @@ class StatisticsFragment : Fragment() {
             xAxis.run {
                 // 막대 그래프 바 grid 제거
                 setDrawGridLines(false)
-                setDrawAxisLine(false)
+//                setDrawAxisLine(false)
 
                 // 막대 그래프 설정
                 position = XAxis.XAxisPosition.BOTTOM
@@ -384,19 +457,17 @@ class StatisticsFragment : Fragment() {
             axisLeft.run {
                 // 좌측 y축 제거
                 isEnabled = false
-
-
+                axisMinimum = -4f
             }
             axisRight.run {
                 //우측 y축 제거
                 isEnabled = false
             }
 
-
             xAxis.run {
                 // 막대 그래프 바 grid 제거
                 setDrawGridLines(false)
-                setDrawAxisLine(false)
+//                setDrawAxisLine(false)
 
                 // 막대 그래프 설정
                 position = XAxis.XAxisPosition.BOTTOM
@@ -453,7 +524,6 @@ class StatisticsFragment : Fragment() {
             }
         }
     }
-
 
 
     // change barchart shape circular - barchart
@@ -629,5 +699,24 @@ class StatisticsFragment : Fragment() {
             path.close() //Given close, last lineto can be removed.
             return path
         }
+    }
+
+    private fun initDailyPieChart(){
+        var pie: Pie = AnyChart.pie()
+        val dataEntries: ArrayList<DataEntry> = ArrayList<DataEntry>()
+
+        for(i in topFiveData.indices){
+            dataEntries.add(ValueDataEntry(topFiveData[i].name,topFiveData[i].DataUsage))
+        }
+
+        pie.data(dataEntries)
+        pie.palette().itemAt(0, SolidFill("#B4D9FD",1) )
+        pie.palette().itemAt(1, SolidFill("#82C0FB",1) )
+        pie.palette().itemAt(2, SolidFill("#5AABF9",1) )
+        pie.palette().itemAt(3, SolidFill("#3496F5",1) )
+        pie.palette().itemAt(4, SolidFill("#0F7EE9",1) )
+
+        pie.labels().position("outside")
+        dailyPieChart.setChart(pie)
     }
 }
