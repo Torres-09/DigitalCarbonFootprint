@@ -146,8 +146,8 @@ class StatisticsFragment : Fragment() {
 
 
         weeklybarChart = view.findViewById(R.id.weeklybarchart)
-        monthlybarChart = view.findViewById(R.id.monthlychart)
-        yearlybarChart = view.findViewById(R.id.yearlychart)
+        monthlybarChart = view.findViewById(R.id.monthlybarchart)
+        yearlybarChart = view.findViewById(R.id.yearlybarchart)
         dailyPieChartView = view.findViewById(R.id.piechart)
 
         WeekDataList = getWeeklyBarDataUsage()
@@ -712,7 +712,6 @@ class StatisticsFragment : Fragment() {
         for(i in topFiveData.indices){
             dataEntries.add(ValueDataEntry(topFiveData[i].name,topFiveData[i].DataUsage))
         }
-
 
         pie.data(dataEntries)
         pie.title("Top 5 App 탄소배출량")
