@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/north_pole"
     tools:context=".fragment.HomeFragment">
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -19,30 +18,71 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/glacierImage"
-            android:layout_width="300dp"
-            android:layout_height="140dp"
-            android:layout_marginBottom="190dp"
-            android:src="@drawable/glacier0"
+            android:id="@+id/ocean"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ocean"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-        </ImageView>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/polarBearImage"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
-            android:layout_marginBottom="60dp"
-            android:src="@drawable/polar_bear1"
-            app:layout_constraintBottom_toBottomOf="@+id/glacierImage"
-            app:layout_constraintEnd_toEndOf="@+id/glacierImage"
-            app:layout_constraintStart_toStartOf="@+id/glacierImage" />
+            android:id="@+id/glacier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/glacier_4"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/glacier_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/glacier_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/glacier_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/polarbear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/polarbear_1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <TextView
-            android:id="@+id/todayGoalText"
+            android:id="@+id/today_goal_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="160dp"
@@ -59,38 +99,49 @@
             android:id="@+id/remainText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="152dp"
+            android:layout_marginBottom="100dp"
             android:fontFamily="@font/app_font"
             android:text="remain percentage"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
-            android:id="@+id/chatBubble"
-            android:layout_width="97dp"
+            android:id="@+id/chat_bubble"
+            android:layout_width="120dp"
             android:layout_height="104dp"
-            android:layout_marginBottom="352dp"
-            android:src="@drawable/chat_bubble2"
+            android:layout_marginBottom="312dp"
+            android:src="@drawable/chat_bubble"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.764"
+            app:layout_constraintHorizontal_bias="0.866"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/chatBubbleText"
+            android:id="@+id/chat_bubble_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/chat_font"
             android:text="살려조.."
             android:textColor="@color/black"
-            android:textSize="26sp"
-            app:layout_constraintBottom_toBottomOf="@+id/chatBubble"
-            app:layout_constraintEnd_toEndOf="@+id/chatBubble"
-            app:layout_constraintStart_toStartOf="@+id/chatBubble"
-            app:layout_constraintTop_toTopOf="@+id/chatBubble" />
+            android:textSize="22sp"
+            app:layout_constraintBottom_toBottomOf="@+id/chat_bubble"
+            app:layout_constraintEnd_toEndOf="@+id/chat_bubble"
+            app:layout_constraintStart_toStartOf="@+id/chat_bubble"
+            app:layout_constraintTop_toTopOf="@+id/chat_bubble" />
+
+        <ImageView
+            android:id="@+id/chat_button"
+            android:layout_width="181dp"
+            android:layout_height="261dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.654" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
