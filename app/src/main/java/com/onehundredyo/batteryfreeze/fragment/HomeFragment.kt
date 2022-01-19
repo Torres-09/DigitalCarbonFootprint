@@ -1,11 +1,13 @@
 package com.onehundredyo.batteryfreeze.fragment
 
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -40,21 +42,13 @@ class HomeFragment : Fragment() {
     }
 
     fun setChatText(view: View, level: Int) {
-        val chatBubbleText: TextView = view.findViewById(R.id.chatBubbleText)
+        val chatBubbleText: TextView = view.findViewById(R.id.chat_bubble_text)
         var randomNumber = (0..2).random()
         when (level) {
+            4 -> chatBubbleText.setText(resources.getStringArray(R.array.chat_list4)[randomNumber])
             3 -> chatBubbleText.setText(resources.getStringArray(R.array.chat_list3)[randomNumber])
             2 -> chatBubbleText.setText(resources.getStringArray(R.array.chat_list2)[randomNumber])
             1 -> chatBubbleText.setText(resources.getStringArray(R.array.chat_list1)[randomNumber])
-            0 -> chatBubbleText.setText(resources.getStringArray(R.array.chat_list0)[randomNumber])
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
         }
     }
 
@@ -70,13 +64,13 @@ class HomeFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val glacierImage: ImageView = view.findViewById(R.id.glacierImage)
-        val polarBearImage: ImageView = view.findViewById(R.id.polarBearImage)
+        val glacier: ImageView = view.findViewById(R.id.glacier)
+        val polarbear: ImageView = view.findViewById(R.id.polarbear)
         val remainText: TextView = view.findViewById(R.id.remainText)
-        val chatBubbleText: TextView = view.findViewById(R.id.chatBubbleText)
-        val chatBubble: ImageView = view.findViewById(R.id.chatBubble)
-        val animation = AnimationUtils.loadAnimation(activity, R.anim.moving)
-        val todayGoalText: TextView = view.findViewById(R.id.todayGoalText)
+        val chatBubbleText: TextView = view.findViewById(R.id.chat_bubble_text)
+        val chatBubble: ImageView = view.findViewById(R.id.chat_bubble)
+        val todayGoalText: TextView = view.findViewById(R.id.today_goal_text)
+        val chatButton: ImageView = view.findViewById(R.id.chat_button)
 
         //퍼센트에 따른 변화
         var randomNumber = (0..2).random()
@@ -85,44 +79,147 @@ class HomeFragment : Fragment() {
         var dailyCarbonInt = (remainPercentage)?.toDouble()?.div(1000)?.toInt()
         // 배출된 이산화탄소 양
         when (dailyCarbonInt) {
-            in 76..100 -> {
-                polarBearImage.setOnClickListener { setChatText(view, 3) }
-            }
-            in 51..75 -> {
-                polarBearImage.setOnClickListener { setChatText(view, 2) }
+            in 0..4 -> {
+                glacier.setImageResource(R.drawable.glacier_4)
+                polarbear.setImageResource(R.drawable.polarbear_4)
 
-//                glacierImage.setImageResource(R.drawable.glacier0)
-//                polarBearImage.setImageResource(R.drawable.polar_bear2)
-//                glacierImage.startAnimation(animation)
-//                polarBearImage.startAnimation(animation)
-                glacierImage.startAnimation(animation)
-                polarBearImage.startAnimation(animation)
+                setChatText(view, 4)
+
+                chatButton.setOnClickListener { setChatText(view, 4) }
+                ObjectAnimator.ofFloat(chatBubble, "translationY", -300f).apply { start() }
+                ObjectAnimator.ofFloat(chatBubble, "translationX", -50f).apply { start() }
+                ObjectAnimator.ofFloat(chatBubbleText, "translationY", -300f).apply { start() }
+                ObjectAnimator.ofFloat(chatBubbleText, "translationX", -50f).apply { start() }
             }
-            in 26..50 -> {
-                polarBearImage.setOnClickListener { setChatText(view, 1) }
-                textArray = resources.getStringArray(R.array.chat_list1)
-                glacierImage.setImageResource(R.drawable.glacier0)
-                polarBearImage.setImageResource(R.drawable.polar_bear1)
+            in 5..9 -> {
+                glacier.setImageResource(R.drawable.glacier_3)
+                polarbear.setImageResource(R.drawable.polarbear_3)
+
+                setChatText(view, 3)
+
+                chatButton.setOnClickListener { setChatText(view, 3) }
+                ObjectAnimator.ofFloat(chatBubble, "translationY", -50f).apply { start() }
+                ObjectAnimator.ofFloat(chatBubbleText, "translationY", -50f).apply { start() }
             }
-            in 0..25 -> {
-                polarBearImage.setOnClickListener { setChatText(view, 0) }
-                textArray = resources.getStringArray(R.array.chat_list0)
-//                glacierImage.setImageResource(0)
-//                polarBearImage.setImageResource(0)
+            in 10..14 -> {
+                val glacier_2_1: ImageView = view.findViewById(R.id.glacier_1)
+                val glacier_2_2: ImageView = view.findViewById(R.id.glacier_2)
+                val glacier_2_3: ImageView = view.findViewById(R.id.glacier_3)
+
+                setChatText(view, 2)
+
+                glacier.setImageResource(R.drawable.glacier_2_0)
+                glacier_2_1.setImageResource(R.drawable.glacier_2_1)
+                glacier_2_2.setImageResource(R.drawable.glacier_2_2)
+                glacier_2_3.setImageResource(R.drawable.glacier_2_3)
+                polarbear.setImageResource(R.drawable.polarbear_2)
+
+                glacier.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        activity,
+                        R.anim.glacier_2_0_moving
+                    )
+                )
+                glacier_2_1.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        activity,
+                        R.anim.glacier_2_1_moving
+                    )
+                )
+                glacier_2_2.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        activity,
+                        R.anim.glacier_2_2_moving
+                    )
+                )
+                glacier_2_3.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        activity,
+                        R.anim.glacier_2_3_moving
+                    )
+                )
+                polarbear.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        activity,
+                        R.anim.glacier_2_0_moving
+                    )
+                )
+
+                chatBubble.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        activity,
+                        R.anim.glacier_2_0_moving
+                    )
+                )
+                chatBubbleText.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        activity,
+                        R.anim.glacier_2_0_moving
+                    )
+                )
+
+                chatButton.setOnClickListener { setChatText(view, 2) }
+
+            }
+            in 15..19 -> {
+                val glacier_1_1: ImageView = view.findViewById(R.id.glacier_1)
+                glacier.setImageResource(R.drawable.glacier_1_0)
+                glacier_1_1.setImageResource(R.drawable.glacier_1_1)
+                polarbear.setImageResource(R.drawable.polarbear_1)
+
+                setChatText(view, 1)
+
+                ObjectAnimator.ofFloat(chatBubble, "translationY", -200f).apply { start() }
+                ObjectAnimator.ofFloat(chatBubbleText, "translationY", -200f).apply { start() }
+
+                glacier.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        activity,
+                        R.anim.glacier_2_0_moving
+                    )
+                )
+                glacier_1_1.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        activity,
+                        R.anim.glacier_2_2_moving
+                    )
+                )
+                polarbear.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        activity,
+                        R.anim.glacier_2_0_moving
+                    )
+                )
+                chatBubble.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        activity,
+                        R.anim.glacier_2_0_moving
+                    )
+                )
+                chatBubbleText.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        activity,
+                        R.anim.glacier_2_0_moving
+                    )
+                )
+
+                chatButton.setOnClickListener { setChatText(view, 1) }
+
             }
             else -> {
-                glacierImage.setImageResource(R.drawable.glacier0)
-                polarBearImage.setImageResource(R.drawable.polar_bear1)
-                glacierImage.startAnimation(animation)
-                polarBearImage.startAnimation(animation)
+                glacier.setImageResource(R.drawable.glacier_0)
+                polarbear.setImageResource(0)
+                chatBubble.setImageResource(0)
+                chatBubbleText.setText("")
+                glacier.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        activity,
+                        R.anim.glacier_2_0_moving
+                    )
+                )
             }
         }
         remainText.setText("오늘의 탄소배출량 ${dailyCarbonDouble}kg")
-        glacierImage.startAnimation(animation)
-        polarBearImage.startAnimation(animation)
-        chatBubble.startAnimation(animation)
-        chatBubbleText.startAnimation(animation)
-
 
         //문구
 //        val todayGoalText: TextView = view.findViewById(R.id.todayGoalText)
