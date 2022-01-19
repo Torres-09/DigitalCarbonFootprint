@@ -3,11 +3,11 @@
     <item
         android:id="@+id/page_1"
         android:enabled="true"
-        android:icon="@drawable/iceberg3"
-        android:title="@string/home" />
+        android:icon="@drawable/navigation_selector_home"
+        android:title= "홈"/>
     <item
         android:id="@+id/page_2"
         android:enabled="true"
-        android:icon="@drawable/ic_bar_chart"
-        android:title="@string/statics" />
+        android:icon="@drawable/navigation_selector_statistics"
+        android:title= "통계"/>
 </menu>

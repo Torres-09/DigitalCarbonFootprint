@@ -49,12 +49,11 @@ import kotlinx.coroutines.launch
 //yearlybarchart - yearly
 
 class StatisticsFragment : Fragment() {
-    private var colorArray: ArrayList<Int> = ArrayList<Int>()
     private var WeekDataList = ArrayList<DataUsage>()
     private var MonthDataList = ArrayList<DataUsage>()
     private var YearDataList = ArrayList<DataUsage>()
 
-    private lateinit var dailyPieChartView: AnyChartView
+    private lateinit var dailyPieChart: AnyChartView
     private lateinit var weeklybarChart: BarChart
     private lateinit var monthlybarChart: BarChart
     private lateinit var yearlybarChart: BarChart
@@ -149,12 +148,13 @@ class StatisticsFragment : Fragment() {
         weeklybarChart = view.findViewById(R.id.weeklybarchart)
         monthlybarChart = view.findViewById(R.id.monthlybarchart)
         yearlybarChart = view.findViewById(R.id.yearlybarchart)
-        dailyPieChartView = view.findViewById(R.id.piechart)
+        dailyPieChart = view.findViewById(R.id.piechart)
 
         WeekDataList = getWeeklyBarDataUsage()
         MonthDataList = getMonthlyBarDataUsage()
         YearDataList = getYearlyBarDataUsage()
 
+        initDailyPieChart()
         initWeeklyBarChart()
         initMonthlyBarChart()
         initYearlyBarChart()
@@ -241,8 +241,6 @@ class StatisticsFragment : Fragment() {
         monthlybarChart.invalidate()
         yearlybarChart.invalidate()
 
-        initColor()
-        initDailyPieChart()
         
         // 바차트 뷰 페이저 어댑터
         val adapter = StatisticsViewPagerAdapter()
@@ -465,7 +463,6 @@ class StatisticsFragment : Fragment() {
                 //우측 y축 제거
                 isEnabled = false
             }
-
 
             xAxis.run {
                 // 막대 그래프 바 grid 제거
@@ -704,14 +701,6 @@ class StatisticsFragment : Fragment() {
         }
     }
 
-    private fun initColor(){
-        colorArray.add(Color.BLACK)
-        colorArray.add(Color.BLUE)
-        colorArray.add(Color.YELLOW)
-        colorArray.add(Color.LTGRAY)
-        colorArray.add(Color.GRAY)
-    }
-
     private fun initDailyPieChart(){
         var pie: Pie = AnyChart.pie()
         val dataEntries: ArrayList<DataEntry> = ArrayList<DataEntry>()
@@ -721,7 +710,6 @@ class StatisticsFragment : Fragment() {
         }
 
         pie.data(dataEntries)
-        pie.title("Top 5 App 탄소배출량")
         pie.palette().itemAt(0, SolidFill("#B4D9FD",1) )
         pie.palette().itemAt(1, SolidFill("#82C0FB",1) )
         pie.palette().itemAt(2, SolidFill("#5AABF9",1) )
@@ -729,6 +717,6 @@ class StatisticsFragment : Fragment() {
         pie.palette().itemAt(4, SolidFill("#0F7EE9",1) )
 
         pie.labels().position("outside")
-        dailyPieChartView.setChart(pie)
+        dailyPieChart.setChart(pie)
     }
 }
