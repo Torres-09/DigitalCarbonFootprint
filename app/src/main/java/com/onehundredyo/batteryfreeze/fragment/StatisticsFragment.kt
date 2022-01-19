@@ -1,6 +1,5 @@
 package com.onehundredyo.batteryfreeze.fragment
 
-import android.content.ContentValues
 import android.content.Context
 import android.graphics.*
 import android.os.Bundle
@@ -9,6 +8,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.anychart.AnyChart
+import com.anychart.AnyChartView
+import com.anychart.chart.common.dataentry.DataEntry
+import com.anychart.chart.common.dataentry.ValueDataEntry
+import com.anychart.charts.Pie
+import com.anychart.graphics.vector.SolidFill
 import android.widget.Button
 import androidx.viewpager.widget.ViewPager
 import com.example.myapplication.DataUsage
@@ -16,9 +21,7 @@ import com.github.mikephil.charting.animation.ChartAnimator
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
@@ -45,10 +48,12 @@ import kotlinx.coroutines.launch
 //yearlybarchart - yearly
 
 class StatisticsFragment : Fragment() {
+    private var colorArray: ArrayList<Int> = ArrayList<Int>()
     private var WeekDataList = ArrayList<DataUsage>()
     private var MonthDataList = ArrayList<DataUsage>()
     private var YearDataList = ArrayList<DataUsage>()
 
+    private lateinit var dailyPieChartView: AnyChartView
     private lateinit var weeklybarChart: BarChart
     private lateinit var monthlybarChart: BarChart
     private lateinit var yearlybarChart: BarChart
@@ -97,10 +102,9 @@ class StatisticsFragment : Fragment() {
         getDatabase()
         if (activity != null && activity is MainActivity) {
             topFiveData = (activity as MainActivity?)?.getTopFiveApp()!!
-            Log.d("통계" ,topFiveData.toString())
+            Log.d("통계", topFiveData.toString())
         }
     }
-
 
     private fun getDatabase() {
         val db = DataBaseManager.getInstance(mainActivity)!!
@@ -142,8 +146,9 @@ class StatisticsFragment : Fragment() {
 
 
         weeklybarChart = view.findViewById(R.id.weeklybarchart)
-        monthlybarChart = view.findViewById(R.id.monthlybarchart)
-        yearlybarChart = view.findViewById(R.id.yearlybarchart)
+        monthlybarChart = view.findViewById(R.id.monthlychart)
+        yearlybarChart = view.findViewById(R.id.yearlychart)
+        dailyPieChartView = view.findViewById(R.id.piechart)
 
         WeekDataList = getWeeklyBarDataUsage()
         MonthDataList = getMonthlyBarDataUsage()
@@ -202,17 +207,29 @@ class StatisticsFragment : Fragment() {
 
 
         val weeklybarChartRender =
-            CustomBarChartRender(weeklybarChart, weeklybarChart.animator, weeklybarChart.viewPortHandler)
+            CustomBarChartRender(
+                weeklybarChart,
+                weeklybarChart.animator,
+                weeklybarChart.viewPortHandler
+            )
         weeklybarChartRender.setRadius(myradius)
         weeklybarChart.renderer = weeklybarChartRender
 
         val monthlybarChartRender =
-            CustomBarChartRender(monthlybarChart, monthlybarChart.animator, monthlybarChart.viewPortHandler)
+            CustomBarChartRender(
+                monthlybarChart,
+                monthlybarChart.animator,
+                monthlybarChart.viewPortHandler
+            )
         monthlybarChartRender.setRadius(myradius)
         monthlybarChart.renderer = monthlybarChartRender
 
         val yearlybarChartRender =
-            CustomBarChartRender(yearlybarChart, yearlybarChart.animator, yearlybarChart.viewPortHandler)
+            CustomBarChartRender(
+                yearlybarChart,
+                yearlybarChart.animator,
+                yearlybarChart.viewPortHandler
+            )
         yearlybarChartRender.setRadius(myradius)
         yearlybarChart.renderer = yearlybarChartRender
 
@@ -220,6 +237,9 @@ class StatisticsFragment : Fragment() {
         monthlybarChart.invalidate()
         yearlybarChart.invalidate()
 
+        initColor()
+        initDailyPieChart()
+        
         // 바차트 뷰 페이저 어댑터
         val adapter = StatisticsViewPagerAdapter()
         chartViewPager = view.findViewById(R.id.chartViewPager)
@@ -276,8 +296,7 @@ class StatisticsFragment : Fragment() {
         return WeekDataList
     }
 
-    fun getMonthlyBarDataUsage(): ArrayList<DataUsage>
-    {
+    fun getMonthlyBarDataUsage(): ArrayList<DataUsage> {
         MonthDataList.add(DataUsage("3주전", monthlyData[0].DataUsage))
         MonthDataList.add(DataUsage("2주전", monthlyData[1].DataUsage))
         MonthDataList.add(DataUsage("1주전", monthlyData[2].DataUsage))
@@ -286,8 +305,7 @@ class StatisticsFragment : Fragment() {
         return MonthDataList
     }
 
-    fun getYearlyBarDataUsage(): ArrayList<DataUsage>
-    {
+    fun getYearlyBarDataUsage(): ArrayList<DataUsage> {
         YearDataList.add(DataUsage("1월", yearlyData[0].DataUsage))
         YearDataList.add(DataUsage("2월", yearlyData[1].DataUsage))
         YearDataList.add(DataUsage("3월", yearlyData[2].DataUsage))
@@ -325,8 +343,6 @@ class StatisticsFragment : Fragment() {
             axisLeft.run {
                 // 좌측 y축 제거
                 isEnabled = false
-
-
             }
             axisRight.run {
                 //우측 y축 제거
@@ -506,7 +522,6 @@ class StatisticsFragment : Fragment() {
     }
 
 
-
     // change barchart shape circular - barchart
 
     class CustomBarChartRender(
@@ -680,5 +695,34 @@ class StatisticsFragment : Fragment() {
             path.close() //Given close, last lineto can be removed.
             return path
         }
+    }
+
+    private fun initColor(){
+        colorArray.add(Color.BLACK)
+        colorArray.add(Color.BLUE)
+        colorArray.add(Color.YELLOW)
+        colorArray.add(Color.LTGRAY)
+        colorArray.add(Color.GRAY)
+    }
+
+    private fun initDailyPieChart(){
+        var pie: Pie = AnyChart.pie()
+        val dataEntries: ArrayList<DataEntry> = ArrayList<DataEntry>()
+
+        for(i in topFiveData.indices){
+            dataEntries.add(ValueDataEntry(topFiveData[i].name,topFiveData[i].DataUsage))
+        }
+
+
+        pie.data(dataEntries)
+        pie.title("Top 5 App 탄소배출량")
+        pie.palette().itemAt(0, SolidFill("#B4D9FD",1) )
+        pie.palette().itemAt(1, SolidFill("#82C0FB",1) )
+        pie.palette().itemAt(2, SolidFill("#5AABF9",1) )
+        pie.palette().itemAt(3, SolidFill("#3496F5",1) )
+        pie.palette().itemAt(4, SolidFill("#0F7EE9",1) )
+
+        pie.labels().position("outside")
+        dailyPieChartView.setChart(pie)
     }
 }

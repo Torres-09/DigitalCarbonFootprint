@@ -7,13 +7,17 @@
     android:background="#78B2D9"
     tools:context=".fragment.StatisticsFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="16dp"
-        tools:context=".MainActivity">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.card.MaterialCardView
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="16dp"
+            tools:context=".MainActivity">
+
+ <com.google.android.material.card.MaterialCardView
             android:id="@+id/card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -176,21 +180,23 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp">
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_piechart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/card"
+                android:layout_marginTop="8dp"
+                app:layout_constraintVertical_bias="1.0">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-        </androidx.cardview.widget.CardView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <com.anychart.AnyChartView
+                    android:id="@+id/piechart"
+                    android:layout_width="match_parent"
+                    android:layout_height="360dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp" />
+            </com.google.android.material.card.MaterialCardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </FrameLayout>
