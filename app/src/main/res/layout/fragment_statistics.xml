@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#78B2D9"
     android:layout_marginBottom="56dp"
+    android:background="#78B2D9"
     tools:context=".fragment.StatisticsFragment">
 
     <ScrollView
@@ -18,214 +18,166 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"
-            tools:context=".MainActivity">
-
-            <ImageView
-                android:id="@+id/mountain_image"
-                android:layout_width="160dp"
-                android:layout_height="27dp"
-                android:src="@drawable/mountains_color"
-                app:layout_constraintBottom_toTopOf="@id/card"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="#FFFFFF"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/mountain_image"
-                app:strokeColor="@color/white"
-                app:strokeWidth="1dp"
-                tools:visibility="visible">
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
+                tools:context=".MainActivity">
+
+                <ImageView
+                    android:id="@+id/mountain_image"
+                    android:layout_width="160dp"
+                    android:layout_height="27dp"
+                    android:src="@drawable/mountains_color"
+                    app:layout_constraintBottom_toTopOf="@id/card"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="16dp">
-
-                    <!-- Title, secondary and supporting text -->
-                    <TextView
-                        android:id="@+id/carbonString"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="탄소 배출량"
-                        android:textAppearance="?attr/textAppearanceHeadline6"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="#FFFFFF"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/mountain_image"
+                    app:strokeColor="@color/white"
+                    app:strokeWidth="1dp"
+                    tools:visibility="visible">
 
 
-                    <com.google.android.material.button.MaterialButtonToggleGroup
-                        android:id="@+id/toggleButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:textSize="12sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/carbonString"
-                        app:selectionRequired="true"
-                        app:singleSelection="true">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="16dp">
 
-                        <Button
-                            android:id="@+id/weekbutton"
-                            style="?attr/materialButtonOutlinedStyle"
+                        <!-- Title, secondary and supporting text -->
+                        <TextView
+                            android:id="@+id/carbonString"
                             android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:backgroundTint="@color/button_selection"
-                            android:text="주간"
-                            android:textColor="@color/button_selection_text" />
+                            android:layout_height="wrap_content"
+                            android:text="탄소 배출량"
+                            android:textAppearance="?attr/textAppearanceHeadline6"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                        <Button
-                            android:id="@+id/monthbutton"
-                            style="?attr/materialButtonOutlinedStyle"
+
+                        <com.google.android.material.button.MaterialButtonToggleGroup
+                            android:id="@+id/toggleButton"
                             android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:backgroundTint="@color/button_selection"
-                            android:text="월간"
-                            android:textColor="@color/button_selection_text" />
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:textSize="12sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/carbonString"
+                            app:selectionRequired="true"
+                            app:singleSelection="true">
 
-                        <Button
-                            android:id="@+id/yearbutton"
-                            style="?attr/materialButtonOutlinedStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:backgroundTint="@color/button_selection"
-                            android:text="연간"
-                            android:textColor="@color/button_selection_text" />
-                    </com.google.android.material.button.MaterialButtonToggleGroup>
+                            <Button
+                                android:id="@+id/weekbutton"
+                                style="?attr/materialButtonOutlinedStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:backgroundTint="@color/button_selection"
+                                android:fontFamily="@font/app_font"
+                                android:text="주간"
+                                android:textColor="@color/button_selection_text" />
 
-                    <com.onehundredyo.batteryfreeze.customs.CustomViewPager
-                        android:id="@+id/chartViewPager"
-                        android:layout_width="300dp"
-                        android:layout_height="200dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/toggleButton">
+                            <Button
+                                android:id="@+id/monthbutton"
+                                style="?attr/materialButtonOutlinedStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:backgroundTint="@color/button_selection"
+                                android:fontFamily="@font/app_font"
+                                android:text="월간"
+                                android:textColor="@color/button_selection_text" />
 
-                        <com.github.mikephil.charting.charts.BarChart
-                            android:id="@+id/weeklybarchart"
+                            <Button
+                                android:id="@+id/yearbutton"
+                                style="?attr/materialButtonOutlinedStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:backgroundTint="@color/button_selection"
+                                android:fontFamily="@font/app_font"
+                                android:text="연간"
+                                android:textColor="@color/button_selection_text" />
+                        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                        <com.onehundredyo.batteryfreeze.customs.CustomViewPager
+                            android:id="@+id/chartViewPager"
                             android:layout_width="300dp"
                             android:layout_height="200dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginBottom="16dp" />
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/toggleButton">
 
-                        <com.github.mikephil.charting.charts.BarChart
-                            android:id="@+id/monthlybarchart"
-                            android:layout_width="300dp"
-                            android:layout_height="200dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginBottom="16dp" />
+                            <com.github.mikephil.charting.charts.BarChart
+                                android:id="@+id/weeklybarchart"
+                                android:layout_width="300dp"
+                                android:layout_height="200dp"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginBottom="16dp" />
 
-                        <com.github.mikephil.charting.charts.BarChart
-                            android:id="@+id/yearlybarchart"
-                            android:layout_width="300dp"
-                            android:layout_height="200dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginBottom="16dp" />
+                            <com.github.mikephil.charting.charts.BarChart
+                                android:id="@+id/monthlybarchart"
+                                android:layout_width="300dp"
+                                android:layout_height="200dp"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginBottom="16dp" />
 
-                    </com.onehundredyo.batteryfreeze.customs.CustomViewPager>
+                            <com.github.mikephil.charting.charts.BarChart
+                                android:id="@+id/yearlybarchart"
+                                android:layout_width="300dp"
+                                android:layout_height="200dp"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginBottom="16dp" />
 
-                    <!--                <HorizontalScrollView-->
-                    <!--                    android:layout_width="wrap_content"-->
-                    <!--                    android:layout_height="wrap_content"-->
-                    <!--                    app:layout_constraintStart_toStartOf="parent"-->
-                    <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-                    <!--                    app:layout_constraintTop_toBottomOf="@+id/toggleButton"-->
-                    <!--                    >-->
+                        </com.onehundredyo.batteryfreeze.customs.CustomViewPager>
 
-                    <!--                    <androidx.appcompat.widget.LinearLayoutCompat-->
-                    <!--                        android:layout_width="wrap_content"-->
-                    <!--                        android:layout_height="wrap_content">-->
+                        <!-- Title, secondary and supporting text -->
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="데이터 사용량을 바탕으로 계산된 탄소 배출량입니다."
+                            android:textAppearance="?attr/textAppearanceBody2"
+                            android:textColor="?android:attr/textColorSecondary"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/chartViewPager" />
 
-                    <!--&lt;!&ndash;                        <androidx.constraintlayout.widget.ConstraintLayout&ndash;&gt;-->
-                    <!--&lt;!&ndash;                            android:layout_width="wrap_content"&ndash;&gt;-->
-                    <!--&lt;!&ndash;                            android:layout_height="wrap_content"&ndash;&gt;-->
-                    <!--&lt;!&ndash;                            >&ndash;&gt;-->
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                    <!--                                app:layout_constraintStart_toStartOf="parent"-->
-                    <!--                                app:layout_constraintEnd_toEndOf="parent"-->
-                    <!--                                app:layout_constraintRight_toRightOf="parent"-->
-                    <!--                                app:layout_constraintTop_toTopOf="parent"/>-->
+                <ImageView
+                    android:id="@+id/mountain_image2"
+                    android:layout_width="160dp"
+                    android:layout_height="27dp"
+                    android:src="@drawable/mountains_color2"
+                    app:layout_constraintBottom_toTopOf="@id/card_piechart"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
-                    <!--                            <com.github.mikephil.charting.charts.BarChart-->
-                    <!--                                android:id="@+id/monthlychart"-->
-                    <!--                                android:layout_width="300dp"-->
-                    <!--                                android:layout_height="200dp"-->
-                    <!--                                android:layout_marginTop="16dp"-->
-                    <!--                                android:layout_marginBottom="16dp"/>-->
-                    <!--&lt;!&ndash;                                app:layout_constraintStart_toStartOf="parent"&ndash;&gt;-->
-                    <!--&lt;!&ndash;                                app:layout_constraintEnd_toEndOf="parent"&ndash;&gt;-->
-                    <!--&lt;!&ndash;                                app:layout_constraintRight_toRightOf="parent"&ndash;&gt;-->
-                    <!--&lt;!&ndash;                                app:layout_constraintTop_toTopOf="parent"/>&ndash;&gt;-->
-
-                    <!--                            <com.github.mikephil.charting.charts.BarChart-->
-                    <!--                                android:id="@+id/yearlychart"-->
-                    <!--                                android:layout_width="300dp"-->
-                    <!--                                android:layout_height="200dp"-->
-                    <!--                                android:layout_marginTop="16dp"-->
-                    <!--                                android:layout_marginBottom="16dp"/>-->
-                    <!--&lt;!&ndash;                                app:layout_constraintStart_toStartOf="parent"&ndash;&gt;-->
-                    <!--&lt;!&ndash;                                app:layout_constraintEnd_toEndOf="parent"&ndash;&gt;-->
-                    <!--&lt;!&ndash;                                app:layout_constraintRight_toRightOf="parent"&ndash;&gt;-->
-                    <!--&lt;!&ndash;                                app:layout_constraintTop_toTopOf="parent"/>&ndash;&gt;-->
-
-
-                    <!--&lt;!&ndash;                        </androidx.constraintlayout.widget.ConstraintLayout>&ndash;&gt;-->
-
-                    <!--                    </androidx.appcompat.widget.LinearLayoutCompat>-->
-                    <!--                </HorizontalScrollView>-->
-
-
-                    <!-- Title, secondary and supporting text -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="데이터 사용량을 바탕으로 계산된 탄소 배출량입니다."
-                        android:textAppearance="?attr/textAppearanceBody2"
-                        android:textColor="?android:attr/textColorSecondary"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/chartViewPager" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <ImageView
-                android:id="@+id/mountain_image2"
-                android:layout_width="160dp"
-                android:layout_height="27dp"
-                android:src="@drawable/mountains_color2"
-                app:layout_constraintBottom_toTopOf="@id/card_piechart"
-                app:layout_constraintEnd_toEndOf="parent" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/card_piechart"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="34dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/card"
-                app:layout_constraintVertical_bias="1.0">
-
-                <com.anychart.AnyChartView
-                    android:id="@+id/piechart"
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/card_piechart"
                     android:layout_width="match_parent"
-                    android:layout_height="360dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp" />
-            </com.google.android.material.card.MaterialCardView>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="34dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/card"
+                    app:layout_constraintVertical_bias="1.0">
+
+                    <com.anychart.AnyChartView
+                        android:id="@+id/piechart"
+                        android:layout_width="match_parent"
+                        android:layout_height="360dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp" />
+                </com.google.android.material.card.MaterialCardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.appcompat.widget.LinearLayoutCompat>
     </ScrollView>
 </FrameLayout>
