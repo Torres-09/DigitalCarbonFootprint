@@ -15,6 +15,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -49,6 +50,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.5.0'
     // chart library
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
     // Room (DB 관리 의존성)
     implementation 'androidx.room:room-runtime:2.2.6'
     kapt 'androidx.room:room-compiler:2.2.6'
@@ -57,5 +59,6 @@ dependencies {
     // cardView material
     implementation "androidx.cardview:cardview:1.0.0"
     implementation 'com.google.android.material:material:<version>'
+    implementation 'com.android.support:multidex:1.0.3'
 
 }
