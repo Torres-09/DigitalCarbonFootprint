@@ -49,6 +49,7 @@ class HomeFragment : Fragment() {
             0 -> chatBubbleText.setText(resources.getStringArray(R.array.chat_list0)[randomNumber])
         }
     }
+    
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:color="@color/main_color" android:state_pressed="true" />
+    <item android:color="@color/main_color" android:state_focused="true" />
+    <item android:color="@color/main_color" android:state_selected="true"/><!--    <item-->
+    <!--        android:color="hex_color"-->
+    <!--        android:state_pressed=["true" | "false"]-->
+    <!--    android:state_focused=["true" | "false"]-->
+    <!--    android:state_selected=["true" | "false"]-->
+    <!--    android:state_checkable=["true" | "false"]-->
+    <!--    android:state_checked=["true" | "false"]-->
+    <!--    android:state_enabled=["true" | "false"]-->
+    <!--    android:state_window_focused=["true" | "false"] />-->
+</selector>
