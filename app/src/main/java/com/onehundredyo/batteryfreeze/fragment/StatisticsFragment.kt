@@ -61,6 +61,7 @@ class StatisticsFragment : Fragment() {
     private lateinit var weekbutton: Button
     private lateinit var monthbutton: Button
     private lateinit var yearbutton: Button
+    private lateinit var carbonhelpbutton : Button
     lateinit var mainActivity: MainActivity     // CONTEXT
     private lateinit var topFiveData: MutableList<AppUsageData>
 
@@ -141,6 +142,8 @@ class StatisticsFragment : Fragment() {
         weekbutton = view.findViewById(R.id.weekbutton)
         monthbutton = view.findViewById(R.id.monthbutton)
         yearbutton = view.findViewById(R.id.yearbutton)
+        carbonhelpbutton = view.findViewById(R.id.carbon_help)
+        carbonhelpbutton.tooltipText = "이건 탄소다."
         setOnclickListenerOnToggleButton()
 
 
