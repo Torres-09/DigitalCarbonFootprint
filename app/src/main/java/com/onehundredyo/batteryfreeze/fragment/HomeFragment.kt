@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.ContentValues
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -15,6 +16,7 @@ import android.net.Uri
 import android.os.*
 import android.provider.MediaStore
 import android.util.Log
+import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.PixelCopy
@@ -29,6 +31,8 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.marginBottom
 import com.onehundredyo.batteryfreeze.App
 import com.onehundredyo.batteryfreeze.MainActivity
 import com.onehundredyo.batteryfreeze.databinding.FragmentHomeBinding
@@ -57,14 +61,12 @@ class HomeFragment : Fragment() {
         }
     }
 
-    fun compareDate(): Boolean {
-        var currentDate: String = LocalDate.now().toString()
-        val savedDate: String = App.prefs.getSavedDate("savedDate", "")
-        if (currentDate != savedDate) {
-            App.prefs.setSavedDate("savedDate", currentDate)
-            return false
-        } else
-            return true
+    fun dpToPx(context: Context, dp: Float): Float {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            dp,
+            context.resources.displayMetrics
+        )
     }
 
     fun setChatText(view: View, level: Int) {
@@ -98,6 +100,7 @@ class HomeFragment : Fragment() {
         val todayGoalText: TextView = view.findViewById(R.id.today_goal_text)
         val chatButton: ImageView = view.findViewById(R.id.chat_button)
         val instabtn: ImageButton = view.findViewById(R.id.insta_share_button)
+        val activity = context as Activity
 
         //퍼센트에 따른 변화
         var randomNumber = (0..2).random()
@@ -106,29 +109,33 @@ class HomeFragment : Fragment() {
         var dailyCarbonInt = (remainPercentage)?.toDouble()?.div(1000)?.toInt()
         // 배출된 이산화탄소 양
         when (dailyCarbonInt) {
-            in 0..4 -> {
+            in 0..2 -> {
                 glacier.setImageResource(R.drawable.glacier_4)
                 polarbear.setImageResource(R.drawable.polarbear_4)
 
                 setChatText(view, 4)
 
                 chatButton.setOnClickListener { setChatText(view, 4) }
-                ObjectAnimator.ofFloat(chatBubble, "translationY", -300f).apply { start() }
-                ObjectAnimator.ofFloat(chatBubble, "translationX", -50f).apply { start() }
-                ObjectAnimator.ofFloat(chatBubbleText, "translationY", -300f).apply { start() }
-                ObjectAnimator.ofFloat(chatBubbleText, "translationX", -50f).apply { start() }
+                ObjectAnimator.ofFloat(chatBubble, "translationY", -dpToPx(activity, 110f))
+                    .apply { start() }
+                ObjectAnimator.ofFloat(chatBubble, "translationX", -dpToPx(activity, 20f))
+                    .apply { start() }
+                ObjectAnimator.ofFloat(chatBubbleText, "translationY", -dpToPx(activity, 110f))
+                    .apply { start() }
+                ObjectAnimator.ofFloat(chatBubbleText, "translationX", -dpToPx(activity, 20f))
+                    .apply { start() }
+
+
             }
-            in 5..9 -> {
+            in 3..4 -> {
                 glacier.setImageResource(R.drawable.glacier_3)
                 polarbear.setImageResource(R.drawable.polarbear_3)
 
                 setChatText(view, 3)
 
                 chatButton.setOnClickListener { setChatText(view, 3) }
-                ObjectAnimator.ofFloat(chatBubble, "translationY", -50f).apply { start() }
-                ObjectAnimator.ofFloat(chatBubbleText, "translationY", -50f).apply { start() }
             }
-            in 10..14 -> {
+            in 5..6 -> {
                 val glacier_2_1: ImageView = view.findViewById(R.id.glacier_1)
                 val glacier_2_2: ImageView = view.findViewById(R.id.glacier_2)
                 val glacier_2_3: ImageView = view.findViewById(R.id.glacier_3)
@@ -172,13 +179,13 @@ class HomeFragment : Fragment() {
                     )
                 )
 
-                chatBubble.startAnimation(
+                chatBubbleText.startAnimation(
                     AnimationUtils.loadAnimation(
                         activity,
                         R.anim.glacier_2_0_moving
                     )
                 )
-                chatBubbleText.startAnimation(
+                chatBubble.startAnimation(
                     AnimationUtils.loadAnimation(
                         activity,
                         R.anim.glacier_2_0_moving
@@ -186,9 +193,8 @@ class HomeFragment : Fragment() {
                 )
 
                 chatButton.setOnClickListener { setChatText(view, 2) }
-
             }
-            in 15..19 -> {
+            in 7..8 -> {
                 val glacier_1_1: ImageView = view.findViewById(R.id.glacier_1)
                 glacier.setImageResource(R.drawable.glacier_1_0)
                 glacier_1_1.setImageResource(R.drawable.glacier_1_1)
@@ -196,8 +202,10 @@ class HomeFragment : Fragment() {
 
                 setChatText(view, 1)
 
-                ObjectAnimator.ofFloat(chatBubble, "translationY", -200f).apply { start() }
-                ObjectAnimator.ofFloat(chatBubbleText, "translationY", -200f).apply { start() }
+                ObjectAnimator.ofFloat(chatBubble, "translationY", -dpToPx(activity, 70f))
+                    .apply { start() }
+                ObjectAnimator.ofFloat(chatBubbleText, "translationY", -dpToPx(activity, 70f))
+                    .apply { start() }
 
                 glacier.startAnimation(
                     AnimationUtils.loadAnimation(
@@ -217,13 +225,13 @@ class HomeFragment : Fragment() {
                         R.anim.glacier_2_0_moving
                     )
                 )
-                chatBubble.startAnimation(
+                chatBubbleText.startAnimation(
                     AnimationUtils.loadAnimation(
                         activity,
                         R.anim.glacier_2_0_moving
                     )
                 )
-                chatBubbleText.startAnimation(
+                chatBubble.startAnimation(
                     AnimationUtils.loadAnimation(
                         activity,
                         R.anim.glacier_2_0_moving
@@ -247,7 +255,6 @@ class HomeFragment : Fragment() {
             }
         }
         remainText.setText("오늘의 탄소배출량 ${dailyCarbonDouble}kg")
-
         randomNumber = (0..6).random()
         textArray = resources.getStringArray(R.array.dailyMission)
         todayGoalText.setText(textArray[randomNumber])
