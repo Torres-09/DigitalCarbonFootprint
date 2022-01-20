@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="56dp"
-    android:background="#78B2D9"
+    android:background="@color/main_color"
     tools:context=".fragment.StatisticsFragment">
 
     <ScrollView
@@ -61,6 +61,7 @@
                             android:layout_height="wrap_content"
                             android:text="탄소 배출량"
                             android:textAppearance="?attr/textAppearanceHeadline6"
+                            android:textColor="@color/black"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -166,10 +167,10 @@
                     android:id="@+id/card_piechart"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="34dp"
+                    app:cardBackgroundColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/card"
-                    app:layout_constraintVertical_bias="1.0">
+                    app:layout_constraintTop_toBottomOf="@id/card">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -182,6 +183,7 @@
                             android:layout_height="wrap_content"
                             android:text="탄소배출량 상위 5 어플"
                             android:textAppearance="?attr/textAppearanceHeadline6"
+                            android:textColor="@color/black"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
