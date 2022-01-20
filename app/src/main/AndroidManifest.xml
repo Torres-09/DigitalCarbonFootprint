@@ -20,7 +20,7 @@
         android:name=".App">
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.khs.instagramshareexampleproject.fileprovider"
+            android:authorities="com.onehundredyo.batteryfreeze.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

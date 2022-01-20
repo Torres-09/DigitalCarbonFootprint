@@ -10,17 +10,18 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Rect
 import android.net.Uri
-import android.os.Build
-import android.os.Bundle
-import android.os.Environment
+import android.os.*
 import android.provider.MediaStore
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.PixelCopy
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.ImageButton
 import android.widget.ImageView
 import com.onehundredyo.batteryfreeze.R
 import android.widget.TextView
@@ -36,6 +37,11 @@ import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 import java.time.LocalDate
+import java.lang.IllegalArgumentException
+import android.os.Environment
+
+
+val TAG = "Home"
 
 class HomeFragment : Fragment() {
     private var remainPercentage: Long? = 0L
@@ -77,7 +83,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        Log.d("homefragment", "yeah${remainPercentage}")
+
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
@@ -91,6 +97,7 @@ class HomeFragment : Fragment() {
         val chatBubble: ImageView = view.findViewById(R.id.chat_bubble)
         val todayGoalText: TextView = view.findViewById(R.id.today_goal_text)
         val chatButton: ImageView = view.findViewById(R.id.chat_button)
+        val instabtn: ImageButton = view.findViewById(R.id.insta_share_button)
 
         //퍼센트에 따른 변화
         var randomNumber = (0..2).random()
@@ -258,6 +265,148 @@ class HomeFragment : Fragment() {
         randomNumber = (0..6).random()
         textArray = resources.getStringArray(R.array.dailyMission)
         todayGoalText.setText(textArray[randomNumber])
+        instabtn.setOnClickListener {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                getBitmapFromView(binding!!.root) { bitmap -> screenShot(bitmap) }
+//                screenTwo()
+            } else {
+                // Q 버전 이하일 경우. 저장소 권한을 얻어온다.
+                val writePermission = ActivityCompat.checkSelfPermission(
+                    mContext!!,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+                if (writePermission == PackageManager.PERMISSION_GRANTED) {
+                    getBitmapFromView(binding!!.root) { bitmap -> screenShot(bitmap) }
+//                    screenTwo()
+                } else {
+                    val requestExternalStorageCode = 1
+
+                    val permissionStorage = arrayOf(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    )
+
+                    ActivityCompat.requestPermissions(
+                        activity as MainActivity,
+                        permissionStorage,
+                        requestExternalStorageCode
+                    )
+                }
+            }
+
+        }
     }
+
+    // https://goni95.tistory.com/123
+    // https://kimyunseok.tistory.com/139 를 참고하여 작성함
+
+    private fun getBitmapFromView(view: View, callback: (Bitmap?) -> Unit) {
+        binding!!.ocean.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        val width = binding!!.ocean.measuredWidth
+        val height = binding!!.ocean.measuredHeight
+        Log.d(TAG, "너비, 높이 ${width}, ${height}")
+        requireActivity().window?.let { window ->
+            val bitmap = Bitmap.createBitmap(
+                width, height,
+                Bitmap.Config.ARGB_8888
+            )
+            val locationOfViewInWindow = IntArray(2)
+            view.getLocationInWindow(locationOfViewInWindow)
+
+            try {
+                PixelCopy.request(
+                    window,
+                    Rect(
+                        locationOfViewInWindow[0],
+                        locationOfViewInWindow[1],
+                        locationOfViewInWindow[0] + view.width,
+                        locationOfViewInWindow[1] + view.height
+                    ),
+                    bitmap, { copyResult ->
+                        if (copyResult == PixelCopy.SUCCESS) callback.invoke(bitmap)
+                        else callback.invoke(null)
+                    }, Handler(Looper.getMainLooper())
+                )
+            } catch (e: IllegalArgumentException) {
+                callback.invoke(null)
+            }
+
+        }
+    }
+
+    private fun screenShot(bitmap: Bitmap?) {
+        try {
+            // 사진공유
+            val cachePath = File(mContext?.cacheDir, "images")
+            cachePath.mkdirs()
+            val stream =
+                FileOutputStream("/data/user/0/com.onehundredyo.batteryfreeze/cache/images/image.png")
+            bitmap?.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            stream.close()
+
+            val newFile = File(cachePath, "image.png")
+            val contentUri: Uri = FileProvider.getUriForFile(
+                mContext!!, "com.onehundredyo.batteryfreeze.fileprovider", newFile
+            )
+            // URI 생성
+            Log.d(TAG, contentUri.toString())
+            val sourceApplication = "com.onehundredyo.batteryfreeze"
+
+
+            val sharing_intent = Intent("com.instagram.share.ADD_TO_STORY")
+
+            sharing_intent.putExtra("source_application", sourceApplication)
+
+            sharing_intent.type = "image/png"
+            sharing_intent.setDataAndType(contentUri, "image/png");
+
+            mContext?.grantUriPermission(
+                "com.instagram.android", contentUri, Intent.FLAG_GRANT_READ_URI_PERMISSION
+            )
+
+            try {
+                this.startActivity(sharing_intent)
+            } catch (e: ActivityNotFoundException) {
+                Toast.makeText(
+                    mContext!!.applicationContext,
+                    "인스타그램 앱이 존재하지 않습니다.",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }
+            try {
+                //저장해놓고 삭제한다.
+                Thread.sleep(1000)
+//                contentUri?.let { uri -> mContext?.contentResolver?.delete(uri, null, null) }
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
+
+        } catch (e: IOException) {
+            Log.d(TAG, "사진 공유 실패")
+            e.printStackTrace()
+        }
+    }
+
+//    private fun screenTwo(): File? {
+//        requireView().isDrawingCacheEnabled = true
+//
+//        val screenBitmap = requireView().drawingCache
+//
+//        val filename = "image.png"
+//        val file = File("/data/user/0/com.onehundredyo.batteryfreeze/cache/images/", filename)
+//        var os: FileOutputStream? = null
+//        try {
+//            os = FileOutputStream(file)
+//            screenBitmap.compress(Bitmap.CompressFormat.PNG, 100, os) //PNG파일로 만들기
+//            os.close()
+//        } catch (e: IOException) {
+//            e.printStackTrace()
+//            return null
+//        }
+//
+//        requireView().isDrawingCacheEnabled = false
+//        return file
+//    }
 
 }

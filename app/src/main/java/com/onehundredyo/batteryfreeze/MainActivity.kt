@@ -91,6 +91,7 @@ class MainActivity : AppCompatActivity() {
         }
         totalDailyCarbon = getDaily()
         setTopFiveApp()
+
     }
 
     fun getTotalDailyCarbon(): Long {
