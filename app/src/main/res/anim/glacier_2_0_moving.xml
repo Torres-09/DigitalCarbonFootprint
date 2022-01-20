@@ -3,15 +3,15 @@
     <translate
         android:duration="3037"
         android:fillAfter="true"
-        android:fromYDelta="-1%"
+        android:fromYDelta="-1%p"
         android:repeatCount="infinite"
         android:repeatMode="reverse"
-        android:toYDelta="1%" />
+        android:toYDelta="1%p" />
     <translate
         android:duration="2632"
         android:fillAfter="true"
-        android:fromXDelta="-1%"
+        android:fromXDelta="-1%p"
         android:repeatCount="infinite"
         android:repeatMode="reverse"
-        android:toXDelta="1%" />
+        android:toXDelta="1%p" />
 </set>
