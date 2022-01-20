@@ -1,35 +1,61 @@
 package com.onehundredyo.batteryfreeze.fragment
 
+import android.Manifest
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
+import android.content.ContentValues
 import android.app.Activity
 import android.content.Context
-import android.os.Bundle
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Rect
+import android.net.Uri
+import android.os.*
+import android.provider.MediaStore
 import android.util.Log
 import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MotionEvent
+import android.view.PixelCopy
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.ImageButton
 import android.widget.ImageView
 import com.onehundredyo.batteryfreeze.R
 import android.widget.TextView
+import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
+import androidx.core.content.FileProvider
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.marginBottom
 import com.onehundredyo.batteryfreeze.App
 import com.onehundredyo.batteryfreeze.MainActivity
 import com.onehundredyo.batteryfreeze.databinding.FragmentHomeBinding
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
 import java.time.LocalDate
+import java.lang.IllegalArgumentException
+import android.os.Environment
+
+
+val TAG = "Home"
 
 class HomeFragment : Fragment() {
     private var remainPercentage: Long? = 0L
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding
+    private var mContext: Context? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        mContext = context
         if (activity != null && activity is MainActivity) {
             remainPercentage = (activity as MainActivity?)?.getTotalDailyCarbon()
         }
@@ -59,7 +85,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        Log.d("homefragment", "yeah${remainPercentage}")
+
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
@@ -73,6 +99,7 @@ class HomeFragment : Fragment() {
         val chatBubble: ImageView = view.findViewById(R.id.chat_bubble)
         val todayGoalText: TextView = view.findViewById(R.id.today_goal_text)
         val chatButton: ImageView = view.findViewById(R.id.chat_button)
+        val instabtn: ImageButton = view.findViewById(R.id.insta_share_button)
         val activity = context as Activity
 
         //퍼센트에 따른 변화
@@ -228,10 +255,97 @@ class HomeFragment : Fragment() {
             }
         }
         remainText.setText("오늘의 탄소배출량 ${dailyCarbonDouble}kg")
-
-        //문구
         randomNumber = (0..6).random()
         textArray = resources.getStringArray(R.array.dailyMission)
         todayGoalText.setText(textArray[randomNumber])
+        instabtn.setOnClickListener {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                screenTwo()
+            } else {
+                // Q 버전 이하일 경우. 저장소 권한을 얻어온다.
+                val writePermission = ActivityCompat.checkSelfPermission(
+                    mContext!!,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                )
+                if (writePermission == PackageManager.PERMISSION_GRANTED) {
+//                    getBitmapFromView(binding!!.root) { bitmap -> screenShot(bitmap) }
+                    screenTwo()
+                } else {
+                    val requestExternalStorageCode = 1
+
+                    val permissionStorage = arrayOf(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    )
+
+                    ActivityCompat.requestPermissions(
+                        activity as MainActivity,
+                        permissionStorage,
+                        requestExternalStorageCode
+                    )
+                }
+            }
+
+        }
     }
+
+    // https://goni95.tistory.com/123
+    // https://kimyunseok.tistory.com/139 를 참고하여 작성함
+    private fun screenTwo(){
+        requireView().isDrawingCacheEnabled = true
+
+        val screenBitmap = requireView().drawingCache
+
+        try {
+            val cachePath = File(mContext?.cacheDir, "images")
+            cachePath.mkdirs()
+            val stream =
+                FileOutputStream("/data/user/0/com.onehundredyo.batteryfreeze/cache/images/image.png")
+            screenBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            stream.close()
+
+            val newFile = File(cachePath, "image.png")
+            val contentUri: Uri = FileProvider.getUriForFile(
+                mContext!!, "com.onehundredyo.batteryfreeze.fileprovider", newFile
+            )
+            // URI 생성
+            Log.d(TAG, contentUri.toString())
+            val sourceApplication = "com.onehundredyo.batteryfreeze"
+
+
+            val sharing_intent = Intent("com.instagram.share.ADD_TO_STORY")
+
+            sharing_intent.putExtra("source_application", sourceApplication)
+
+            sharing_intent.type = "image/png"
+            sharing_intent.setDataAndType(contentUri, "image/png");
+
+            mContext?.grantUriPermission(
+                "com.instagram.android", contentUri, Intent.FLAG_GRANT_READ_URI_PERMISSION
+            )
+
+            try {
+                this.startActivity(sharing_intent)
+            } catch (e: ActivityNotFoundException) {
+                Toast.makeText(
+                    mContext!!.applicationContext,
+                    "인스타그램 앱이 존재하지 않습니다.",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }
+            try {
+                //저장해놓고 삭제한다.
+                Thread.sleep(1000)
+                contentUri?.let { uri -> mContext?.contentResolver?.delete(uri, null, null) }
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
+
+        } catch (e: IOException) {
+            Log.d(TAG, "사진 공유 실패")
+            e.printStackTrace()
+        }
+    }
+
 }
