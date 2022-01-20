@@ -248,27 +248,12 @@ class HomeFragment : Fragment() {
         }
         remainText.setText("오늘의 탄소배출량 ${dailyCarbonDouble}kg")
 
-        //문구
-//        val todayGoalText: TextView = view.findViewById(R.id.todayGoalText)
-//        if (compareDate()) {
-//            todayGoalText.setText(App.prefs.getSavedText("savedDate", "error"))
-//        } else {
-//            val range = (0..6)
-//            val randomNumber = range.random()
-//            val textArray: Array<String> = resources.getStringArray(R.array.dailyMission)
-//            val newText: String = textArray[randomNumber]
-//            todayGoalText.setText(newText)
-//            App.prefs.setSavedText("savedDate", newText)
-//        }
-
-        //문구
         randomNumber = (0..6).random()
         textArray = resources.getStringArray(R.array.dailyMission)
         todayGoalText.setText(textArray[randomNumber])
         instabtn.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                getBitmapFromView(binding!!.root) { bitmap -> screenShot(bitmap) }
-//                screenTwo()
+                screenTwo()
             } else {
                 // Q 버전 이하일 경우. 저장소 권한을 얻어온다.
                 val writePermission = ActivityCompat.checkSelfPermission(
@@ -276,8 +261,8 @@ class HomeFragment : Fragment() {
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
                 )
                 if (writePermission == PackageManager.PERMISSION_GRANTED) {
-                    getBitmapFromView(binding!!.root) { bitmap -> screenShot(bitmap) }
-//                    screenTwo()
+//                    getBitmapFromView(binding!!.root) { bitmap -> screenShot(bitmap) }
+                    screenTwo()
                 } else {
                     val requestExternalStorageCode = 1
 
@@ -299,49 +284,17 @@ class HomeFragment : Fragment() {
 
     // https://goni95.tistory.com/123
     // https://kimyunseok.tistory.com/139 를 참고하여 작성함
+    private fun screenTwo(){
+        requireView().isDrawingCacheEnabled = true
 
-    private fun getBitmapFromView(view: View, callback: (Bitmap?) -> Unit) {
-        binding!!.ocean.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-        val width = binding!!.ocean.measuredWidth
-        val height = binding!!.ocean.measuredHeight
-        Log.d(TAG, "너비, 높이 ${width}, ${height}")
-        requireActivity().window?.let { window ->
-            val bitmap = Bitmap.createBitmap(
-                width, height,
-                Bitmap.Config.ARGB_8888
-            )
-            val locationOfViewInWindow = IntArray(2)
-            view.getLocationInWindow(locationOfViewInWindow)
+        val screenBitmap = requireView().drawingCache
 
-            try {
-                PixelCopy.request(
-                    window,
-                    Rect(
-                        locationOfViewInWindow[0],
-                        locationOfViewInWindow[1],
-                        locationOfViewInWindow[0] + view.width,
-                        locationOfViewInWindow[1] + view.height
-                    ),
-                    bitmap, { copyResult ->
-                        if (copyResult == PixelCopy.SUCCESS) callback.invoke(bitmap)
-                        else callback.invoke(null)
-                    }, Handler(Looper.getMainLooper())
-                )
-            } catch (e: IllegalArgumentException) {
-                callback.invoke(null)
-            }
-
-        }
-    }
-
-    private fun screenShot(bitmap: Bitmap?) {
         try {
-            // 사진공유
             val cachePath = File(mContext?.cacheDir, "images")
             cachePath.mkdirs()
             val stream =
                 FileOutputStream("/data/user/0/com.onehundredyo.batteryfreeze/cache/images/image.png")
-            bitmap?.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            screenBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
             stream.close()
 
             val newFile = File(cachePath, "image.png")
@@ -377,7 +330,7 @@ class HomeFragment : Fragment() {
             try {
                 //저장해놓고 삭제한다.
                 Thread.sleep(1000)
-//                contentUri?.let { uri -> mContext?.contentResolver?.delete(uri, null, null) }
+                contentUri?.let { uri -> mContext?.contentResolver?.delete(uri, null, null) }
             } catch (e: InterruptedException) {
                 e.printStackTrace()
             }
@@ -387,26 +340,5 @@ class HomeFragment : Fragment() {
             e.printStackTrace()
         }
     }
-
-//    private fun screenTwo(): File? {
-//        requireView().isDrawingCacheEnabled = true
-//
-//        val screenBitmap = requireView().drawingCache
-//
-//        val filename = "image.png"
-//        val file = File("/data/user/0/com.onehundredyo.batteryfreeze/cache/images/", filename)
-//        var os: FileOutputStream? = null
-//        try {
-//            os = FileOutputStream(file)
-//            screenBitmap.compress(Bitmap.CompressFormat.PNG, 100, os) //PNG파일로 만들기
-//            os.close()
-//        } catch (e: IOException) {
-//            e.printStackTrace()
-//            return null
-//        }
-//
-//        requireView().isDrawingCacheEnabled = false
-//        return file
-//    }
 
 }
