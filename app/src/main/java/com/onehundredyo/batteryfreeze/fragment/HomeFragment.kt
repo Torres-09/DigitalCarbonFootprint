@@ -1,31 +1,51 @@
 package com.onehundredyo.batteryfreeze.fragment
 
+import android.Manifest
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
+import android.content.ContentValues
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import com.onehundredyo.batteryfreeze.R
 import android.widget.TextView
+import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
+import androidx.core.content.FileProvider
 import com.onehundredyo.batteryfreeze.App
 import com.onehundredyo.batteryfreeze.MainActivity
 import com.onehundredyo.batteryfreeze.databinding.FragmentHomeBinding
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
 import java.time.LocalDate
 
 class HomeFragment : Fragment() {
     private var remainPercentage: Long? = 0L
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding
+    private var mContext: Context? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+        mContext = context
         if (activity != null && activity is MainActivity) {
             remainPercentage = (activity as MainActivity?)?.getTotalDailyCarbon()
         }
@@ -239,4 +259,5 @@ class HomeFragment : Fragment() {
         textArray = resources.getStringArray(R.array.dailyMission)
         todayGoalText.setText(textArray[randomNumber])
     }
+
 }
