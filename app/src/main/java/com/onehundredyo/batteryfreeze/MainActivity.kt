@@ -123,6 +123,9 @@ class MainActivity : AppCompatActivity() {
                     R.id.page_2 -> {
                         changeFragment(StatisticsFragment())
                     }
+                    R.id.page_3 ->{
+                        changeFragment(InformationFragment())
+                    }
                 }
                 true
             }
