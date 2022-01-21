@@ -2,13 +2,7 @@
 
 ## 팀원 🙋‍♂️🙎‍♂️🙆‍♂️💁‍♂️
 
-> [Torres-09](https://github.com/Torres-09) <br>
-
-> [Gaebobman](https://github.com/Gaebobman) <br>
-
-> [BBSSJJ](https://github.com/BBSSJJ) <br>
-
-> [jis8140](https://github.com/jis8140) <br>
+> [Torres-09](https://github.com/Torres-09) > [Gaebobman](https://github.com/Gaebobman) > [BBSSJJ](https://github.com/BBSSJJ) > [jis8140](https://github.com/jis8140)
 
 <h2>프로젝트 소개💻 </h2>
 
@@ -137,5 +131,5 @@
 <li><a href = "https://github.com/Torres-09/17th-hackathon/blob/main/NOTICE">NOTICE</a></li>
 <li>
 <a href = "https://github.com/Torres-09/17th-hackathon/blob/main/LICENSE"> LICENSE</a></li>
-<li><a href="">CREDITS</a></li>
+<li><a href="https://github.com/Torres-09/17th-hackathon/blob/main/credits.md">CREDITS</a></li>
 </ul>
