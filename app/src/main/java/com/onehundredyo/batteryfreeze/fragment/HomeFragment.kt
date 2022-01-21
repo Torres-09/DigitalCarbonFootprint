@@ -110,7 +110,6 @@ class HomeFragment : Fragment() {
         lateinit var textArray: Array<String>
         var dailyCarbonDouble = (remainPercentage)?.toDouble()?.div(1000)
         var dailyCarbonInt = (remainPercentage)?.toDouble()?.div(1000)?.toInt()
-        dailyCarbonInt = 5
         // 배출된 이산화탄소 양
         when (dailyCarbonInt) {
             in 0..2 -> {
