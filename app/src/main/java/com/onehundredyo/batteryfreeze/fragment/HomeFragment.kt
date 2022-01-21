@@ -11,6 +11,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Rect
 import android.net.Uri
 import android.os.*
@@ -109,11 +110,14 @@ class HomeFragment : Fragment() {
         lateinit var textArray: Array<String>
         var dailyCarbonDouble = (remainPercentage)?.toDouble()?.div(1000)
         var dailyCarbonInt = (remainPercentage)?.toDouble()?.div(1000)?.toInt()
+        dailyCarbonInt = 5
         // 배출된 이산화탄소 양
         when (dailyCarbonInt) {
             in 0..2 -> {
                 glacier.setImageResource(R.drawable.glacier_4)
                 polarbear.setImageResource(R.drawable.polarbear_4)
+                remainText.setTextColor(Color.BLACK)
+                remainText.setShadowLayer(1f, 0f, 0f, Color.GRAY)
 
                 setChatText(view, 4)
 
