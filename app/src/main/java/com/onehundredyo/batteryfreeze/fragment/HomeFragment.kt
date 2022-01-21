@@ -341,12 +341,9 @@ class HomeFragment : Fragment() {
             // URI 생성
             Log.d(TAG, contentUri.toString())
             val sourceApplication = "com.onehundredyo.batteryfreeze"
-
-
             val sharing_intent = Intent("com.instagram.share.ADD_TO_STORY")
 
             sharing_intent.putExtra("source_application", sourceApplication)
-
             sharing_intent.type = "image/png"
             sharing_intent.setDataAndType(contentUri, "image/png");
 

@@ -713,10 +713,10 @@ class StatisticsFragment : Fragment() {
 
     private fun initDailyPieChart() {
         var pie: Pie = AnyChart.pie()
-        val dataEntries: ArrayList<DataEntry> = ArrayList<DataEntry>()
+        val dataEntries: ArrayList<DataEntry> = ArrayList()
 
-        for (i in topFiveData.indices) {
-            dataEntries.add(ValueDataEntry(topFiveData[i].name, topFiveData[i].DataUsage))
+        for(i in topFiveData.indices){
+            dataEntries.add(ValueDataEntry(topFiveData[i].name,topFiveData[i].DataUsage.toDouble().div(1000)))
         }
 
         pie.data(dataEntries)
