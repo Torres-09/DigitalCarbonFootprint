@@ -143,7 +143,7 @@ class StatisticsFragment : Fragment() {
         monthbutton = view.findViewById(R.id.monthbutton)
         yearbutton = view.findViewById(R.id.yearbutton)
         carbonhelpbutton = view.findViewById(R.id.carbon_help)
-        carbonhelpbutton.tooltipText = "이건 탄소다."
+        carbonhelpbutton.tooltipText = "데이터 사용량을 바탕으로 계산된 탄소 배출량입니다."
         setOnclickListenerOnToggleButton()
 
 
