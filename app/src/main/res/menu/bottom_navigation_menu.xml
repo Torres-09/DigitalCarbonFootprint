@@ -4,15 +4,15 @@
         android:id="@+id/page_1"
         android:enabled="true"
         android:icon="@drawable/navigation_selector_home"
-        android:title= "홈"/>
+        android:title= ""/>
     <item
         android:id="@+id/page_2"
         android:enabled="true"
         android:icon="@drawable/navigation_selector_statistics"
-        android:title= "통계"/>
+        android:title= ""/>
     <item
         android:id="@+id/page_3"
         android:enabled="true"
         android:icon="@drawable/navigation_selector_information"
-        android:title="정보"/>
+        android:title=""/>
 </menu>
