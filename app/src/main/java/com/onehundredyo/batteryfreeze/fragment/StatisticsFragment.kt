@@ -15,6 +15,7 @@ import com.anychart.chart.common.dataentry.ValueDataEntry
 import com.anychart.charts.Pie
 import com.anychart.graphics.vector.SolidFill
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.viewpager.widget.ViewPager
 import com.example.myapplication.DataUsage
 import com.github.mikephil.charting.animation.ChartAnimator
@@ -61,7 +62,7 @@ class StatisticsFragment : Fragment() {
     private lateinit var weekbutton: Button
     private lateinit var monthbutton: Button
     private lateinit var yearbutton: Button
-    private lateinit var carbonhelpbutton : Button
+    private lateinit var carbonhelpbutton : ImageButton
     lateinit var mainActivity: MainActivity     // CONTEXT
     private lateinit var topFiveData: MutableList<AppUsageData>
 

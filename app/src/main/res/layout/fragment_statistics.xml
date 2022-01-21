@@ -65,13 +65,16 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <Button
+                        <ImageButton
                             android:id="@+id/carbon_help"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
+                            android:scaleType="centerCrop"
                             android:layout_marginStart="8dp"
-                            android:layout_marginTop="3dp"
-                            android:background="@drawable/help_mark"
+                            android:layout_marginTop="2dp"
+                            android:background="@android:color/transparent"
+                            android:elevation="5dp"
+                            android:src="@drawable/help_mark"
                             app:layout_constraintStart_toEndOf="@id/carbonString"
                             app:layout_constraintTop_toTopOf="parent"
                             android:tooltipText="데이터 사용량을 바탕으로 계산된 탄소 배출량입니다."/>
