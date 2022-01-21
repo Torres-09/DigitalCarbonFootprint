@@ -22,6 +22,7 @@ import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.interfaces.dataprovider.BarDataProvider
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
@@ -43,6 +44,11 @@ import com.onehundredyo.batteryfreeze.dataBaseHelper.DataBaseManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.DecimalFormat
+import com.github.mikephil.charting.formatter.IValueFormatter
+
+
+
 
 //weeklybarchart - weekly
 //monthlybarchart - monthly
@@ -61,7 +67,7 @@ class StatisticsFragment : Fragment() {
     private lateinit var weekbutton: Button
     private lateinit var monthbutton: Button
     private lateinit var yearbutton: Button
-    private lateinit var carbonhelpbutton : Button
+    private lateinit var carbonhelpbutton: Button
     lateinit var mainActivity: MainActivity     // CONTEXT
     private lateinit var topFiveData: MutableList<AppUsageData>
 
@@ -244,7 +250,7 @@ class StatisticsFragment : Fragment() {
         monthlybarChart.invalidate()
         yearlybarChart.invalidate()
 
-        
+
         // 바차트 뷰 페이저 어댑터
         val adapter = StatisticsViewPagerAdapter()
         chartViewPager = view.findViewById(R.id.chartViewPager)
@@ -255,11 +261,11 @@ class StatisticsFragment : Fragment() {
         chartViewPager.adapter = adapter
     }
 
-    private fun setOnclickListenerOnToggleButton(){
-        weekbutton.setOnClickListener(View.OnClickListener{
-            if(it.id == R.id.weekbutton){
+    private fun setOnclickListenerOnToggleButton() {
+        weekbutton.setOnClickListener(View.OnClickListener {
+            if (it.id == R.id.weekbutton) {
                 // 현재 주간차트를 보여주는중이 아니면
-                if( chartViewPager.currentItem != 0){
+                if (chartViewPager.currentItem != 0) {
                     // setCurrentItem 의 두번째 인자 true 로 하면 손으로 넘기는 느낌
                     // false 로 하면 짠! 하고 바뀜
                     chartViewPager.setCurrentItem(0, true)
@@ -268,9 +274,9 @@ class StatisticsFragment : Fragment() {
             }
         })
         monthbutton.setOnClickListener(View.OnClickListener {
-            if(it.id == R.id.monthbutton){
+            if (it.id == R.id.monthbutton) {
                 // 현재 월간차트를 보여주는중이 아니면 월간차트로 변경
-                if( chartViewPager.currentItem != 1){
+                if (chartViewPager.currentItem != 1) {
                     // setCurrentItem 의 두번째 인자 true 로 하면 손으로 넘기는 느낌
                     // false 로 하면 짠! 하고 바뀜
                     chartViewPager.setCurrentItem(1, true)
@@ -278,9 +284,9 @@ class StatisticsFragment : Fragment() {
             }
         })
         yearbutton.setOnClickListener(View.OnClickListener {
-            if(it.id == R.id.yearbutton){
+            if (it.id == R.id.yearbutton) {
                 // 현재 주간차트를 보여주는중이 아니면
-                if( chartViewPager.currentItem != 2){
+                if (chartViewPager.currentItem != 2) {
                     // setCurrentItem 의 두번째 인자 true 로 하면 손으로 넘기는 느낌
                     // false 로 하면 짠! 하고 바뀜
                     chartViewPager.setCurrentItem(2, true)
@@ -288,24 +294,25 @@ class StatisticsFragment : Fragment() {
             }
         })
     }
+
     private fun getWeeklyBarDataUsage(): ArrayList<DataUsage> {
 
-        WeekDataList.add(DataUsage("일", weeklyData[0].DataUsage))
-        WeekDataList.add(DataUsage("월", weeklyData[1].DataUsage))
-        WeekDataList.add(DataUsage("화", weeklyData[2].DataUsage))
-        WeekDataList.add(DataUsage("수", weeklyData[3].DataUsage))
-        WeekDataList.add(DataUsage("목", weeklyData[4].DataUsage))
-        WeekDataList.add(DataUsage("금", weeklyData[5].DataUsage))
-        WeekDataList.add(DataUsage("토", weeklyData[6].DataUsage))
+        WeekDataList.add(DataUsage("일", weeklyData[0].DataUsage / 1000.0))
+        WeekDataList.add(DataUsage("월", weeklyData[1].DataUsage / 1000.0))
+        WeekDataList.add(DataUsage("화", weeklyData[2].DataUsage / 1000.0))
+        WeekDataList.add(DataUsage("수", weeklyData[3].DataUsage / 1000.0))
+        WeekDataList.add(DataUsage("목", weeklyData[4].DataUsage / 1000.0))
+        WeekDataList.add(DataUsage("금", weeklyData[5].DataUsage / 1000.0))
+        WeekDataList.add(DataUsage("토", weeklyData[6].DataUsage / 1000.0))
 
         return WeekDataList
     }
 
     fun getMonthlyBarDataUsage(): ArrayList<DataUsage> {
-        MonthDataList.add(DataUsage("3주전", monthlyData[0].DataUsage))
-        MonthDataList.add(DataUsage("2주전", monthlyData[1].DataUsage))
-        MonthDataList.add(DataUsage("지난주", monthlyData[2].DataUsage))
-        MonthDataList.add(DataUsage("이번주", monthlyData[3].DataUsage))
+        MonthDataList.add(DataUsage("3주전", monthlyData[0].DataUsage / 1000.0))
+        MonthDataList.add(DataUsage("2주전", monthlyData[1].DataUsage / 1000.0))
+        MonthDataList.add(DataUsage("지난주", monthlyData[2].DataUsage / 1000.0))
+        MonthDataList.add(DataUsage("이번주", monthlyData[3].DataUsage / 1000.0))
 
         return MonthDataList
     }
@@ -319,10 +326,10 @@ class StatisticsFragment : Fragment() {
 //        YearDataList.add(DataUsage("6월", yearlyData[5].DataUsage))
 //        YearDataList.add(DataUsage("7월", yearlyData[6].DataUsage))
 //        YearDataList.add(DataUsage("8월", yearlyData[7].DataUsage))
-        YearDataList.add(DataUsage("3달전", yearlyData[8].DataUsage))
-        YearDataList.add(DataUsage("2달전", yearlyData[9].DataUsage))
-        YearDataList.add(DataUsage("지난달", yearlyData[10].DataUsage))
-        YearDataList.add(DataUsage("이번달", yearlyData[11].DataUsage))
+        YearDataList.add(DataUsage("3달전", yearlyData[8].DataUsage / 1000.0))
+        YearDataList.add(DataUsage("2달전", yearlyData[9].DataUsage / 1000.0))
+        YearDataList.add(DataUsage("지난달", yearlyData[10].DataUsage / 1000.0))
+        YearDataList.add(DataUsage("이번달", yearlyData[11].DataUsage / 1000.0))
 
         return YearDataList
     }
@@ -343,14 +350,12 @@ class StatisticsFragment : Fragment() {
             // 막대 그래프 올라가는 애니메이션 추가
             animateXY(0, 800)
 
-
-            extraBottomOffset = 10f
 //            extraBottomOffset = 0f
 
             axisLeft.run {
                 // 좌측 y축 제거
                 isEnabled = false
-                axisMinimum = -4f
+                axisMinimum = 0f
             }
             axisRight.run {
                 //우측 y축 제거
@@ -406,7 +411,7 @@ class StatisticsFragment : Fragment() {
             axisLeft.run {
                 // 좌측 y축 제거
                 isEnabled = false
-                axisMinimum = -4f
+                axisMinimum = 0f
             }
             axisRight.run {
                 //우측 y축 제거
@@ -460,7 +465,7 @@ class StatisticsFragment : Fragment() {
             axisLeft.run {
                 // 좌측 y축 제거
                 isEnabled = false
-                axisMinimum = -4f
+                axisMinimum = 0f
             }
             axisRight.run {
                 //우측 y축 제거
@@ -502,6 +507,8 @@ class StatisticsFragment : Fragment() {
                 ""
             }
         }
+
+
     }
 
     //month data index 입력
@@ -704,22 +711,31 @@ class StatisticsFragment : Fragment() {
         }
     }
 
-    private fun initDailyPieChart(){
+    private fun initDailyPieChart() {
         var pie: Pie = AnyChart.pie()
         val dataEntries: ArrayList<DataEntry> = ArrayList<DataEntry>()
 
-        for(i in topFiveData.indices){
-            dataEntries.add(ValueDataEntry(topFiveData[i].name,topFiveData[i].DataUsage))
+        for (i in topFiveData.indices) {
+            dataEntries.add(ValueDataEntry(topFiveData[i].name, topFiveData[i].DataUsage))
         }
 
         pie.data(dataEntries)
-        pie.palette().itemAt(0, SolidFill("#B4D9FD",1) )
-        pie.palette().itemAt(1, SolidFill("#82C0FB",1) )
-        pie.palette().itemAt(2, SolidFill("#5AABF9",1) )
-        pie.palette().itemAt(3, SolidFill("#3496F5",1) )
-        pie.palette().itemAt(4, SolidFill("#0F7EE9",1) )
+        pie.palette().itemAt(0, SolidFill("#B4D9FD", 1))
+        pie.palette().itemAt(1, SolidFill("#82C0FB", 1))
+        pie.palette().itemAt(2, SolidFill("#5AABF9", 1))
+        pie.palette().itemAt(3, SolidFill("#3496F5", 1))
+        pie.palette().itemAt(4, SolidFill("#0F7EE9", 1))
 
         pie.labels().position("outside")
         dailyPieChart.setChart(pie)
     }
+
+    inner class YAxisDecimalLabelFormatter() : IAxisValueFormatter {
+        private val mFormat: DecimalFormat = DecimalFormat("#.##")
+        override fun getFormattedValue(value: Float, axis: AxisBase?): String {
+            return mFormat.format(value)
+        }
+    }
 }
+
+
