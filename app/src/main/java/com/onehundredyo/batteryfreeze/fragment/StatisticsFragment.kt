@@ -48,9 +48,6 @@ import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 import com.github.mikephil.charting.formatter.IValueFormatter
 
-
-
-
 //weeklybarchart - weekly
 //monthlybarchart - monthly
 //yearlybarchart - yearly
@@ -141,7 +138,6 @@ class StatisticsFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_statistics, container, false)
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -319,14 +315,6 @@ class StatisticsFragment : Fragment() {
     }
 
     fun getYearlyBarDataUsage(): ArrayList<DataUsage> {
-//        YearDataList.add(DataUsage("1월", yearlyData[0].DataUsage))
-//        YearDataList.add(DataUsage("2월", yearlyData[1].DataUsage))
-//        YearDataList.add(DataUsage("3월", yearlyData[2].DataUsage))
-//        YearDataList.add(DataUsage("4월", yearlyData[3].DataUsage))
-//        YearDataList.add(DataUsage("5월", yearlyData[4].DataUsage))
-//        YearDataList.add(DataUsage("6월", yearlyData[5].DataUsage))
-//        YearDataList.add(DataUsage("7월", yearlyData[6].DataUsage))
-//        YearDataList.add(DataUsage("8월", yearlyData[7].DataUsage))
         YearDataList.add(DataUsage("3달전", yearlyData[8].DataUsage / 1000.0))
         YearDataList.add(DataUsage("2달전", yearlyData[9].DataUsage / 1000.0))
         YearDataList.add(DataUsage("지난달", yearlyData[10].DataUsage / 1000.0))
