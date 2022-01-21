@@ -65,7 +65,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <androidx.appcompat.widget.AppCompatButton
+                        <Button
                             android:id="@+id/carbon_help"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
@@ -74,7 +74,7 @@
                             android:background="@drawable/help_mark"
                             app:layout_constraintStart_toEndOf="@id/carbonString"
                             app:layout_constraintTop_toTopOf="parent"
-                            android:tooltipText="이건 탄소다"/>
+                            android:tooltipText="데이터 사용량을 바탕으로 계산된 탄소 배출량입니다."/>
 
 
                         <com.google.android.material.button.MaterialButtonToggleGroup
@@ -155,15 +155,15 @@
                         </com.onehundredyo.batteryfreeze.customs.CustomViewPager>
 
                         <!-- Title, secondary and supporting text -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="데이터 사용량을 바탕으로 계산된 탄소 배출량입니다."
-                            android:textAppearance="?attr/textAppearanceBody2"
-                            android:textColor="?android:attr/textColorSecondary"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/chartViewPager" />
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="데이터 사용량을 바탕으로 계산된 탄소 배출량입니다."-->
+<!--                            android:textAppearance="?attr/textAppearanceBody2"-->
+<!--                            android:textColor="?android:attr/textColorSecondary"-->
+<!--                            app:layout_constraintEnd_toEndOf="parent"-->
+<!--                            app:layout_constraintStart_toStartOf="parent"-->
+<!--                            app:layout_constraintTop_toBottomOf="@id/chartViewPager" />-->
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </com.google.android.material.card.MaterialCardView>
