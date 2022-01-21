@@ -36,11 +36,11 @@
 
 <li>앱 별 와이파이 사용량 및 데이터 사용량 조회 쿼리 프로토타입 정의</li>
 
-<li><a  href = "https://developer.android.com/reference/com/google/android/material/bottomnavigation/BottomNavigationView"> 하단네비게이션바 추가</a></li>
+<li><a href = "https://developer.android.com/reference/com/google/android/material/bottomnavigation/BottomNavigationView"> 하단네비게이션바 추가</a></li>
 
 <li>홈화면 디자인 초안</li>
 
-<li><a  href = "https://github.com/PhilJay/MPAndroidChart">데이터시각화</a></li>
+<li><a href = "https://github.com/PhilJay/MPAndroidChart">데이터시각화</a></li>
 
 <li>코드 리팩터링</li>
 
@@ -62,7 +62,7 @@
 
 <ul>
 
-<li><a  href="https://developer.android.com/training/data-storage/room?hl=ko">Room</a>을 사용한 데이터베이스 구축</li>
+<li><a href="https://developer.android.com/training/data-storage/room?hl=ko">Room</a>을 사용한 데이터베이스 구축</li>
 
 <li>코루틴 이용한 DB 접근 및 사용자 경험 향상</li>
 
@@ -101,23 +101,41 @@
 <li>UI/UX 개선</li>
 
 </ul>
+
 <br>
+
 22.01.20
+
 <ul>
 
 <li> 통계페이지 카드뷰 개선 </li>
-<li> 네비게이션뷰  아이콘 변경</li>
+
+<li> 네비게이션뷰 아이콘 변경</li>
+
 <li>앱 아이콘 변경</li>
+
 <li>로딩이미지 배경 변경</li>
+
 <li>소셜기능(인스타그램 스토리 공유기능) 추가</li>
 
 </ul>
 
 <br>
+
 22.01.21
+
 <ul>
+
 <li>기사 페이지 생성</li>
+
 <li>마무리 작업</li>
+
 </ul>
 
 <h2> LICENSE</h2>
+<ul> 
+<li><a href = "https://github.com/Torres-09/17th-hackathon/blob/main/NOTICE">NOTICE</a></li>
+<li>
+<a href = "https://github.com/Torres-09/17th-hackathon/blob/main/LICENSE"> LICENSE</a></li>
+<li><a href="">CREDITS</a></li>
+</ul>
