@@ -5,7 +5,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string-array name="dailyMission">
-        <item>오늘은 ${ 24시간동안 사용량 가장 높은 어플 이름} 의 사용량을 줄여보시겠어요?</item>
+        <item>오늘은 %s의 사용량을 줄여보시겠어요?</item>
         <item>오늘은 유튜브를 720p로 보는건 어때요?</item>
         <item>스마트폰을 잠시 내려놓으시겠어요?</item>
         <item>화면 밝기를 줄여주시겠어요?</item>
