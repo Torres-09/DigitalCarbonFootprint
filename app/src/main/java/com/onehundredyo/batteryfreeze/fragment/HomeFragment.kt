@@ -101,6 +101,8 @@ class HomeFragment : Fragment() {
         val chatButton: ImageView = view.findViewById(R.id.chat_button)
         val instabtn: ImageButton = view.findViewById(R.id.insta_share_button)
         val activity = context as Activity
+        val topOne = (activity as MainActivity?)?.getTopFiveApp()!![0].name
+
 
         //퍼센트에 따른 변화
         var randomNumber = (0..2).random()
@@ -117,13 +119,25 @@ class HomeFragment : Fragment() {
 
                 chatButton.setOnClickListener { setChatText(view, 4) }
                 ObjectAnimator.ofFloat(chatBubble, "translationY", -dpToPx(activity, 110f))
-                    .apply { start() }
+                    .apply {
+                        duration = 0
+                        start()
+                    }
                 ObjectAnimator.ofFloat(chatBubble, "translationX", -dpToPx(activity, 20f))
-                    .apply { start() }
+                    .apply {
+                        duration = 0
+                        start()
+                    }
                 ObjectAnimator.ofFloat(chatBubbleText, "translationY", -dpToPx(activity, 110f))
-                    .apply { start() }
+                    .apply {
+                        duration = 0
+                        start()
+                    }
                 ObjectAnimator.ofFloat(chatBubbleText, "translationX", -dpToPx(activity, 20f))
-                    .apply { start() }
+                    .apply {
+                        duration = 0
+                        start()
+                    }
 
 
             }
@@ -203,9 +217,15 @@ class HomeFragment : Fragment() {
                 setChatText(view, 1)
 
                 ObjectAnimator.ofFloat(chatBubble, "translationY", -dpToPx(activity, 70f))
-                    .apply { start() }
+                    .apply {
+                        duration = 0
+                        start()
+                    }
                 ObjectAnimator.ofFloat(chatBubbleText, "translationY", -dpToPx(activity, 70f))
-                    .apply { start() }
+                    .apply {
+                        duration = 0
+                        start()
+                    }
 
                 glacier.startAnimation(
                     AnimationUtils.loadAnimation(
@@ -257,7 +277,13 @@ class HomeFragment : Fragment() {
         remainText.setText("오늘의 탄소배출량 ${dailyCarbonDouble}kg")
         randomNumber = (0..6).random()
         textArray = resources.getStringArray(R.array.dailyMission)
-        todayGoalText.setText(textArray[randomNumber])
+
+        if (randomNumber == 0)
+            todayGoalText.setText(resources.getStringArray(R.array.dailyMission)[0].format(topOne))
+        else
+            todayGoalText.setText(textArray[randomNumber])
+
+
         instabtn.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 screenTwo()
@@ -291,7 +317,7 @@ class HomeFragment : Fragment() {
 
     // https://goni95.tistory.com/123
     // https://kimyunseok.tistory.com/139 를 참고하여 작성함
-    private fun screenTwo(){
+    private fun screenTwo() {
         requireView().isDrawingCacheEnabled = true
 
         val screenBitmap = requireView().drawingCache
