@@ -17,6 +17,7 @@ import com.anychart.graphics.vector.SolidFill
 import android.widget.Button
 import android.widget.ImageButton
 import androidx.viewpager.widget.ViewPager
+import com.anychart.core.ui.ChartCredits
 import com.example.myapplication.DataUsage
 import com.github.mikephil.charting.animation.ChartAnimator
 import com.github.mikephil.charting.charts.BarChart
@@ -716,6 +717,7 @@ class StatisticsFragment : Fragment() {
         pie.palette().itemAt(4, SolidFill("#0F7EE9", 1))
 
         pie.labels().position("outside")
+        dailyPieChart.setLicenceKey("standard_lee@inha.edu-cdb5da19-a1fa9e8f")
         dailyPieChart.setChart(pie)
     }
 
