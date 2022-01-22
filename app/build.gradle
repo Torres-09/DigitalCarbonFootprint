@@ -4,6 +4,9 @@ plugins {
     id 'kotlin-kapt'
 }
 
+def properties = new Properties()
+properties.load(new FileInputStream(project.rootProject.file('./local.properties')))
+
 android {
     compileSdk 31
 
@@ -16,6 +19,8 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+
+        buildConfigField("String", "CHART_KEY", properties.getProperty("ANYCHARTKEY"))
     }
 
     buildTypes {
