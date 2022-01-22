@@ -9,22 +9,36 @@
 
 <h2>프로젝트 소개💻 </h2>
 
+<table>
+<tr>
+<td>
 <img src="https://user-images.githubusercontent.com/67403246/150627889-349f04f4-d6be-4bc0-aabb-51dc6453d20c.gif" style="height:400px;"/>
-<img src="https://user-images.githubusercontent.com/67403246/150627893-57107a20-afe4-4a31-8fa7-074a083ae7e2.gif" alt="B2" style="height:400px;"/>
-
-<img src="https://user-images.githubusercontent.com/67403246/150627947-e1f3849e-ff7b-47ea-9386-ef55f773422a.gif" alt="B3" style="height:400px;"/>
-
+</td>
+<td><img src="https://user-images.githubusercontent.com/67403246/150627893-57107a20-afe4-4a31-8fa7-074a083ae7e2.gif" alt="B2" style="height:400px;"/></td>
+<td><img src="https://user-images.githubusercontent.com/67403246/150627947-e1f3849e-ff7b-47ea-9386-ef55f773422a.gif" alt="B3" style="height:400px;"/></td>
+</tr>
+<tr>
+<td>
 <img src="https://user-images.githubusercontent.com/67403246/150627950-11a6c273-47f0-4a77-917e-0131f7811cf3.gif" alt="B4" style="height:400px;"/>
-
+</td>
+<td>
 <img src="https://user-images.githubusercontent.com/67403246/150633000-f9ad5ff2-213d-49c0-8fbe-e49e572aed3d.gif" alt="B5" style="height:400px;">
-
-<img src="https://user-images.githubusercontent.com/67403246/150633003-7210ae49-6fe9-4990-ae60-c6eca35c873a.gif" alt="barchart" style="height:400px;">
-
-<img src="https://user-images.githubusercontent.com/67403246/150633016-79c5405e-2cc3-46e4-a382-abed7a20a3d9.gif" alt="piechart" style="height:400px;">
-
-<img src="https://user-images.githubusercontent.com/67403246/150633125-c5cde79e-8b91-4fcc-9536-638f2cd07959.gif" alt="funding" style="height:400px;">
-
+</td>
+<td>
 <img src="https://user-images.githubusercontent.com/67403246/150633008-900c43b1-4c19-41dc-9d9e-ee9fab85930c.gif" alt="insta_share (1)" style="height:400px;">
+</td>
+</tr>
+</table>
+
+<hr>
+<table>
+<tr>
+<td><img src="https://user-images.githubusercontent.com/67403246/150633003-7210ae49-6fe9-4990-ae60-c6eca35c873a.gif" alt="barchart" style="height:400px;"></td>
+<td><img src="https://user-images.githubusercontent.com/67403246/150633016-79c5405e-2cc3-46e4-a382-abed7a20a3d9.gif" alt="piechart" style="height:400px;"></td>
+</tr>
+</table>
+<hr>
+<img src="https://user-images.githubusercontent.com/67403246/150633125-c5cde79e-8b91-4fcc-9536-638f2cd07959.gif" alt="funding" style="height:400px;">
 
 <h2>개발일지 💻</h2>
 
