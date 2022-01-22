@@ -48,6 +48,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 import com.github.mikephil.charting.formatter.IValueFormatter
+import com.onehundredyo.batteryfreeze.BuildConfig
 
 //weeklybarchart - weekly
 //monthlybarchart - monthly
@@ -717,7 +718,7 @@ class StatisticsFragment : Fragment() {
         pie.palette().itemAt(4, SolidFill("#0F7EE9", 1))
 
         pie.labels().position("outside")
-        dailyPieChart.setLicenceKey("standard_lee@inha.edu-cdb5da19-a1fa9e8f")
+        dailyPieChart.setLicenceKey(BuildConfig.CHART_KEY)
         dailyPieChart.setChart(pie)
     }
 
