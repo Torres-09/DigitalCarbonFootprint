@@ -3,15 +3,15 @@
 👨‍🏫 목차 👨‍🏫
 
 <ol>
-<li><a href="member">팀원 소개</a></li>
-<li><a href="project">프로젝트 소개</a></li>
-<li><a href="format">화면 구성</a></li>
-<li><a href="journal">개발 일지</a></li>
-<li><a href="license">LICENSE</li>
+<li><a href="#member">팀원 소개</a></li>
+<li><a href="#project">프로젝트 소개</a></li>
+<li><a href="#format">화면 구성</a></li>
+<li><a href="#journal">개발 일지</a></li>
+<li><a href="#license">LICENSE</li>
 </ol>
 <h2 name="member">  팀원 🙋‍♂️🙎‍♂️🙆‍♂️💁‍♂️</h2>
 
-> [Torres-09](https://github.com/Torres-09) > [Gaebobman](https://github.com/Gaebobman) > [BBSSJJ](https://github.com/BBSSJJ) > [jis8140](https://github.com/jis8140)
+> [Torres-09](https://github.com/Torres-09) <br> > [Gaebobman](https://github.com/Gaebobman) <br> > [BBSSJJ](https://github.com/BBSSJJ) <br> > [jis8140](https://github.com/jis8140) <br><br>
 
 <h2 name="project">프로젝트 소개 💻 </h2>
 코로나 사태로 온라인 컨텐츠 사용이 증가하였고, 이로 인한 디지털 탄소 배출량이 늘게 되었습니다. <br>
@@ -19,21 +19,21 @@
 
 <h2 name="format">화면 구성 💻 </h2>
 
-<a href="main">메인 화면</a>
+<a href="#main">메인 화면</a>
 
 <ul>
 <li>탄소 배출량이 많아질 수록 빙하가 줄어드는 애니메이션을 통해 사용자가 현재 탄소 배출량을 시각적으로 인식할 수 있게 합니다.</li> 
 <li>사용자의 북극곰 상태를 SNS상에 게시하는 기능이 있습니다.</li>
 </ul>
 
-<a href="statistics">통계 화면</a>
+<a href="#statistics">통계 화면</a>
 
 <ul>
 <li>통계 화면에서는 주간, 월간, 연간 발생 탄소 데이터를 제공합니다. </li>
 <li>일간 탄소배출량 상위 5개 어플에 대한 정보를 제공합니다.</li>
 </ul>
 
-<a href="funding">펀딩 화면</a>
+<a href="#funding">펀딩 화면</a>
 
 <ul>
 <li>자신의 탄소 배출량을 줄여 환경 단체나 기업에서 주관하는 기부를 위한 펀딩에 참여 가능하도록 하여 이용자로 하여금 보람과 성취감을 느낄 수 있도록 하였습니다.</li>
