@@ -1,15 +1,17 @@
 package com.onehundredyo.batteryfreeze.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.util.Log
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
+import androidx.recyclerview.widget.RecyclerView
 import com.onehundredyo.batteryfreeze.DO.News
 import com.onehundredyo.batteryfreeze.R
 import kotlinx.coroutines.CoroutineScope
@@ -20,44 +22,52 @@ import java.io.IOException
 import java.net.MalformedURLException
 import java.net.URL
 
-class CustomListViewAdapter(val context: Context?, val newsList: MutableList<News>) : BaseAdapter(){
-    private lateinit var newsTitle: TextView
-    private lateinit var newsBody: TextView
-    private lateinit var newsImageUrl: ImageView
+class CustomListViewAdapter(private val context: Context) :
+RecyclerView.Adapter<CustomListViewAdapter.ViewHolder>(){
+    private lateinit var itemClickListener : OnItemClickListener
+    var newsList = mutableListOf<News>()
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
+        private val listTitle: TextView = view.findViewById(R.id.list_view_title)
+        private val listImage: ImageView = view.findViewById(R.id.list_view_image)
 
-    override fun getCount(): Int {
-        return newsList.size
-    }
-
-    override fun getItem(position: Int): Any {
-        return newsList[position]
-    }
-
-    override fun getItemId(p0: Int): Long {
-        return 0
-    }
-
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val view: View = LayoutInflater.from(context).inflate(R.layout.list_view_custiom, null)
-
-        newsTitle = view.findViewById(R.id.list_view_title)
-        newsBody = view.findViewById(R.id.list_view_body)
-        newsImageUrl = view.findViewById(R.id.list_view_image)
-
-        val news = newsList[position]
-        var bitmap: Bitmap? = null
-        newsTitle.setText(news.title)
-        newsBody.setText(news.body)
-        CoroutineScope(Dispatchers.Main).launch{
-            bitmap = withContext(Dispatchers.IO){
-                ImageLoader.loadImage(news.imageUrl)
+        fun bind(item: News) {
+            listTitle.text = item.title
+            CoroutineScope(Dispatchers.Main).launch{
+                var bitmap = withContext(Dispatchers.IO){
+                    ImageLoader.loadImage(item.imageUrl)
+                }
+                listImage.setImageBitmap(bitmap)
             }
-            newsImageUrl.setImageBitmap(bitmap)
+
         }
-        return view
     }
 
-    object ImageLoader{
+    override fun getItemCount(): Int = newsList.size
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(context).inflate(R.layout.list_view_custom, parent,false)
+        return ViewHolder(view)
+    }
+
+    fun setItemClickListener(onItemClickListener: OnItemClickListener) {
+        this.itemClickListener = onItemClickListener
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(newsList[position])
+
+        holder.itemView.setOnClickListener{
+            itemClickListener.onClick(it, position)
+        }
+    }
+
+    interface OnItemClickListener{
+        fun onClick(view: View, position: Int)
+    }
+
+}
+
+object ImageLoader{
         suspend fun loadImage(imageUrl: String): Bitmap?{
             val bmp: Bitmap? = null
             try{
@@ -72,5 +82,4 @@ class CustomListViewAdapter(val context: Context?, val newsList: MutableList<New
             }
             return bmp
         }
-    }
 }

@@ -110,7 +110,6 @@ class HomeFragment : Fragment() {
         lateinit var textArray: Array<String>
         var dailyCarbonDouble = (remainPercentage)?.toDouble()?.div(1000)
         var dailyCarbonInt = (remainPercentage)?.toDouble()?.div(1000)?.toInt()
-        dailyCarbonInt = 5
         // 배출된 이산화탄소 양
         when (dailyCarbonInt) {
             in 0..2 -> {
@@ -341,12 +340,9 @@ class HomeFragment : Fragment() {
             // URI 생성
             Log.d(TAG, contentUri.toString())
             val sourceApplication = "com.onehundredyo.batteryfreeze"
-
-
             val sharing_intent = Intent("com.instagram.share.ADD_TO_STORY")
 
             sharing_intent.putExtra("source_application", sourceApplication)
-
             sharing_intent.type = "image/png"
             sharing_intent.setDataAndType(contentUri, "image/png");
 
